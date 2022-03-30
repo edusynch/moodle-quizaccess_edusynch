@@ -15,9 +15,9 @@ To find out more about the integration procedure or schedule a trial exam, pleas
 
 To use the EduSynch E-Proctoring plugin, you must install it.
 
--   You can download the plugin directly from the Moodle Directory here: {INSERT LINK TO THE MOODLE DIRECTORY}
+-   You can download the plugin directly from the Moodle Directory here: https://moodle.org/plugins/quizaccess_edusyncheproctoring 
     
--   Alternatively, you can download the plugin from {INSERT LINK HERE} (ZIP archive).
+-   Alternatively, you can download the plugin from https://github.com/edusynch/moodle-quizaccess_edusyncheproctoring/releases.
     
 
 -   To install it, login to your Moodle site as an admin, go to Site administration → Plugins → Install plugins, upload the ZIP file and install the plugin as prompted.
