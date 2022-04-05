@@ -26,7 +26,7 @@ require_once($CFG->dirroot . '/mod/quiz/accessrule/edusyncheproctoring/vendor/au
 class network {
 
     /** @var string The Edusynch Student Server URL */
-    public static $BASE_URL_STUDENT = 'https://admin.edusynch.com';
+    public static $BASE_URL_STUDENT = 'https://api.edusynch.com';
     /** @var string The Edusynch CMS Server URL */
     public static $BASE_URL_CMS     = 'https://cmsapi.edusynch.com';
 
