@@ -34,6 +34,7 @@ class network {
      * Sends a request to a server
      *
      * @param  string  $method  The request's method 
+     * 
      * @param  string  $base    The edusynch server target (cms | student)  
      * @param  string  $url     The URL Requested  
      * @param  array   $body    Array with the body of the request (if any)  
@@ -44,6 +45,23 @@ class network {
     {       
         try {
             $client = new \GuzzleHttp\Client();
+
+            $config      = new config();
+            $student_api = $config->get_key('student_api');
+            $cms_api     = $config->get_key('cms_api');
+
+            if(is_null($student_api)) {
+                $student_api = self::$BASE_URL_STUDENT;
+            } else {
+                $student_api = $student_api->value;
+            }
+
+            if(is_null($cms_api)) {
+                $cms_api = self::$BASE_URL_CMS;
+            } else {
+                $cms_api = $cms_api->value;
+            }
+
 
             $default_headers = ['Content-Type' => 'application/json'];
             $request_config  = ['headers' => $default_headers];
@@ -58,7 +76,7 @@ class network {
     
             $request = $client->request(
                 $method, 
-                ($base == 'cms' ? self::$BASE_URL_CMS : self::$BASE_URL_STUDENT) . '/' . $url,
+                ($base == 'cms' ? $cms_api : $student_api) . '/' . $url,
                 $request_config
             );
             
