@@ -47,6 +47,7 @@
                     <h4 class="font-weight-bold">Log</h4>
                 </div>
                 <div class="card-body">
+                    <?php if (count($events)): ?>
                     <nav>
                         <ul class="pagination justify-content-end">
                             <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
@@ -87,7 +88,10 @@
                                 <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&events_page=' . $next_page .'"' ?>>Next</a>
                             </li>
                         </ul>
-                    </nav>                        
+                    </nav> 
+                    <?php else: ?>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> There are no events for this session</div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -100,6 +104,7 @@
                     <h4 class="font-weight-bold">Screen Archive</h4>
                 </div>
                 <div class="card-body">
+                    <?php if (count($photos)): ?>
                     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <?php for($i = 0; $i < count($photos); $i++): ?> 
@@ -125,6 +130,9 @@
                             <span class="sr-only">Next</span>
                         </button>
                     </div>
+                    <?php else: ?>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> There are no screens for this session</div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
