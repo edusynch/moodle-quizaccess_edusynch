@@ -37,18 +37,25 @@ if ($action != 'settings' && !$config_key) {
 }
 
 if($action == 'settings') {
-    $api_key    = optional_param('api_key', '', PARAM_RAW);
-    $user       = optional_param('user', '', PARAM_RAW);
-    $password   = optional_param('password', '', PARAM_RAW);
+    $student_api = optional_param('student_api', '', PARAM_RAW);
+    $cms_api     = optional_param('cms_api', '', PARAM_RAW);
+    $api_key     = optional_param('api_key', '', PARAM_RAW);
+    $api_key     = optional_param('api_key', '', PARAM_RAW);
+    $user        = optional_param('user', '', PARAM_RAW);
+    $password    = optional_param('password', '', PARAM_RAW);
 
     $success = null;
     if($api_key == '') {
-        $api_key  = $config->get_key('api_key');    
-        $user     = $config->get_key('user'   );    
-        $password = $config->get_key('password');    
-        $api_key_value  = $api_key ? $api_key->value : null;    
-        $user_value     = $user ? $user->value : null;    
-        $password_value = $password ? $password->value : null;    
+        $student_api  = $config->get_key('student_api');    
+        $cms_api      = $config->get_key('cms_api');    
+        $api_key      = $config->get_key('api_key');    
+        $user         = $config->get_key('user');    
+        $password     = $config->get_key('password');    
+        $student_api_value  = $student_api ? $student_api->value : null;    
+        $cms_api_value      = $cms_api ? $cms_api->value : null;    
+        $api_key_value      = $api_key ? $api_key->value : null;    
+        $user_value         = $user ? $user->value : null;    
+        $password_value     = $password ? $password->value : null;    
     } else {
         $config->set_key('api_key', $api_key);
         $config->set_key('user', $user);
@@ -56,6 +63,13 @@ if($action == 'settings') {
         $api_key_value  = $api_key;
         $user_value     = $user;
         $password_value = $password;
+
+        if(!empty($student_api) && !empty($cms_api)) {
+            $config->set_key('student_api', $student_api);              
+            $config->set_key('cms_api', $cms_api);   
+            $student_api_value  = $student_api;
+            $cms_api_value      = $cms_api;
+        }
         $success = true;
     }
 

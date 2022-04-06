@@ -12,7 +12,7 @@ $host = $PAGE->url->get_host();
         <div class="tab-pane fade show active" id="nav-settings" role="tabpanel">
 
             <form action="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusyncheproctoring/index.php?action=settings" method="POST" class="mt-3">
-                <?php if ($host == 'localhost' || strpos('edusynch.com', $host) !== FALSE): ?>
+                <?php if ($host == 'localhost' || strpos($host, 'edusynch.com') !== FALSE): ?>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
