@@ -52,9 +52,9 @@ class session {
             );
             $session_id = $session_request['id'];
     
-            return ['session_id' => $session_id, 'token' => $student_token];
+            return ['success' => true, 'session_id' => $session_id, 'token' => $student_token];
         } catch (\Exception $e) {
-            die('Unable to create session: ' . $e->getMessage());
+            return ['success' => false, 'session_id' => null, 'token' => null];
         }
 
     }

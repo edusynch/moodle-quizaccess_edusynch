@@ -7,11 +7,13 @@ require_once(__DIR__ . '/../../../../config.php');
 /**
  * EPROCTORING_URL - sets the current URL (web) of the plugins page.
  */
-define('EPROCTORING_URL', $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/index.php');
+define('EPROCTORING_PATH', $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/');
+define('EPROCTORING_URL', EPROCTORING_PATH . 'index.php');
 
 is_siteadmin() || die;
 
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
+$subaction = optional_param('subaction', '', PARAM_ALPHA);
 
 global $PAGE;
 
@@ -37,14 +39,18 @@ if ($action != 'settings' && !$config_key) {
 }
 
 if($action == 'settings') {
-    $student_api = optional_param('student_api', '', PARAM_RAW);
-    $cms_api     = optional_param('cms_api', '', PARAM_RAW);
-    $api_key     = optional_param('api_key', '', PARAM_RAW);
-    $api_key     = optional_param('api_key', '', PARAM_RAW);
-    $user        = optional_param('user', '', PARAM_RAW);
-    $password    = optional_param('password', '', PARAM_RAW);
+    $importform = new \quizaccess_edusyncheproctoring\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
 
-    $success = null;
+    $student_api   = optional_param('student_api', '', PARAM_RAW);
+    $cms_api       = optional_param('cms_api', '', PARAM_RAW);
+    $api_key       = optional_param('api_key', '', PARAM_RAW);
+    $api_key       = optional_param('api_key', '', PARAM_RAW);
+    $user          = optional_param('user', '', PARAM_RAW);
+    $password      = optional_param('password', '', PARAM_RAW);
+    $success       = optional_param('success', 0, PARAM_INT);
+
+    $success = (bool) $success;
+
     if($api_key == '') {
         $student_api  = $config->get_key('student_api');    
         $cms_api      = $config->get_key('cms_api');    
@@ -72,6 +78,21 @@ if($action == 'settings') {
         }
         $success = true;
     }
+
+    if($subaction == 'import') {
+        global $USER;
+
+        $file = required_param('import_list', PARAM_FILE); 
+
+        $fs = get_file_storage();
+        $context = context_user::instance($USER->id);
+        $files = $fs->get_area_files($context->id, 'user', 'draft', $file, 'id DESC', false);
+
+        $tempfile = reset($files)->copy_content_to_temp();
+        $import_list = \quizaccess_edusyncheproctoring\user::import_students($tempfile);    
+
+        redirect(EPROCTORING_URL . '?action=settings&success=1');
+     }
 
 } else if ($action == 'sessions') {
     $current_page = optional_param('page', 1, PARAM_INT);

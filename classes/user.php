@@ -63,4 +63,40 @@ class user {
             throw new \Exception('Unable to login user: ' . $e->getMessage());
         }
     }
+
+    /**
+     * Requests for a student token on Edusynch for the logged user
+     *
+     * @param   int     $userid  The moodle user ID 
+     * @return  string  The generated token  
+     */     
+    public static function import_students($file)
+    {       
+        global $DB;
+        
+        $config = new config();
+        $api_key = $config->get_key('api_key')->value;   
+        
+        try {
+            $token = user::login();
+
+            $students = network::sendRequest(
+                'POST', 
+                'cms',
+                'cms/v1/students/import_external',
+                [
+                    'file' => $file,
+                    'filename' => 'import.csv',
+                ],
+                [
+                    'Authorization' => 'Bearer ' . $token,
+                    'Content-Type' => 'multipart/form-data',
+                ]
+            );
+
+            return $students;
+        } catch (\Exception $e) {
+            throw new \Exception('Unable to import students: ' . $e->getMessage());
+        }
+    }       
 }

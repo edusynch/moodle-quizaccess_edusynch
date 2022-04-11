@@ -59,7 +59,8 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
     $userid = $event->userid; 
     $session_details = \quizaccess_edusyncheproctoring\session::create($userid);
 
-    $js = "
+    if($session_details['success']) {
+        $js = "
         // Start attempt
         var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
         
@@ -71,7 +72,8 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
         var form = document.getElementsByTagName('form')[0];
         form.setAttribute('data-proctoring', 'form');
 ";
-    $PAGE->requires->js_init_code($js);
+        $PAGE->requires->js_init_code($js);
+    }
 
 }
 

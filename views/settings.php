@@ -10,8 +10,9 @@ $host = $PAGE->url->get_host();
         <?php endif; ?>
 
         <div class="tab-pane fade show active" id="nav-settings" role="tabpanel">
+            <h4 class="mt-3">Keys</h4>
 
-            <form action="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusyncheproctoring/index.php?action=settings" method="POST" class="mt-3">
+            <form action="<?php echo EPROCTORING_URL  ?>?action=settings" method="POST" class="mt-3">
                 <?php if ($host == 'localhost' || strpos($host, 'edusynch.com') !== FALSE): ?>
                 <div class="row">
                     <div class="col-md-8">
@@ -57,6 +58,20 @@ $host = $PAGE->url->get_host();
                 </div>
 
                 <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+            <hr>            
+            <h4 class="mt-3">Import students</h4>
+
+            <div class="row">
+              <div class="col-md-12">
+                    Use the box below to import a .CSV file with your students data, like <a href="<?php echo EPROCTORING_PATH ?>students-import.csv">this example</a>
+
+                    <br> 
+                    <?php echo $importform->render() ?>
+              </div>
+            </div>
+
             </form>
 
         </div>

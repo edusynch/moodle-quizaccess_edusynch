@@ -59,6 +59,6 @@ class student {
         } catch (\Exception $e) {
             throw new \Exception('Unable to login student: ' . $e->getMessage());
         }
-    }
+    } 
 
 }

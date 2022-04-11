@@ -63,7 +63,7 @@ class network {
             }
 
 
-            $default_headers = ['Content-Type' => 'application/json'];
+            $default_headers = ['Content-Type' => array_key_exists('Content-Type', $headers) ? $headers['Content-Type'] : 'application/json'];
             $request_config  = ['headers' => $default_headers];
 
             if (count($headers) > 0) {
@@ -71,7 +71,14 @@ class network {
             }
 
             if($body && count($body) > 0) {
-                $request_config['json'] = $body;
+                if($default_headers['Content-Type'] != 'application/json') {
+                    unset($request_config['headers']['Content-Type']); // Auto-seted by Guzzle
+                    $request_config['multipart'] = [
+                        ['name' => 'file', 'contents' => \GuzzleHttp\Psr7\Utils::tryFopen($body['file'],'r'), 'filename' => $body['filename']]
+                    ];
+                } else {
+                    $request_config['json'] = $body;
+                }
             }
     
             $request = $client->request(
