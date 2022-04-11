@@ -34,10 +34,26 @@ class session {
      * Creates an antifraud session with the student logged
      *
      * @param   int     $userid  The moodle user ID 
+     * @param   int     $quizid  The moodle Quiz ID 
      * @return  array   Created session details  
      */       
-    public static function create($userid)
+    public static function create($userid, $quizid)
     {       
+        global $DB;
+       
+        // Is Quiz enabled?
+        $config      = new config();
+        $quizzes     = $config->get_key('quizzes');
+
+        $quizzes = $quizzes ? json_decode($quizzes->value, true) : [];
+
+        $search = array_search($quizid, array_column($quizzes, 'id'));
+
+        if($search === false) {
+            return ['success' => false];
+        }
+
+        // Is Student enabled?
         try {
             $student_token = student::login($userid);
             

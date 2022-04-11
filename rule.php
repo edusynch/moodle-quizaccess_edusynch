@@ -56,8 +56,10 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 
     $PAGE->requires->jquery();
     
+
     $userid = $event->userid; 
-    $session_details = \quizaccess_edusyncheproctoring\session::create($userid);
+    $quizid = $event->objectid; 
+    $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
 
     if($session_details['success']) {
         $js = "

@@ -15,13 +15,16 @@ is_siteadmin() || die;
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
 $subaction = optional_param('subaction', '', PARAM_ALPHA);
 
-global $PAGE;
+global $PAGE, $DB;
 
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
 $PAGE->set_title('EduSynch E-Proctoring');
 $PAGE->set_heading('EduSynch E-Proctoring');
+
+
+$PAGE->requires->jquery();
 
 echo $OUTPUT->header();
 
@@ -39,6 +42,9 @@ if ($action != 'settings' && !$config_key) {
 }
 
 if($action == 'settings') {
+    global $PAGE;
+
+
     $importform = new \quizaccess_edusyncheproctoring\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
 
     $student_api   = optional_param('student_api', '', PARAM_RAW);
@@ -49,7 +55,10 @@ if($action == 'settings') {
     $password      = optional_param('password', '', PARAM_RAW);
     $success       = optional_param('success', 0, PARAM_INT);
 
+    
+
     $success = (bool) $success;
+    $quizzes       = $config->get_key('quizzes');    
 
     if($api_key == '') {
         $student_api  = $config->get_key('student_api');    
@@ -57,6 +66,7 @@ if($action == 'settings') {
         $api_key      = $config->get_key('api_key');    
         $user         = $config->get_key('user');    
         $password     = $config->get_key('password');    
+        
         $student_api_value  = $student_api ? $student_api->value : null;    
         $cms_api_value      = $cms_api ? $cms_api->value : null;    
         $api_key_value      = $api_key ? $api_key->value : null;    
@@ -79,6 +89,8 @@ if($action == 'settings') {
         $success = true;
     }
 
+    $quizzes_enabled = is_null($quizzes) ? [] : json_decode($quizzes->value, true);
+
     if($subaction == 'import') {
         global $USER;
 
@@ -90,6 +102,23 @@ if($action == 'settings') {
 
         $tempfile = reset($files)->copy_content_to_temp();
         $import_list = \quizaccess_edusyncheproctoring\user::import_students($tempfile);    
+
+        redirect(EPROCTORING_URL . '?action=settings&success=1');
+     } else if ($subaction == 'quizzes') {
+        $quizzes = optional_param_array('quizzes', [], PARAM_INT);    
+        
+
+        if(count($quizzes) > 0) {
+            $quizzes = array_unique($quizzes);
+        }
+
+        $quizzes_array = [];
+        foreach($quizzes as $quiz) {
+            $quiz_info   = $DB->get_record('quiz', ['id' => $quiz]);
+            $course_info = $DB->get_record('course', ['id' => $quiz_info->course]);
+            $quizzes_array[] = ['id' => $quiz, 'name' => $quiz_info->name, 'course' => $course_info->fullname];
+        }
+        $config->set_key('quizzes', json_encode($quizzes_array));
 
         redirect(EPROCTORING_URL . '?action=settings&success=1');
      }
