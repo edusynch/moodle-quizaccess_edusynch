@@ -86,14 +86,6 @@ function quizaccess_edusyncheproctoring_attempt_abandoned_handler($event)
 
 class quizaccess_edusyncheproctoring extends quiz_access_rule_base {
     public static function add_settings_form_fields(mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-        $element = $mform->createElement(
-            'select',
-            'edusyncheproctoring_required',
-            'Require E-proctoring Plugin',
-            ['0' => 'No', '1' => 'Yes']
-        );
-
-
         $eproctoring_required = 0;
         $form_data = $quizform->get_current(); 
 
@@ -112,13 +104,13 @@ class quizaccess_edusyncheproctoring extends quiz_access_rule_base {
             }
         }
 
-        $header = $mform->createElement('header', 'edusyncheproctoring', 'Edusynch E-proctoring');
+        $header = $mform->createElement('header', 'edusyncheproctoring', 'Edusynch E-Proctoring');
         $mform->insertElementBefore($header, 'security');
 
         $element = $mform->createElement(
             'select',
             'edusynch_requireeproctoring',
-            'Require E-proctoring Plugin',
+            'Require E-Proctoring Plugin',
             [0 => 'No', 1 => 'Yes']
         );
         $mform->insertElementBefore($element, 'security');
