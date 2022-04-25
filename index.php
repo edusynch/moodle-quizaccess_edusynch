@@ -15,7 +15,9 @@ is_siteadmin() || die;
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
 $subaction = optional_param('subaction', '', PARAM_ALPHA);
 
-global $PAGE, $DB;
+global $PAGE, $DB, $ADMIN;
+
+
 
 $context = context_system::instance();
 $PAGE->set_context($context);
