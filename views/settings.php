@@ -34,6 +34,17 @@ $host = $PAGE->url->get_host();
                         </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="api_key">Events API: </label>
+                            <input class="form-control" type="text" id="events_api" name="events_api"
+                                value="<?php echo $events_api_value ? $events_api_value : 'https://events.edusynch.com' ?>">
+                        </div>
+                    </div>
+                </div>
+
                 <?php endif; ?>
 
                 <div class="row">

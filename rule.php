@@ -25,7 +25,7 @@ function quizaccess_edusyncheproctoring_attempt_started_handler($event)
 
 function quizaccess_edusyncheproctoring_attempt_summary_viewed_handler($event)
 {
-    global $PAGE; 
+    global $PAGE, $SESSION; 
     
     echo "<script type=\"text/javascript\">
         // Finish attempt
@@ -33,10 +33,22 @@ function quizaccess_edusyncheproctoring_attempt_summary_viewed_handler($event)
         var btn = form.querySelectorAll('button[type=submit]')[0];
         
         btn.setAttribute('data-proctoring', 'finish');
-
         form.setAttribute('data-proctoring', 'form');
         </script>
 ";
+
+}
+
+function quizaccess_edusyncheproctoring_attempt_submitted_handler($event)
+{
+    global $SESSION;
+
+    $session_id    = isset($SESSION->edusyncheproctoring_sessionid) ? $SESSION->edusyncheproctoring_sessionid : null;        
+    $student_token = isset($SESSION->edusyncheproctoring_token) ? $SESSION->edusyncheproctoring_token : null;   
+
+    if(!is_null($session_id) && !is_null($student_token)) {
+        $end_event = \quizaccess_edusyncheproctoring\session::create_event_for($student_token, $session_id, 'FINISH_SIMULATION');
+    }
 
 }
 
@@ -52,16 +64,19 @@ function quizaccess_edusyncheproctoring_course_module_instance_list_viewed_handl
 
 function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 {
-    global $PAGE;
+    global $PAGE, $SESSION;
 
     $PAGE->requires->jquery();
     
-
-    $userid = $event->userid; 
-    $quizid = $event->objectid; 
+    $userid          = $event->userid; 
+    $quizid          = $event->objectid; 
     $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
 
     if($session_details['success']) {
+        $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
+        $SESSION->edusyncheproctoring_token     = $session_details['token'];        
+        $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
+
         $js = "
         // Start attempt
         var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');

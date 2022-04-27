@@ -34,7 +34,14 @@ $observers = [
         'eventname' => 'mod_quiz\event\attempt_reviewed',
         'callback' => 'quizaccess_edusyncheproctoring_attempt_ewviewed_handler',
         'internal' => false,
-    ],    
+    ],   
+    
+    [
+        'eventname' => '\mod_quiz\event\attempt_submitted',
+        'callback' => 'quizaccess_edusyncheproctoring_attempt_submitted_handler',
+        'internal' => false,
+    ], 
+
     [
         'eventname' => 'mod_quiz\event\attempt_preview_started',
         'callback' => 'quizaccess_edusyncheproctoring_attempt_preview_started_handler',

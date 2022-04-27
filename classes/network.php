@@ -29,6 +29,8 @@ class network {
     public static $BASE_URL_STUDENT = 'https://api.edusynch.com';
     /** @var string The Edusynch CMS Server URL */
     public static $BASE_URL_CMS     = 'https://cmsapi.edusynch.com';
+    /** @var string The Edusynch Events Server URL */
+    public static $BASE_URL_EVENTS  = 'https://events.edusynch.com';    
 
     /**
      * Sends a request to a server
@@ -49,6 +51,7 @@ class network {
             $config      = new config();
             $student_api = $config->get_key('student_api');
             $cms_api     = $config->get_key('cms_api');
+            $events_api  = $config->get_key('events_api');
 
             if(is_null($student_api)) {
                 $student_api = self::$BASE_URL_STUDENT;
@@ -62,6 +65,25 @@ class network {
                 $cms_api = $cms_api->value;
             }
 
+            if(is_null($events_api)) {
+                $events_api = self::$BASE_URL_EVENTS;
+            } else {
+                $events_api = $events_api->value;
+            }            
+
+
+            $api_url = '';
+            switch($base) {
+                case 'cms':
+                    $api_url = $cms_api;
+                break;
+                case 'student':
+                    $api_url = $student_api;
+                break;
+                case 'events':
+                    $api_url = $events_api;
+                break;
+            }
 
             $default_headers = ['Content-Type' => array_key_exists('Content-Type', $headers) ? $headers['Content-Type'] : 'application/json'];
             $request_config  = ['headers' => $default_headers];
@@ -83,7 +105,7 @@ class network {
     
             $request = $client->request(
                 $method, 
-                ($base == 'cms' ? $cms_api : $student_api) . '/' . $url,
+                $api_url . '/' . $url,
                 $request_config
             );
             

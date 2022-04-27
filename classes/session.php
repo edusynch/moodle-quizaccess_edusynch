@@ -155,6 +155,43 @@ class session {
         } catch (\Exception $e) {
             die('Unable to get session events');
         }     
-    }    
+    }   
+    
+    /**
+     * Sends an event associated to session
+     *
+     * @param   int     $student_id  The student's ID 
+     * @param   int     $session_id  The session's ID 
+     * @param   string  $event_type  The event's type 
+     * @return  bool    true if events created, false if some error occurrs   
+     */      
+    public static function create_event_for($student_token, $session_id, $event_type)
+    {
+        try {
+            $event_body     = [
+                'event' => [
+                    'type' => $event_type,
+                    'date' => date('Y-m-d H:i:s'),
+                    'isAntifraud' => true,
+                    'antifraudId' => $session_id,
+                    'read' => false,
+                ] 
+            ];
+
+            $events_request = network::sendRequest(
+                'POST', 
+                'events',
+                'events',
+                $event_body,
+                [
+                    'Authorization' => 'Bearer ' . $student_token,
+                ]
+            );  
+            
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }     
+    }     
 
 }
