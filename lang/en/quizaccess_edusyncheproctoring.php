@@ -11,4 +11,5 @@ $string['EVENT_OFFLINE'] = 'Lost connection';
 $string['EVENT_ONLINE'] = 'Connection established';
 $string['EVENT_ONLINE_SERVER'] = 'Connection established with socket';
 $string['EVENT_UI_EVENT'] = 'User Interface moved';
-$string['EVENT_START_SIMULATION'] = 'Starts the simulation';
+$string['EVENT_START_SIMULATION'] = 'Exam started';
+$string['EVENT_FINISH_SIMULATION'] = 'Exam completed successfully';
