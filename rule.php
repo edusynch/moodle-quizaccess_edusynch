@@ -35,7 +35,7 @@ function quizaccess_edusyncheproctoring_attempt_summary_viewed_handler($event)
         btn.setAttribute('data-proctoring', 'finish');
         form.setAttribute('data-proctoring', 'form');
         </script>
-";
+    ";
 
 }
 
@@ -55,6 +55,25 @@ function quizaccess_edusyncheproctoring_attempt_submitted_handler($event)
 function quizaccess_edusyncheproctoring_report_viewed_handler($event)
 {
     // TODO
+}
+
+function quizaccess_edusyncheproctoring_attempt_reviewed_handler($event)
+{
+    global $SESSION;
+    
+    $session_id    = isset($SESSION->edusyncheproctoring_sessionid) ? $SESSION->edusyncheproctoring_sessionid : null;        
+
+    if(!is_null($session_id)) {
+        echo "<script type=\"text/javascript\">
+        // Finish attempt
+        const event = new Event('FINISH_SESSION_SERVER');
+        window.dispatchEvent(event);
+        console.log('Finish event dispatched');
+        </script>
+        ";   
+        
+        $SESSION->edusyncheproctoring_sessionid = null;
+    }
 }
 
 function quizaccess_edusyncheproctoring_course_module_instance_list_viewed_handler($event)
