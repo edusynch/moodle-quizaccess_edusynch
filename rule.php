@@ -66,9 +66,10 @@ function quizaccess_edusyncheproctoring_attempt_reviewed_handler($event)
     if(!is_null($session_id)) {
         echo "<script type=\"text/javascript\">
         // Finish attempt
-        const event = new Event('FINISH_SESSION_SERVER');
-        window.dispatchEvent(event);
-        console.log('Finish event dispatched');
+        document.addEventListener(\"load\", function() {
+            const event = new Event('FINISH_SESSION_SERVER');
+            window.dispatchEvent(event);
+          });          
         </script>
         ";   
         
