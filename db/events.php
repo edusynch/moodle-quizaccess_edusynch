@@ -32,7 +32,7 @@ $observers = [
     ],
     [
         'eventname' => 'mod_quiz\event\attempt_reviewed',
-        'callback' => 'quizaccess_edusyncheproctoring_attempt_ewviewed_handler',
+        'callback' => 'quizaccess_edusyncheproctoring_attempt_reviewed_handler',
         'internal' => false,
     ],   
     
