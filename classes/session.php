@@ -167,6 +167,8 @@ class session {
      */      
     public static function create_event_for($student_token, $session_id, $event_type)
     {
+        date_default_timezone_set("UTC");
+
         try {
             $event_body     = [
                 'event' => [
