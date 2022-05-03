@@ -11,10 +11,17 @@ define('EPROCTORING_PATH', $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheprocto
 define('EPROCTORING_URL', EPROCTORING_PATH . 'index.php');
 
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
-$subaction = optional_param('subaction', '', PARAM_ALPHA);
+$subaction  = optional_param('subaction', '', PARAM_ALPHA);
 
 global $PAGE, $DB, $ADMIN;
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
+$PAGE->set_title('EduSynch E-Proctoring');
+$PAGE->set_heading('EduSynch E-Proctoring');
 
+$config      = new \quizaccess_edusyncheproctoring\config();
+$config_key  = $config->get_key('api_key');    
 
 if($action == 'settings') {
     is_siteadmin() || die;
@@ -156,11 +163,6 @@ if($action == 'settings') {
 
 
 
-$context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
-$PAGE->set_title('EduSynch E-Proctoring');
-$PAGE->set_heading('EduSynch E-Proctoring');
 
 
 $PAGE->requires->jquery();
@@ -168,8 +170,7 @@ $PAGE->requires->jquery();
 echo $OUTPUT->header();
 
 include 'views/navbars.php';
-$config      = new \quizaccess_edusyncheproctoring\config();
-$config_key  = $config->get_key('api_key');    
+
 
 if ($action != 'settings' && !$config_key) {
     ?>
