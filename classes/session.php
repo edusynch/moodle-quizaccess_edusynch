@@ -9,6 +9,8 @@ use quizaccess_edusyncheproctoring\config;
 use quizaccess_edusyncheproctoring\network;
 use quizaccess_edusyncheproctoring\student;
 use quizaccess_edusyncheproctoring\user;
+use stdClass;
+
 
 defined('MOODLE_INTERNAL') || die();
 /**
@@ -29,6 +31,9 @@ class session {
     public static $SESSION_EVENTS_PER_PAGE = 50;
     /** @var array Ignored Edusynch antifraud events (to reduce the server load) */
     public static $SESSION_IGNORED_EVENTS  = ['UI_EVENT'];
+    /** @var string Name of the table which sessions are stored */
+    public static $SESSION_STORE_TABLE     = 'quizaccess_edusynch_sessions';
+
 
     /**
      * Creates an antifraud session with the student logged
@@ -67,6 +72,11 @@ class session {
                 ]
             );
             $session_id = $session_request['id'];
+
+            $session_object             = new stdClass;
+            $session_object->quiz_id    = $quizid;
+            $session_object->session_id = $session_id;
+            $DB->insert_record(self::$SESSION_STORE_TABLE, $session_object);
     
             return ['success' => true, 'session_id' => $session_id, 'token' => $student_token];
         } catch (\Exception $e) {
@@ -81,20 +91,34 @@ class session {
      * @param   int     $page  The page wanted 
      * @return  array   List of sessions  
      */       
-    public static function list($page = 1)
+    public static function list($page = 1, $quizid = null)
     {
+        global $DB;
+
         try {
             $token = user::login();
+
+            $per_page = $quizid ? 9999 : self::$SESSIONS_PER_PAGE;
 
             $sessions_request = network::sendRequest(
                 'GET', 
                 'cms',
-                'cms/v1/antifraud_sessions?page='. $page .'&paginates_per=' . self::$SESSIONS_PER_PAGE,
+                'cms/v1/antifraud_sessions?page='. $page .'&paginates_per=' . $per_page,
                 null,
                 [
                     'Authorization' => 'Bearer ' . $token,
                 ]
             );  
+            
+            if($quizid) {
+                $sessions_per_quiz = [];
+                $records_per_quiz  = $DB->get_records(self::$SESSION_STORE_TABLE, ['quiz_id' => $quizid]);
+                foreach($records_per_quiz as $record) {
+                    $sessions_per_quiz[] = $record->session_id;
+                }                
+
+                $sessions_request['content']['sessions_per_quiz'] = $sessions_per_quiz;
+            }
             
             return $sessions_request['content'];
         } catch (\Exception $e) {

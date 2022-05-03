@@ -10,40 +10,15 @@ require_once(__DIR__ . '/../../../../config.php');
 define('EPROCTORING_PATH', $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/');
 define('EPROCTORING_URL', EPROCTORING_PATH . 'index.php');
 
-is_siteadmin() || die;
-
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
 $subaction = optional_param('subaction', '', PARAM_ALPHA);
 
 global $PAGE, $DB, $ADMIN;
 
 
-
-$context = context_system::instance();
-$PAGE->set_context($context);
-$PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
-$PAGE->set_title('EduSynch E-Proctoring');
-$PAGE->set_heading('EduSynch E-Proctoring');
-
-
-$PAGE->requires->jquery();
-
-echo $OUTPUT->header();
-
-include 'views/navbars.php';
-$config      = new \quizaccess_edusyncheproctoring\config();
-$config_key  = $config->get_key('api_key');    
-
-if ($action != 'settings' && !$config_key) {
-    ?>
-    <div class="alert alert-danger mt-3">
-        Please, visit SETTINGS page to set your credentials before continue.
-    </div>
-    <?php
-    return;
-}
-
 if($action == 'settings') {
+    is_siteadmin() || die;
+
     global $PAGE;
 
 
@@ -132,16 +107,38 @@ if($action == 'settings') {
 
 } else if ($action == 'sessions') {
     $current_page = optional_param('page', 1, PARAM_INT);
+    $courseid     = optional_param('courseid', null, PARAM_INT);
+    $quizid       = optional_param('quizid', null, PARAM_INT);
 
-    $content = \quizaccess_edusyncheproctoring\session::list($current_page);    
+    if($courseid && $quizid) 
+    {
+        global $COURSE, $USER, $CFG;
+        
+        $context    = context_course::instance($courseid);
+        $roles      = get_user_roles($context, $USER->id, true);
+        $user_role  = reset($roles);        
 
-    $sessions_list      = $content['sessions'];
+        if(is_siteadmin() || $user_role->shortname == 'editingteacher') {
+            $content       = \quizaccess_edusyncheproctoring\session::list($current_page, $quizid);    
+            $sessions_list = array_filter($content['sessions'], function($array) use($content) {
+                return in_array($array['id'], $content['sessions_per_quiz']);
+            });
+
+        } else {
+            redirect($CFG->wwwroot);
+        }
+    } else {
+        is_siteadmin() || die;
+        $content       = \quizaccess_edusyncheproctoring\session::list($current_page);   
+        $sessions_list = $content['sessions'];
+    }
+
     $prev_page          = $content['prev_page'];    
     $next_page          = $content['next_page'];    
     $last_page          = $content['last_page'];    
     $total_pages        = $content['total_pages'];       
 
-} else if ($action == 'session') {
+} else if ($action == 'session') {   
     $session_id  = required_param('session_id', PARAM_INT);
     $events_page = optional_param('events_page', 1, PARAM_INT);
 
@@ -155,6 +152,32 @@ if($action == 'settings') {
     $next_page          = $events_query['next_page'];    
     $last_page          = $events_query['last_page'];    
     $total_pages        = $events_query['total_pages'];    
+}
+
+
+
+$context = context_system::instance();
+$PAGE->set_context($context);
+$PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
+$PAGE->set_title('EduSynch E-Proctoring');
+$PAGE->set_heading('EduSynch E-Proctoring');
+
+
+$PAGE->requires->jquery();
+
+echo $OUTPUT->header();
+
+include 'views/navbars.php';
+$config      = new \quizaccess_edusyncheproctoring\config();
+$config_key  = $config->get_key('api_key');    
+
+if ($action != 'settings' && !$config_key) {
+    ?>
+    <div class="alert alert-danger mt-3">
+        Please, visit SETTINGS page to set your credentials before continue.
+    </div>
+    <?php
+    return;
 }
 
 include 'views/' . $action . '.php';
