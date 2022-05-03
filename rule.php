@@ -71,7 +71,7 @@ function quizaccess_edusyncheproctoring_attempt_reviewed_handler($event)
         </script>
         ";   
         
-        // $SESSION->edusyncheproctoring_sessionid = null;
+        $SESSION->edusyncheproctoring_sessionid = null;
     }
 }
 
