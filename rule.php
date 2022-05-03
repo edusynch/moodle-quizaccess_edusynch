@@ -65,15 +65,13 @@ function quizaccess_edusyncheproctoring_attempt_reviewed_handler($event)
 
     if(!is_null($session_id)) {
         echo "<script type=\"text/javascript\">
-        // Finish attempt
-        document.addEventListener(\"load\", function() {
-            const event = new Event('FINISH_SESSION_SERVER');
-            window.dispatchEvent(event);
-          });          
+        var body = document.querySelectorAll('body')[0];
+        
+        body.setAttribute('data-proctoring', 'expired');
         </script>
         ";   
         
-        $SESSION->edusyncheproctoring_sessionid = null;
+        // $SESSION->edusyncheproctoring_sessionid = null;
     }
 }
 
