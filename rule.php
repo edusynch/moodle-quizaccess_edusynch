@@ -82,7 +82,11 @@ function quizaccess_edusyncheproctoring_course_module_instance_list_viewed_handl
 
 function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 {
-    global $PAGE, $SESSION;
+    global $PAGE, $SESSION, $COURSE, $USER, $CFG;
+
+    $context    = context_course::instance($COURSE->id);
+    $roles      = get_user_roles($context, $USER->id, true);
+    $user_role  = reset($roles);
 
     $PAGE->requires->jquery();
     
@@ -90,6 +94,7 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
     $quizid          = $event->objectid; 
     $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
 
+    // Student session
     if($session_details['success']) {
         $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
         $SESSION->edusyncheproctoring_token     = $session_details['token'];        
@@ -105,8 +110,19 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
         btn.attr('data-proctoring', 'start');
 
         var form = document.getElementsByTagName('form')[0];
-        form.setAttribute('data-proctoring', 'form');
-";
+        form.setAttribute('data-proctoring', 'form');";
+        $PAGE->requires->js_init_code($js);
+    }
+
+    $is_teacher_or_admin = is_siteadmin() || (!is_null($user_role) && $user_role->shortname == 'editingteacher');
+
+    if($is_teacher_or_admin) {
+        $js = "
+        // Start attempt
+        var main_div = $('div[role=main]');
+        main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusyncheproctoring/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">View EduSynch E-Proctoring reports</button></a>');
+        ";
+
         $PAGE->requires->js_init_code($js);
     }
 
