@@ -114,7 +114,7 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
         $PAGE->requires->js_init_code($js);
     }
 
-    $is_teacher_or_admin = is_siteadmin() || (!is_null($user_role) && $user_role->shortname == 'editingteacher');
+    $is_teacher_or_admin = is_siteadmin() || (!is_null($user_role) && strpos($user_role->shortname, 'teacher') !== false);
 
     if($is_teacher_or_admin) {
         $js = "

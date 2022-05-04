@@ -125,7 +125,7 @@ if($action == 'settings') {
         $roles      = get_user_roles($context, $USER->id, true);
         $user_role  = reset($roles);        
 
-        if(is_siteadmin() || $user_role->shortname == 'editingteacher') {
+        if(is_siteadmin() || strpos($user_role->shortname, 'teacher') !== false) {
             $content       = \quizaccess_edusyncheproctoring\session::list($current_page, $quizid);    
             $sessions_list = array_filter($content['sessions'], function($array) use($content) {
                 return in_array($array['id'], $content['sessions_per_quiz']);
