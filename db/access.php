@@ -15,19 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
+ * Quiz plugin for integration with Edusynch Eproctoring proctoring system.
+ *
  * @package   quizaccess_edusyncheproctoring
  * @copyright 2022, EduSynch <contact@edusynch.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022050600;
-$plugin->requires = 2015111600;
-$plugin->component = 'quizaccess_edusyncheproctoring';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.0';
+$capabilities = [
+    'quizaccess/edusyncheproctoring:view_report' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ],   
+    
+    'quizaccess/edusyncheproctoring:edit_settings' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+    ]
 
-$plugin->dependencies = [
-    'mod_quiz' => ANY_VERSION,
 ];

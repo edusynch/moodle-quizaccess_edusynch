@@ -47,4 +47,6 @@ function xmldb_quizaccess_edusyncheproctoring_upgrade($oldversion) {
         // Edusyncheproctoring savepoint reached.
         upgrade_plugin_savepoint(true, 2022050300, 'quizaccess', 'edusyncheproctoring');
     }
+
+    return true;
 }

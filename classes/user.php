@@ -31,22 +31,23 @@ class user {
     {       
         global $DB;
 
-        $config = new config();
-
-        $api_key  = $config->get_key('api_key');   
-        $user     = $config->get_key('user');   
-        $password = $config->get_key('password');   
-        
-        $payload = [
-            'external_app_type' => 'moodle',
-            'external_app_key' => $api_key->value,
-            'email' => $user->value,
-            'password' => $password->value,
-        ];
-
-        $payload_jwt = helpers::get_jwt($payload);
-
         try {
+            $config = new config();
+
+            $api_key  = $config->get_key('api_key');   
+            $user     = $config->get_key('user');   
+            $password = $config->get_key('password');   
+
+            
+            $payload = [
+                'external_app_type' => 'moodle',
+                'external_app_key' => $api_key->value,
+                'email' => $user->value,
+                'password' => $password->value,
+            ];
+
+            $payload_jwt = helpers::get_jwt($payload);
+    
             $login_request = network::sendRequest(
                 'POST', 
                 'cms',

@@ -88,35 +88,35 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
     $roles      = get_user_roles($context, $USER->id, true);
     $user_role  = reset($roles);
 
+    $userid     = $event->userid; 
+    $quizid     = $event->objectid; 
     $PAGE->requires->jquery();
-    
-    $userid          = $event->userid; 
-    $quizid          = $event->objectid; 
-    $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
 
+    $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
+    
     // Student session
     if($session_details['success']) {
         $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
         $SESSION->edusyncheproctoring_token     = $session_details['token'];        
         $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
-
+    
         $js = "
-        // Start attempt
-        var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
-        
-        btn.attr('disabled', 'disabled');
-        btn.attr('data-id', '".$session_details['session_id']."');
-        btn.attr('data-token', '".$session_details['token']."');
-        btn.attr('data-proctoring', 'start');
-
-        var form = document.getElementsByTagName('form')[0];
-        form.setAttribute('data-proctoring', 'form');";
-        $PAGE->requires->js_init_code($js);
+            // Start attempt
+            var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
+            
+            btn.attr('disabled', 'disabled');
+            btn.attr('data-id', '".$session_details['session_id']."');
+            btn.attr('data-token', '".$session_details['token']."');
+            btn.attr('data-proctoring', 'start');
+    
+            var form = document.getElementsByTagName('form')[0];
+            form.setAttribute('data-proctoring', 'form');";
+            $PAGE->requires->js_init_code($js);
     }
 
-    $is_teacher_or_admin = is_siteadmin() || (!is_null($user_role) && strpos($user_role->shortname, 'teacher') !== false);
+    $has_permission = has_capability('quizaccess/edusyncheproctoring:view_report', $context);
 
-    if($is_teacher_or_admin) {
+    if($has_permission) {
         $js = "
         // Start attempt
         var main_div = $('div[role=main]');
