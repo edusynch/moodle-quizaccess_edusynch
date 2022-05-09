@@ -84,9 +84,7 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 {
     global $PAGE, $SESSION, $COURSE, $USER, $CFG;
 
-    $context    = context_course::instance($COURSE->id);
-    $roles      = get_user_roles($context, $USER->id, true);
-    $user_role  = reset($roles);
+    $context    = context_system::instance();
 
     $userid     = $event->userid; 
     $quizid     = $event->objectid; 
@@ -110,7 +108,18 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
             btn.attr('data-proctoring', 'start');
     
             var form = document.getElementsByTagName('form')[0];
-            form.setAttribute('data-proctoring', 'form');";
+            form.setAttribute('data-proctoring', 'form');
+            
+            // Redirect if no extension
+            
+            setInterval(function() {
+                var body = $('body');
+                if (body.attr('data-eproctoring') != 'true') {                
+                    window.location.href = 'https://edusynch.com/install/extension';
+                }   
+            }, 500);
+         
+            ";
             $PAGE->requires->js_init_code($js);
     }
 
