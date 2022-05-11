@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $capabilities = [
     'quizaccess/edusyncheproctoring:view_report' => [
         'captype' => 'read',
-        'contextlevel' => CONTEXT_SYSTEM,
+        'contextlevel' => CONTEXT_COURSE,
     ],   
     
     'quizaccess/edusyncheproctoring:edit_settings' => [

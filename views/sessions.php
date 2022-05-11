@@ -7,16 +7,16 @@
             <ul class="pagination justify-content-end">
                 <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
                     <a class="page-link"
-                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&page=' . $prev_page .'"' ?>>Previous</a>
+                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $prev_page .'"' ?>>Previous</a>
                 </li>
                 <?php for($page = 1; $page <= $total_pages; $page++): ?>
                 <li class="page-item <?php echo $page == $current_page ? 'active' : '' ?>"><a class="page-link"
-                        href="<?php echo EPROCTORING_URL ?>?action=sessions&page=<?php echo $page ?>"><?php echo $page ?></a>
+                        href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=<?php echo $page ?>"><?php echo $page ?></a>
                 </li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
                     <a class="page-link"
-                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&page=' . $next_page .'"' ?>>Next</a>
+                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $next_page .'"' ?>>Next</a>
                 </li>
             </ul>
         </nav>
@@ -45,7 +45,7 @@
                                     class="badge badge-<?php echo $session['incident_level'] == 'Low' ? 'success' : ($session['incident_level'] == 'Medium' ? 'warning' : 'danger') ?> session-status"><?php echo $session['incident_level']  ?></span>
                             </td>
                             <td class="text-center">
-                                <a href="<?php echo EPROCTORING_URL . '/?action=session&session_id=' . $session['id'] ?>"
+                                <a href="<?php echo EPROCTORING_URL . '?action=session&session_id=' . $session['id'] . '&courseid='.$courseid.'&quizid='.$quizid ?>"
                                     class="btn btn-primary"><i class="fa fa-history"></i> Log</a>
                             </td>
                         </tr>
@@ -60,16 +60,16 @@
             <ul class="pagination justify-content-end">
                 <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
                     <a class="page-link"
-                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&page=' . $prev_page .'"' ?>>Previous</a>
+                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $prev_page .'"' ?>>Previous</a>
                 </li>
                 <?php for($page = 1; $page <= $total_pages; $page++): ?>
                 <li class="page-item <?php echo $page == $current_page ? 'active' : '' ?>"><a class="page-link"
-                        href="<?php echo EPROCTORING_URL ?>?action=sessions&page=<?php echo $page ?>"><?php echo $page ?></a>
+                        href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=<?php echo $page ?>"><?php echo $page ?></a>
                 </li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
                     <a class="page-link"
-                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&page=' . $next_page .'"' ?>>Next</a>
+                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $next_page .'"' ?>>Next</a>
                 </li>
             </ul>
         </nav>

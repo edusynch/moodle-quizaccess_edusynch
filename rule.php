@@ -84,7 +84,7 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 {
     global $PAGE, $SESSION, $COURSE, $USER, $CFG;
 
-    $context    = context_system::instance();
+    $context    = context_course::instance($COURSE->id);
 
     $userid     = $event->userid; 
     $quizid     = $event->objectid; 

@@ -51,13 +51,13 @@
                     <nav>
                         <ul class="pagination justify-content-end">
                             <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&events_page=' . $prev_page .'"' ?>>Previous</a>
+                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>>Previous</a>
                             </li>
                             <?php for($page = 1; $page <= $total_pages; $page++): ?>
-                            <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
+                            <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>.'&quizid=<?php echo $quizid ?>'&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
                             <?php endfor; ?>
                             <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&events_page=' . $next_page .'"' ?>>Next</a>
+                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>>Next</a>
                             </li>
                         </ul>
                     </nav>        
@@ -79,13 +79,13 @@
                     <nav class="mt-3">
                         <ul class="pagination justify-content-end">
                             <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&events_page=' . $prev_page .'"' ?>>Previous</a>
+                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>>Previous</a>
                             </li>
                             <?php for($page = 1; $page <= $total_pages; $page++): ?>
-                            <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
+                            <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>.'&quizid=<?php echo $quizid ?>'&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
                             <?php endfor; ?>
                             <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&events_page=' . $next_page .'"' ?>>Next</a>
+                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>>Next</a>
                             </li>
                         </ul>
                     </nav> 

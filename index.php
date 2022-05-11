@@ -124,25 +124,20 @@ if ($action != 'settings' && !$config_key) {
             redirect(EPROCTORING_URL . '?action=settings&success=1');
          }
     
-    } else if ($action == 'sessions') {
-        require_capability('quizaccess/edusyncheproctoring:view_report', $context);
-    
+    } else if ($action == 'sessions') {   
+        global $COURSE, $USER, $CFG;
+
         $current_page = optional_param('page', 1, PARAM_INT);
-        $courseid     = optional_param('courseid', null, PARAM_INT);
-        $quizid       = optional_param('quizid', null, PARAM_INT);
+        $courseid     = required_param('courseid', PARAM_INT);
+        $quizid       = required_param('quizid', PARAM_INT);
+
+        $coursecontext  = context_course::instance($courseid);   
+        require_capability('quizaccess/edusyncheproctoring:view_report', $coursecontext);
     
-        if($courseid && $quizid) 
-        {
-            global $COURSE, $USER, $CFG;
-            
-            $content       = \quizaccess_edusyncheproctoring\session::list($current_page, $quizid);    
-            $sessions_list = array_filter($content['sessions'], function($array) use($content) {
-                return in_array($array['id'], $content['sessions_per_quiz']);
-            });
-        } else {
-            $content       = \quizaccess_edusyncheproctoring\session::list($current_page);   
-            $sessions_list = $content['sessions'];
-        }
+        $content       = \quizaccess_edusyncheproctoring\session::list($current_page, $quizid);    
+        $sessions_list = array_filter($content['sessions'], function($array) use($content) {
+            return in_array($array['id'], $content['sessions_per_quiz']);
+        });
     
         $prev_page          = $content['prev_page'];    
         $next_page          = $content['next_page'];    
@@ -150,12 +145,15 @@ if ($action != 'settings' && !$config_key) {
         $total_pages        = $content['total_pages'];       
     
     } else if ($action == 'session') {   
-        require_capability('quizaccess/edusyncheproctoring:view_report', $context);
-    
+        $courseid    = required_param('courseid', PARAM_INT);
+        $quizid      = required_param('quizid', PARAM_INT);
         $session_id  = required_param('session_id', PARAM_INT);
         $events_page = optional_param('events_page', 1, PARAM_INT);
+
+        $coursecontext  = context_course::instance($courseid);   
+        require_capability('quizaccess/edusyncheproctoring:view_report', $coursecontext);
     
-    
+
         $content      = \quizaccess_edusyncheproctoring\session::show($session_id);    
         $events_query = \quizaccess_edusyncheproctoring\session::events($session_id, $events_page);    
         
@@ -168,13 +166,11 @@ if ($action != 'settings' && !$config_key) {
         $total_pages        = $events_query['total_pages'];    
     }
     
-    
-    $PAGE->requires->jquery();
-    
-    echo $OUTPUT->header();
-    
-    include 'views/navbars.php';    
 }
+
+$PAGE->requires->jquery();
+    
+echo $OUTPUT->header();    
 
 include 'views/' . $action . '.php';
 
