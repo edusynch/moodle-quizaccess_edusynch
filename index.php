@@ -41,18 +41,20 @@ if ($action != 'settings' && !$config_key) {
     
         global $PAGE;
     
+        $application_info = \quizaccess_edusyncheproctoring\user::get_application_info();
+        $total_students   = intval($application_info['total_students']);
     
-        $importform = new \quizaccess_edusyncheproctoring\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
-    
+        
         $student_api   = optional_param('student_api', '', PARAM_RAW);
         $cms_api       = optional_param('cms_api', '', PARAM_RAW);
         $events_api    = optional_param('events_api', '', PARAM_RAW);
         $api_key       = optional_param('api_key', '', PARAM_RAW);
         $user          = optional_param('user', '', PARAM_RAW);
         $password      = optional_param('password', '', PARAM_RAW);
-        $success       = optional_param('success', 0, PARAM_INT);
-    
-        
+        $success       = optional_param('success', 0, PARAM_INT); 
+
+        $importform = new \quizaccess_edusyncheproctoring\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
+
     
         $success = (bool) $success;
         $quizzes       = $config->get_key('quizzes');    

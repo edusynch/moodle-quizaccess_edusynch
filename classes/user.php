@@ -100,4 +100,28 @@ class user {
             throw new \Exception('Unable to import students: ' . $e->getMessage());
         }
     }       
+
+    public static function get_application_info()
+    {        
+        $config = new config();
+        $api_key = $config->get_key('api_key')->value;   
+        
+        try {
+            $token = user::login();
+
+            $info = network::sendRequest(
+                'GET', 
+                'cms',
+                'cms/v1/external_applications/info',
+                null,
+                [
+                    'Authorization' => 'Bearer ' . $token,
+                ]
+            );
+
+            return $info['content']['external_application'];
+        } catch (\Exception $e) {
+            throw new \Exception('Unable to get students info: ' . $e->getMessage());
+        }        
+    }
 }

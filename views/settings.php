@@ -83,6 +83,12 @@ $host = $PAGE->url->get_host();
 
             <div class="row">
                 <div class="col-md-12">
+                    <?php if($total_students > 0): ?>
+                    <div class="alert alert-info">
+                        <i class="fa fa-info-circle"></i> You have <strong><?php echo $total_students ?></strong> students enabled.
+                    </div>
+                    <?php endif; ?>
+                    
                     Use the box below to import a .CSV file with your students data, like <a
                         href="<?php echo EPROCTORING_PATH ?>students-import.csv">this example</a>
 
