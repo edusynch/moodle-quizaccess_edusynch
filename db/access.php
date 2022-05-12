@@ -28,11 +28,19 @@ $capabilities = [
     'quizaccess/edusyncheproctoring:view_report' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW            
+        ]
     ],   
     
     'quizaccess/edusyncheproctoring:edit_settings' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => [
+            'manager' => CAP_ALLOW            
+        ]        
     ]
 
 ];
