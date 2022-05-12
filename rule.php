@@ -85,55 +85,60 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
     global $PAGE, $SESSION, $COURSE, $USER, $CFG;
 
     $context    = context_course::instance($COURSE->id);
-
     $userid     = $event->userid; 
     $quizid     = $event->objectid; 
-    $PAGE->requires->jquery();
+    
+    $quiz_enabled    = \quizaccess_edusyncheproctoring\quiz::is_enabled($quizid);
 
-    $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
-    
-    // Student session
-    if($session_details['success']) {
-        $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
-        $SESSION->edusyncheproctoring_token     = $session_details['token'];        
-        $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
-    
-        $js = "
-            // Start attempt
-            var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
+    if($quiz_enabled) {
+        $PAGE->requires->jquery();
+
+        $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
+
+        // Student session
+        if($session_details['success']) {
+            $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
+            $SESSION->edusyncheproctoring_token     = $session_details['token'];        
+            $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
+        
+            $js = "
+                // Start attempt
+                var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
+                
+                btn.attr('disabled', 'disabled');
+                btn.attr('data-id', '".$session_details['session_id']."');
+                btn.attr('data-token', '".$session_details['token']."');
+                btn.attr('data-proctoring', 'start');
+        
+                var form = document.getElementsByTagName('form')[0];
+                form.setAttribute('data-proctoring', 'form');
+                
+                // Redirect if no extension
+                
+                setInterval(function() {
+                    var body = $('body');
+                    if (body.attr('data-eproctoring') != 'true') {                
+                        window.location.href = 'https://edusynch.com/install/extension';
+                    }   
+                }, 500);
             
-            btn.attr('disabled', 'disabled');
-            btn.attr('data-id', '".$session_details['session_id']."');
-            btn.attr('data-token', '".$session_details['token']."');
-            btn.attr('data-proctoring', 'start');
-    
-            var form = document.getElementsByTagName('form')[0];
-            form.setAttribute('data-proctoring', 'form');
-            
-            // Redirect if no extension
-            
-            setInterval(function() {
-                var body = $('body');
-                if (body.attr('data-eproctoring') != 'true') {                
-                    window.location.href = 'https://edusynch.com/install/extension';
-                }   
-            }, 500);
-         
+                ";
+                $PAGE->requires->js_init_code($js);
+        }
+
+        $has_permission_to_view_report = has_capability('quizaccess/edusyncheproctoring:view_report', $context);
+
+        if($has_permission_to_view_report) {
+            $js = "
+            var main_div = $('div[role=main]');
+            main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusyncheproctoring/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">View EduSynch E-Proctoring reports</button></a>');
             ";
+
             $PAGE->requires->js_init_code($js);
+        }
+
     }
-
-    $has_permission = has_capability('quizaccess/edusyncheproctoring:view_report', $context);
-
-    if($has_permission) {
-        $js = "
-        // Start attempt
-        var main_div = $('div[role=main]');
-        main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusyncheproctoring/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">View EduSynch E-Proctoring reports</button></a>');
-        ";
-
-        $PAGE->requires->js_init_code($js);
-    }
+    
 
 }
 

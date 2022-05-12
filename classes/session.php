@@ -9,6 +9,7 @@ use quizaccess_edusyncheproctoring\config;
 use quizaccess_edusyncheproctoring\network;
 use quizaccess_edusyncheproctoring\student;
 use quizaccess_edusyncheproctoring\user;
+
 use stdClass;
 
 
@@ -46,18 +47,6 @@ class session {
     {       
         global $DB;
        
-        // Is Quiz enabled?
-        $config      = new config();
-        $quizzes     = $config->get_key('quizzes');
-
-        $quizzes = $quizzes ? json_decode($quizzes->value, true) : [];
-
-        $search = array_search($quizid, array_column($quizzes, 'id'));
-
-        if($search === false) {
-            return ['success' => false];
-        }
-
         // Is Student enabled?
         try {
             $student_token = student::login($userid);
