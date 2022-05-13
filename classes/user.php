@@ -119,9 +119,9 @@ class user {
                 ]
             );
 
-            return $info['content']['external_application'];
+            return ['success' => true, 'data' => $info['content']['external_application']];
         } catch (\Exception $e) {
-            throw new \Exception('Unable to get students info: ' . $e->getMessage());
+            return ['success' => false, 'error' => $e->getMessage()];
         }        
     }
 }
