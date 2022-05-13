@@ -41,6 +41,14 @@ $capabilities = [
         'archetypes' => [
             'manager' => CAP_ALLOW            
         ]        
-    ]
+    ],
+
+    'quizaccess/edusyncheproctoring:enable_quiz' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW            
+        ]        
+    ]    
 
 ];

@@ -20,3 +20,5 @@ $string['EVENT_FINISH_SIMULATION'] = 'Exam completed successfully';
 // Capabilities
 $string['edusyncheproctoring:view_report'] = 'Can view E-Proctoring Reports';
 $string['edusyncheproctoring:edit_settings'] = 'Can edit E-Proctoring Settings';
+$string['edusyncheproctoring:enable_quiz'] = 'Can enable E-Proctoring plugin';
+

@@ -149,36 +149,43 @@ function quizaccess_edusyncheproctoring_attempt_abandoned_handler($event)
 
 class quizaccess_edusyncheproctoring extends quiz_access_rule_base {
     public static function add_settings_form_fields(mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-        $eproctoring_required = 0;
-        $form_data = $quizform->get_current(); 
-
-        if(isset($form_data->id) && !is_null($form_data->id)) {
-            $config          = new \quizaccess_edusyncheproctoring\config();
-            $enabled_quizzes = $config->get_key('quizzes');
+        global $COURSE;
+        
+        $context    = context_course::instance($COURSE->id);
+        
+        if(has_capability('quizaccess/edusyncheproctoring:enable_quiz', $context)) {
             
-            if(!is_null($enabled_quizzes)) {
-                $quizzes = json_decode($enabled_quizzes->value, true);
-                foreach($quizzes as $quiz) {
-                    if($quiz['id'] == $form_data->id) {
-                        $eproctoring_required = 1;
-                        continue;
+            $eproctoring_required = 0;
+            $form_data = $quizform->get_current(); 
+
+            if(isset($form_data->id) && !is_null($form_data->id)) {
+                $config          = new \quizaccess_edusyncheproctoring\config();
+                $enabled_quizzes = $config->get_key('quizzes');
+                
+                if(!is_null($enabled_quizzes)) {
+                    $quizzes = json_decode($enabled_quizzes->value, true);
+                    foreach($quizzes as $quiz) {
+                        if($quiz['id'] == $form_data->id) {
+                            $eproctoring_required = 1;
+                            continue;
+                        }
                     }
                 }
             }
+
+            $header = $mform->createElement('header', 'edusyncheproctoring', 'Edusynch E-Proctoring');
+            $mform->insertElementBefore($header, 'security');
+
+            $element = $mform->createElement(
+                'select',
+                'edusynch_requireeproctoring',
+                'Require E-Proctoring Plugin',
+                [0 => 'No', 1 => 'Yes']
+            );
+            $mform->insertElementBefore($element, 'security');
+            $mform->setType('edusynch_requireeproctoring', PARAM_INT);
+            $mform->setDefault('edusynch_requireeproctoring', $eproctoring_required);
         }
-
-        $header = $mform->createElement('header', 'edusyncheproctoring', 'Edusynch E-Proctoring');
-        $mform->insertElementBefore($header, 'security');
-
-        $element = $mform->createElement(
-            'select',
-            'edusynch_requireeproctoring',
-            'Require E-Proctoring Plugin',
-            [0 => 'No', 1 => 'Yes']
-        );
-        $mform->insertElementBefore($element, 'security');
-        $mform->setType('edusynch_requireeproctoring', PARAM_INT);
-        $mform->setDefault('edusynch_requireeproctoring', $eproctoring_required);
 
     }
 }
