@@ -5,7 +5,27 @@
 
 function quizaccess_edusyncheproctoring_attempt_viewed_handler($event)
 {
-    // TODO
+    global $DB, $SESSION, $USER, $CFG;
+
+    $userid       = $event->userid; 
+    $attemptid    = $event->objectid;
+    $cmid         = $event->contextinstanceid;
+    $currentpage  = optional_param('page', 0, PARAM_INT);
+    
+    $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
+    $quiz_enabled = \quizaccess_edusyncheproctoring\quiz::is_enabled($quizid);
+
+    if($quiz_enabled) {
+        $is_eproctoring_started = isset($SESSION->edusyncheproctoring_started) ? $SESSION->edusyncheproctoring_started : false;
+
+        if(!$is_eproctoring_started) 
+        {
+            $SESSION->edusyncheproctoring_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
+            $SESSION->userid                       = $userid;
+            $SESSION->quizid                       = $quizid;
+            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php');
+        }
+    }
 }
 
 function quizaccess_edusyncheproctoring_attempt_preview_started_handler($event)
@@ -20,7 +40,26 @@ function quizaccess_edusyncheproctoring_attempt_regraded_handler($event)
 
 function quizaccess_edusyncheproctoring_attempt_started_handler($event)
 {
-    // TODO
+    global $DB, $SESSION, $USER, $CFG;
+
+    $userid       = $event->userid; 
+    $attemptid    = $event->objectid;
+    $cmid         = $event->contextinstanceid;
+    $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
+    $quiz_enabled = \quizaccess_edusyncheproctoring\quiz::is_enabled($quizid);
+
+    if($quiz_enabled) {
+        $is_eproctoring_started = isset($SESSION->edusyncheproctoring_started) ? $SESSION->edusyncheproctoring_started : false;
+
+        if(!$is_eproctoring_started) 
+        {
+            $SESSION->edusyncheproctoring_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid;
+            $SESSION->userid                       = $userid;
+            $SESSION->quizid                       = $quizid;
+            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php');
+        }
+    }
+    
 }
 
 function quizaccess_edusyncheproctoring_attempt_summary_viewed_handler($event)
@@ -48,6 +87,11 @@ function quizaccess_edusyncheproctoring_attempt_submitted_handler($event)
 
     if(!is_null($session_id) && !is_null($student_token)) {
         $end_event = \quizaccess_edusyncheproctoring\session::create_event_for($student_token, $session_id, 'FINISH_SIMULATION');
+        $SESSION->edusyncheproctoring_started   = null;        
+        $SESSION->edusyncheproctoring_sessionid = null;        
+        $SESSION->edusyncheproctoring_token     = null;   
+        $SESSION->userid = null;
+        $SESSION->quizid = null;        
     }
 
 }
@@ -82,7 +126,7 @@ function quizaccess_edusyncheproctoring_course_module_instance_list_viewed_handl
 
 function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 {
-    global $PAGE, $SESSION, $COURSE, $USER, $CFG;
+    global $PAGE, $SESSION, $COURSE, $CFG;
 
     $context    = context_course::instance($COURSE->id);
     $userid     = $event->userid; 
@@ -92,39 +136,6 @@ function quizaccess_edusyncheproctoring_course_module_viewed_handler($event)
 
     if($quiz_enabled) {
         $PAGE->requires->jquery();
-
-        $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
-
-        // Student session
-        if($session_details['success']) {
-            $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
-            $SESSION->edusyncheproctoring_token     = $session_details['token'];        
-            $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
-        
-            $js = "
-                // Start attempt
-                var btn = $('div.quizstartbuttondiv').find('[type=submit]:first');
-                
-                btn.attr('disabled', 'disabled');
-                btn.attr('data-id', '".$session_details['session_id']."');
-                btn.attr('data-token', '".$session_details['token']."');
-                btn.attr('data-proctoring', 'start');
-        
-                var form = document.getElementsByTagName('form')[0];
-                form.setAttribute('data-proctoring', 'form');
-                
-                // Redirect if no extension
-                
-                setInterval(function() {
-                    var body = $('body');
-                    if (body.attr('data-eproctoring') != 'true') {                
-                        window.location.href = 'https://edusynch.com/install/extension';
-                    }   
-                }, 500);
-            
-                ";
-                $PAGE->requires->js_init_code($js);
-        }
 
         $has_permission_to_view_report = has_capability('quizaccess/edusyncheproctoring:view_report', $context);
 
