@@ -20,9 +20,12 @@ function quizaccess_edusyncheproctoring_attempt_viewed_handler($event)
 
         if(!$is_eproctoring_started) 
         {
-            $SESSION->edusyncheproctoring_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
-            $SESSION->userid                       = $userid;
-            $SESSION->quizid                       = $quizid;
+            $SESSION->edusyncheproctoring_redirect  = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
+            $SESSION->edusyncheproctoring_attemptid = $attemptid;
+            $SESSION->edusyncheproctoring_cmid      = $cmid;
+            $SESSION->edusyncheproctoring_page      = $currentpage;
+            $SESSION->userid                        = $userid;
+            $SESSION->quizid                        = $quizid;            
             redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php');
         }
     }
