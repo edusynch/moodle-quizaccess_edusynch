@@ -3,10 +3,13 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 require_once(__DIR__ . '/../../../../config.php');
+require_login();
 
 global $CFG;
 
-require_login();
+$attemptid = required_param('attemptid', PARAM_INT);
+$cmid      = required_param('cmid', PARAM_INT);
+$page      = required_param('page', PARAM_INT);
 ?>
 <html>
 <head>
@@ -22,7 +25,7 @@ setTimeout(function() {
     if (body.attr('data-eproctoring') != 'true') {                
         window.location.href = 'https://edusynch.com/install/extension';
     } else {
-        window.location.href = '<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusyncheproctoring/start_quiz.php';
+        window.location.href = '<?php echo $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/start_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $page ?>';
     }
 }, 500);    
 </script>

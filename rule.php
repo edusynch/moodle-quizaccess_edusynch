@@ -23,10 +23,9 @@ function quizaccess_edusyncheproctoring_attempt_viewed_handler($event)
             $SESSION->edusyncheproctoring_redirect  = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
             $SESSION->edusyncheproctoring_attemptid = $attemptid;
             $SESSION->edusyncheproctoring_cmid      = $cmid;
-            $SESSION->edusyncheproctoring_page      = $currentpage;
             $SESSION->userid                        = $userid;
             $SESSION->quizid                        = $quizid;            
-            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php');
+            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage);
         }
     }
 }
@@ -50,16 +49,17 @@ function quizaccess_edusyncheproctoring_attempt_started_handler($event)
     $cmid         = $event->contextinstanceid;
     $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
     $quiz_enabled = \quizaccess_edusyncheproctoring\quiz::is_enabled($quizid);
+    $currentpage  = 0;
 
     if($quiz_enabled) {
         $is_eproctoring_started = isset($SESSION->edusyncheproctoring_started) ? $SESSION->edusyncheproctoring_started : false;
 
         if(!$is_eproctoring_started) 
         {
-            $SESSION->edusyncheproctoring_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid;
+            $SESSION->edusyncheproctoring_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
             $SESSION->userid                       = $userid;
             $SESSION->quizid                       = $quizid;
-            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php');
+            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/setup_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage);
         }
     }
     
@@ -67,18 +67,7 @@ function quizaccess_edusyncheproctoring_attempt_started_handler($event)
 
 function quizaccess_edusyncheproctoring_attempt_summary_viewed_handler($event)
 {
-    global $PAGE, $SESSION; 
-    
-    echo "<script type=\"text/javascript\">
-        // Finish attempt
-        var form = document.querySelectorAll('input[name=finishattempt]')[0].parentNode;
-        var btn = form.querySelectorAll('button[type=submit]')[0];
-        
-        btn.setAttribute('data-proctoring', 'finish');
-        form.setAttribute('data-proctoring', 'form');
-        </script>
-    ";
-
+    // TODO
 }
 
 function quizaccess_edusyncheproctoring_attempt_submitted_handler($event)
@@ -91,7 +80,6 @@ function quizaccess_edusyncheproctoring_attempt_submitted_handler($event)
     if(!is_null($session_id) && !is_null($student_token)) {
         $end_event = \quizaccess_edusyncheproctoring\session::create_event_for($student_token, $session_id, 'FINISH_SIMULATION');
         $SESSION->edusyncheproctoring_started   = null;        
-        $SESSION->edusyncheproctoring_sessionid = null;        
         $SESSION->edusyncheproctoring_token     = null;   
         $SESSION->userid = null;
         $SESSION->quizid = null;        
