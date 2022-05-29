@@ -9,7 +9,7 @@ is_siteadmin() || die;
 
 global $PAGE, $DB;
 
-$config = new \quizaccess_edusyncheproctoring\config();
+$config = new \quizaccess_edusynch\config();
 
 $action = required_param('action', PARAM_ALPHA);
 

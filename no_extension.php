@@ -8,9 +8,9 @@ require_login();
 
 global $SESSION;
 
-$SESSION->edusyncheproctoring_started   = null;        
-$SESSION->edusyncheproctoring_sessionid = null;        
-$SESSION->edusyncheproctoring_token     = null;   
+$SESSION->edusynch_started   = null;        
+$SESSION->edusynch_sessionid = null;        
+$SESSION->edusynch_token     = null;   
 $SESSION->userid = null;
 $SESSION->quizid = null;
 ?>
@@ -22,6 +22,6 @@ $SESSION->quizid = null;
 <body>
 </body>
 <script type="text/javascript">
-window.location.href = '<?php echo "$CFG->wwwroot/$SESSION->edusyncheproctoring_redirect" ?>';
+window.location.href = '<?php echo "$CFG->wwwroot/$SESSION->edusynch_redirect" ?>';
 </script>
 </html>

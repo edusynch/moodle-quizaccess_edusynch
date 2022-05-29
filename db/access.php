@@ -17,7 +17,7 @@
 /**
  * Quiz plugin for integration with Edusynch Eproctoring proctoring system.
  *
- * @package   quizaccess_edusyncheproctoring
+ * @package   quizaccess_edusynch
  * @copyright 2022, EduSynch <contact@edusynch.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
-    'quizaccess/edusyncheproctoring:view_report' => [
+    'quizaccess/edusynch:view_report' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
@@ -35,7 +35,7 @@ $capabilities = [
         ]
     ],   
     
-    'quizaccess/edusyncheproctoring:edit_settings' => [
+    'quizaccess/edusynch:edit_settings' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
@@ -43,7 +43,7 @@ $capabilities = [
         ]        
     ],
 
-    'quizaccess/edusyncheproctoring:enable_quiz' => [
+    'quizaccess/edusynch:enable_quiz' => [
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [

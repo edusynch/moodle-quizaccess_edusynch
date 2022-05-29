@@ -21,16 +21,16 @@ $page      = required_param('page', PARAM_INT);
 
     <body>
     <?php 
-        $session_details = \quizaccess_edusyncheproctoring\session::create($userid, $quizid);
+        $session_details = \quizaccess_edusynch\session::create($userid, $quizid);
 
         // Student session
         if($session_details['success']):
-            $SESSION->edusyncheproctoring_started   = true;        
-            $SESSION->edusyncheproctoring_sessionid = $session_details['session_id'];        
-            $SESSION->edusyncheproctoring_token     = $session_details['token'];        
-            $start_event = \quizaccess_edusyncheproctoring\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
+            $SESSION->edusynch_started   = true;        
+            $SESSION->edusynch_sessionid = $session_details['session_id'];        
+            $SESSION->edusynch_token     = $session_details['token'];        
+            $start_event = \quizaccess_edusynch\session::create_event_for($session_details['token'], $session_details['session_id'], 'START_SIMULATION');
         ?>    
-        <form action="<?php echo "$CFG->wwwroot/$SESSION->edusyncheproctoring_redirect" ?>" data-proctoring="form" method="GET">
+        <form action="<?php echo "$CFG->wwwroot/$SESSION->edusynch_redirect" ?>" data-proctoring="form" method="GET">
             <input type="hidden" name="attempt" value="<?php echo $attemptid ?>">
             <input type="hidden" name="cmid" value="<?php echo $cmid ?>">
             <input type="hidden" name="page" value="<?php echo $page ?>">

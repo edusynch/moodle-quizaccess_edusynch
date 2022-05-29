@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="mod/quiz/accessrule/edusyncheproctoring/db" VERSION="20220503" COMMENT="XMLDB file for Moodle mod/quiz/accessrule/eproctoring"
+<XMLDB PATH="mod/quiz/accessrule/edusynch/db" VERSION="20220503" COMMENT="XMLDB file for Moodle mod/quiz/accessrule/eproctoring"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../../../lib/xmldb/xmldb.xsd"
 >

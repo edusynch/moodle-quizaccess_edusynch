@@ -17,7 +17,7 @@
 /**
  * This file adds the settings pages to the navigation menu
  *
- * @package   quizaccess_edusyncheproctoring
+ * @package   quizaccess_edusynch
  * @copyright 2022 Edusynch <contact@edusynch.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -30,7 +30,7 @@ global $ADMIN;
 
 $section = optional_param('section', '', PARAM_RAW);
 
-if ($section == 'modsettingsquizcatedusyncheproctoring') {
-    redirect(new moodle_url('/mod/quiz/accessrule/edusyncheproctoring/index.php'));
+if ($section == 'modsettingsquizcatedusynch') {
+    redirect(new moodle_url('/mod/quiz/accessrule/edusynch/index.php'));
 }
 

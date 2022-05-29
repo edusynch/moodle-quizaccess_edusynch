@@ -3,10 +3,10 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-namespace quizaccess_edusyncheproctoring;
+namespace quizaccess_edusynch;
 
-use quizaccess_edusyncheproctoring\config;
-use quizaccess_edusyncheproctoring\network;
+use quizaccess_edusynch\config;
+use quizaccess_edusynch\network;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This class manages the E-Proctoring students
  *
- * @package    quizaccess_edusyncheproctoring
+ * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 Edusynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

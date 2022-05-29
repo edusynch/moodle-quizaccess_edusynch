@@ -3,21 +3,21 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-namespace quizaccess_edusyncheproctoring;
+namespace quizaccess_edusynch;
 
-use quizaccess_edusyncheproctoring\config;
-use quizaccess_edusyncheproctoring\helpers;
+use quizaccess_edusynch\config;
+use quizaccess_edusynch\helpers;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/quiz/accessrule/edusyncheproctoring/vendor/autoload.php');
+require_once($CFG->dirroot . '/mod/quiz/accessrule/edusynch/vendor/autoload.php');
 
 /**
  * network class.
  *
  * This class manages the interaction with Edusynch servers
  *
- * @package    quizaccess_edusyncheproctoring
+ * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 Edusynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

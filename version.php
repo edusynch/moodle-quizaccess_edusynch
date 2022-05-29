@@ -15,18 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @package   quizaccess_edusyncheproctoring
+ * @package   quizaccess_edusynch
  * @copyright 2022, EduSynch <contact@edusynch.com>
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022052300;
+$plugin->version = 2022052900;
 $plugin->requires = 2015111600;
-$plugin->component = 'quizaccess_edusyncheproctoring';
+$plugin->component = 'quizaccess_edusynch';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.1';
+$plugin->release = '1.2';
 
 $plugin->dependencies = [
     'mod_quiz' => ANY_VERSION,

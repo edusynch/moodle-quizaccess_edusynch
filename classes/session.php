@@ -3,12 +3,12 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-namespace quizaccess_edusyncheproctoring;
+namespace quizaccess_edusynch;
 
-use quizaccess_edusyncheproctoring\config;
-use quizaccess_edusyncheproctoring\network;
-use quizaccess_edusyncheproctoring\student;
-use quizaccess_edusyncheproctoring\user;
+use quizaccess_edusynch\config;
+use quizaccess_edusynch\network;
+use quizaccess_edusynch\student;
+use quizaccess_edusynch\user;
 
 use stdClass;
 
@@ -19,7 +19,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This class manages the E-Proctoring sessions
  *
- * @package    quizaccess_edusyncheproctoring
+ * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 Edusynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

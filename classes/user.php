@@ -3,10 +3,10 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-namespace quizaccess_edusyncheproctoring;
+namespace quizaccess_edusynch;
 
-use quizaccess_edusyncheproctoring\config;
-use quizaccess_edusyncheproctoring\network;
+use quizaccess_edusynch\config;
+use quizaccess_edusynch\network;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -15,7 +15,7 @@ defined('MOODLE_INTERNAL') || die();
  *
  * This class manages the E-Proctoring students
  *
- * @package    quizaccess_edusyncheproctoring
+ * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 Edusynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -41,9 +41,9 @@ class user {
             
             $payload = [
                 'external_app_type' => 'moodle',
-                'external_app_key' => $api_key->value,
-                'email' => $user->value,
-                'password' => $password->value,
+                'external_app_key' => !is_null($api_key) ? $api_key->value : '',
+                'email' => !is_null($user) ? $user->value : '',
+                'password' => !is_null($password) ? $password->value : '',
             ];
 
             $payload_jwt = helpers::get_jwt($payload);

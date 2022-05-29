@@ -3,7 +3,7 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-namespace quizaccess_edusyncheproctoring;
+namespace quizaccess_edusynch;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -16,7 +16,7 @@ use moodleform;
  *
  * This class manages the E-Proctoring student import form
  *
- * @package    quizaccess_edusyncheproctoring
+ * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 Edusynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

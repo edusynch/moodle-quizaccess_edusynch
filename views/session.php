@@ -71,7 +71,7 @@
                         <?php foreach($events as $event): ?> 
                         <li class="list-group-item p-0 py-3 d-flex border-bottom">
                             <p class="mb-0 mr-5"><?php echo date('H:i', strtotime($event['date'])) ?></p>
-                            <p class="mb-0"><?php echo get_string_manager()->string_exists('EVENT_' . $event['type'], 'quizaccess_edusyncheproctoring') ? get_string('EVENT_' . $event['type'], 'quizaccess_edusyncheproctoring') : $event['type'] ?></p>
+                            <p class="mb-0"><?php echo get_string_manager()->string_exists('EVENT_' . $event['type'], 'quizaccess_edusynch') ? get_string('EVENT_' . $event['type'], 'quizaccess_edusynch') : $event['type'] ?></p>
                         </li>
                         <?php endforeach; ?> 
                     </ul>

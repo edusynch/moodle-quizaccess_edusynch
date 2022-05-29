@@ -25,7 +25,7 @@ setTimeout(function() {
     if (body.attr('data-eproctoring') != 'true') {                
         window.location.href = 'https://edusynch.com/install/extension';
     } else {
-        window.location.href = '<?php echo $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/start_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $page ?>';
+        window.location.href = '<?php echo $CFG->wwwroot . '/mod/quiz/accessrule/edusynch/start_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $page ?>';
     }
 }, 500);    
 </script>

@@ -17,11 +17,11 @@
 /**
  * Quiz plugin for integration with Edusynch Eproctoring proctoring system.
  *
- * @package   quizaccess_edusyncheproctoring
+ * @package   quizaccess_edusynch
  * @copyright 2022, EduSynch <contact@edusynch.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-function xmldb_quizaccess_edusyncheproctoring_upgrade($oldversion) {
+function xmldb_quizaccess_edusynch_upgrade($oldversion) {
     global $DB;
 
     $dbman = $DB->get_manager();
@@ -44,8 +44,8 @@ function xmldb_quizaccess_edusyncheproctoring_upgrade($oldversion) {
             $dbman->create_table($table);
         }
 
-        // Edusyncheproctoring savepoint reached.
-        upgrade_plugin_savepoint(true, 2022050300, 'quizaccess', 'edusyncheproctoring');
+        // edusynch savepoint reached.
+        upgrade_plugin_savepoint(true, 2022050300, 'quizaccess', 'edusynch');
     }
 
     return true;

@@ -3,7 +3,7 @@
  * @copyright 2022 Edusynch <contact@edusynch.com>
  */
 
-function quizaccess_edusyncheproctoring_render_navbar_output() {
+function quizaccess_edusynch_render_navbar_output() {
     global $PAGE, $CFG;
 
     $context = context_system::instance();
@@ -14,12 +14,12 @@ function quizaccess_edusyncheproctoring_render_navbar_output() {
     
 }
 
-function quizaccess_edusyncheproctoring_before_footer()
+function quizaccess_edusynch_before_footer()
 {
 
 }
 
-function quizaccess_edusyncheproctoring_coursemodule_edit_post_actions($moduleinfo)
+function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
 {
     global $DB;
 
@@ -32,7 +32,7 @@ function quizaccess_edusyncheproctoring_coursemodule_edit_post_actions($modulein
         $requireeproctoring = (bool) $required;
         $quizid             = intval($moduleinfo->id);
         
-        $config          = new \quizaccess_edusyncheproctoring\config();
+        $config          = new \quizaccess_edusynch\config();
         $enabled_quizzes = $config->get_key('quizzes');
         
         

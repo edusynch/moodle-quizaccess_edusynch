@@ -7,7 +7,7 @@ require_once(__DIR__ . '/../../../../config.php');
 /**
  * EPROCTORING_URL - sets the current URL (web) of the plugins page.
  */
-define('EPROCTORING_PATH', $CFG->wwwroot . '/mod/quiz/accessrule/edusyncheproctoring/');
+define('EPROCTORING_PATH', $CFG->wwwroot . '/mod/quiz/accessrule/edusynch/');
 define('EPROCTORING_URL', EPROCTORING_PATH . 'index.php');
 
 require_login();
@@ -19,11 +19,11 @@ global $PAGE, $DB, $ADMIN, $SESSION;
 
 $context = context_system::instance();
 $PAGE->set_context($context);
-$PAGE->set_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
+$PAGE->set_url('/mod/quiz/accessrule/edusynch/index.php');
 $PAGE->set_title('EduSynch E-Proctoring');
 $PAGE->set_heading('EduSynch E-Proctoring');
 
-$config      = new \quizaccess_edusyncheproctoring\config();
+$config      = new \quizaccess_edusynch\config();
 $config_key  = $config->get_key('api_key');    
 
 if ($action != 'settings' && !$config_key) {
@@ -37,11 +37,11 @@ if ($action != 'settings' && !$config_key) {
     return;
 } else {
     if($action == 'settings') {
-        require_capability('quizaccess/edusyncheproctoring:edit_settings', $context);
+        require_capability('quizaccess/edusynch:edit_settings', $context);
     
         global $PAGE;
     
-        $application_info = \quizaccess_edusyncheproctoring\user::get_application_info();
+        $application_info = \quizaccess_edusynch\user::get_application_info();
 
         $total_students   = 0;
         
@@ -58,7 +58,7 @@ if ($action != 'settings' && !$config_key) {
         $password      = optional_param('password', '', PARAM_RAW);
         $success       = optional_param('success', 0, PARAM_INT); 
 
-        $importform = new \quizaccess_edusyncheproctoring\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
+        $importform = new \quizaccess_edusynch\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
     
         $success = (bool) $success;
         $quizzes       = $config->get_key('quizzes');    
@@ -109,7 +109,7 @@ if ($action != 'settings' && !$config_key) {
             $files = $fs->get_area_files($context->id, 'user', 'draft', $file, 'id DESC', false);
     
             $tempfile = reset($files)->copy_content_to_temp();
-            $import_list = \quizaccess_edusyncheproctoring\user::import_students($tempfile);    
+            $import_list = \quizaccess_edusynch\user::import_students($tempfile);    
     
             redirect(EPROCTORING_URL . '?action=settings&success=1');
          } else if ($subaction == 'quizzes') {
@@ -138,9 +138,9 @@ if ($action != 'settings' && !$config_key) {
         $quizid       = required_param('quizid', PARAM_INT);
 
         $coursecontext  = context_course::instance($courseid);   
-        require_capability('quizaccess/edusyncheproctoring:view_report', $coursecontext);
+        require_capability('quizaccess/edusynch:view_report', $coursecontext);
     
-        $content       = \quizaccess_edusyncheproctoring\session::list($current_page, $quizid);    
+        $content       = \quizaccess_edusynch\session::list($current_page, $quizid);    
         $sessions_list = array_filter($content['sessions'], function($array) use($content) {
             return in_array($array['id'], $content['sessions_per_quiz']);
         });
@@ -157,11 +157,11 @@ if ($action != 'settings' && !$config_key) {
         $events_page = optional_param('events_page', 1, PARAM_INT);
 
         $coursecontext  = context_course::instance($courseid);   
-        require_capability('quizaccess/edusyncheproctoring:view_report', $coursecontext);
+        require_capability('quizaccess/edusynch:view_report', $coursecontext);
     
 
-        $content      = \quizaccess_edusyncheproctoring\session::show($session_id);    
-        $events_query = \quizaccess_edusyncheproctoring\session::events($session_id, $events_page);    
+        $content      = \quizaccess_edusynch\session::show($session_id);    
+        $events_query = \quizaccess_edusynch\session::events($session_id, $events_page);    
         
         $session_details    = $content['session'];    
         $photos             = $content['photos'];    
