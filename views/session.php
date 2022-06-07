@@ -105,7 +105,7 @@
                 </div>
                 <div class="card-body">
                     <?php if (count($photos)): ?>
-                    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <div id="carouselVideoIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <?php for($i = 0; $i < count($photos); $i++): ?> 
                             <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $i ?>" <?php echo $i == 0 ? 'class="active"' : ''?>></li>
@@ -137,6 +137,48 @@
             </div>
         </div>
     </div>
+
+    <div class="row mt-5">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="font-weight-bold"><?php echo get_string('session_report:video_archive', 'quizaccess_edusynch') ?></h4>
+                </div>
+                <div class="card-body">
+                    <?php if (count($videos)): ?>
+                    <div id="carouselVideoIndicators">
+                        <ol class="carousel-indicators">
+                            <?php for($i = 0; $i < count($videos); $i++): ?> 
+                            <li data-target="#carouselVideoIndicators" data-slide-to="<?php echo $i ?>" <?php echo $i == 0 ? 'class="active"' : ''?>></li>
+                            <?php endfor; ?> 
+                        </ol>
+                        <div class="carousel-inner">
+                            <?php for($i = 0; $i < count($videos); $i++): ?> 
+                            <div class="carousel-item <?php echo $i == 0 ? 'active' : '' ?>">
+                                <video class="d-block w-100" autoplay muted controls>
+                                    <source src="<?php echo $videos[$i]['video']['url'] ?>" type="video/mp4" />
+                                </video>
+                            </div>
+                            <?php endfor; ?>                             
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-target="#carouselVideoIndicators"
+                            data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only"><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-target="#carouselVideoIndicators"
+                            data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only"><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></span>
+                        </button>
+                    </div>
+                    <?php else: ?>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo get_string('session_report:no_videos', 'quizaccess_edusynch') ?></div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"

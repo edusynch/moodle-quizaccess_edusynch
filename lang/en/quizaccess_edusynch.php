@@ -76,6 +76,8 @@ $string['session_report:no_screens'] = 'There are no screenshots for this sessio
 $string['session_report:no_logs'] = 'There are no events for this session';
 $string['session_report:hour'] = 'Hour';
 $string['session_report:type'] = 'Type';
+$string['session_report:video_archive'] = 'Video Archive';
+$string['session_report:no_videos'] = 'There are no videos for this session';
 
 // Session Events
 $string['EVENT_MOVE_FOCUS'] = 'Opened a new window or tab; Minimized the browser; Opened other program;';

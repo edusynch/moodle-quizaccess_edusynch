@@ -165,6 +165,7 @@ if ($action != 'settings' && !$config_key) {
         
         $session_details    = $content['session'];    
         $photos             = $content['photos'];    
+        $videos             = $content['videos'];    
         $events             = $events_query['events'];    
         $prev_page          = $events_query['prev_page'];    
         $next_page          = $events_query['next_page'];    
