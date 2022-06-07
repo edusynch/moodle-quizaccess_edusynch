@@ -28,6 +28,7 @@ $config_key  = $config->get_key('api_key');
 
 if ($action != 'settings' && !$config_key) {
     echo $OUTPUT->header();
+    include 'views/navbars.php';
 
     ?>
     <div class="alert alert-info mt-3">
@@ -134,21 +135,41 @@ if ($action != 'settings' && !$config_key) {
         global $COURSE, $USER, $CFG;
 
         $current_page = optional_param('page', 1, PARAM_INT);
-        $courseid     = required_param('courseid', PARAM_INT);
-        $quizid       = required_param('quizid', PARAM_INT);
 
-        $coursecontext  = context_course::instance($courseid);   
-        require_capability('quizaccess/edusynch:view_report', $coursecontext);
-    
-        $content       = \quizaccess_edusynch\session::list($current_page, $quizid);    
-        $sessions_list = array_filter($content['sessions'], function($array) use($content) {
-            return in_array($array['id'], $content['sessions_per_quiz']);
-        });
-    
-        $prev_page          = $content['prev_page'];    
-        $next_page          = $content['next_page'];    
-        $last_page          = $content['last_page'];    
-        $total_pages        = $content['total_pages'];       
+        if(!is_siteadmin()) {
+            $courseid     = required_param('courseid', PARAM_INT);
+            $quizid       = required_param('quizid', PARAM_INT);
+        } else {
+            $courseid     = optional_param('courseid', null, PARAM_INT);
+            $quizid       = optional_param('quizid', null, PARAM_INT); 
+            
+            $quizzes      = $config->get_key('quizzes');    
+            $quizzes_enabled = is_null($quizzes) ? [] : json_decode($quizzes->value, true);
+
+            foreach($quizzes_enabled as &$qe) {
+            $query = $DB->get_record_sql("SELECT q.id, q.course, COUNT(s.id) AS total FROM mdl_quizaccess_edusynch_sessions s INNER JOIN mdl_quiz q ON s.quiz_id = q.id WHERE quiz_id = {$qe['id']}");
+                $qe['courseid']       = $query->course;
+                $qe['total_sessions'] = $query->total;
+            }
+        }
+
+        if($courseid && $quizid) {
+            $coursecontext  = context_course::instance($courseid);   
+            require_capability('quizaccess/edusynch:view_report', $coursecontext);
+        
+            $content       = \quizaccess_edusynch\session::list($current_page, $quizid);    
+            $sessions_list = array_filter($content['sessions'], function($array) use($content) {
+                return in_array($array['id'], $content['sessions_per_quiz']);
+            });
+        
+            $prev_page          = $content['prev_page'];    
+            $next_page          = $content['next_page'];    
+            $last_page          = $content['last_page'];    
+            $total_pages        = $content['total_pages']; 
+
+            $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
+        }
+      
     
     } else if ($action == 'session') {   
         $courseid    = required_param('courseid', PARAM_INT);
@@ -170,6 +191,8 @@ if ($action != 'settings' && !$config_key) {
         $next_page          = $events_query['next_page'];    
         $last_page          = $events_query['last_page'];    
         $total_pages        = $events_query['total_pages'];    
+        
+        $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
     }
     
 }
@@ -177,7 +200,7 @@ if ($action != 'settings' && !$config_key) {
 $PAGE->requires->jquery();
     
 echo $OUTPUT->header();    
-
+include 'views/navbars.php';
 include 'views/' . $action . '.php';
 
 echo $OUTPUT->footer();
