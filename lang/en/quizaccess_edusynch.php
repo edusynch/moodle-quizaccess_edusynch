@@ -92,5 +92,5 @@ $string['EVENT_NEW_TAB_WINDOW'] = 'Opened a new window or tab';
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
 $string['error:unable_session_details'] = 'Unable to get session details';
 $string['error:unable_session_events'] = 'Unable to get session events';
-$string['error:generic'] = 'An error occurred: {$a}';
+$string['error:general'] = 'An error occurred: {$a}';
 
