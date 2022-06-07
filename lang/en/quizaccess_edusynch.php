@@ -61,6 +61,10 @@ $string['sessions_list:student'] = 'Student';
 $string['sessions_list:date'] = 'Date';
 $string['sessions_list:incident_level'] = 'Incident Level';
 $string['sessions_list:actions'] = 'Actions';
+$string['sessions_list:select_course_and_quiz'] = 'Select course and quiz below to view the reports';
+$string['sessions_list:total_number'] = 'Total Sessions';
+$string['sessions_list:view_reports'] = 'View Reports';
+$string['sessions_list:no_quiz_enabled'] = 'There are no quizzes enabled to E-Proctoring. Enable at least one in SETTINGS page';
 
 // Session report
 $string['session_report:session_details'] = 'Session details';
