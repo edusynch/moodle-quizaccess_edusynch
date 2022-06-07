@@ -108,10 +108,10 @@
                 </div>
                 <div class="card-body">
                     <?php if (count($photos)): ?>
-                    <div id="carouselVideoIndicators" class="carousel slide" data-ride="carousel">
+                    <div id="carouselPhotoIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <?php for($i = 0; $i < count($photos); $i++): ?> 
-                            <li data-target="#carouselExampleIndicators" data-slide-to="<?php echo $i ?>" <?php echo $i == 0 ? 'class="active"' : ''?>></li>
+                            <li data-target="#carouselPhotoIndicators" data-slide-to="<?php echo $i ?>" <?php echo $i == 0 ? 'class="active"' : ''?>></li>
                             <?php endfor; ?> 
                         </ol>
                         <div class="carousel-inner">
@@ -122,12 +122,12 @@
                             </div>
                             <?php endfor; ?>                             
                         </div>
-                        <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators"
+                        <button class="carousel-control-prev" type="button" data-target="#carouselPhotoIndicators"
                             data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="sr-only"><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators"
+                        <button class="carousel-control-next" type="button" data-target="#carouselPhotoIndicators"
                             data-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="sr-only"><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></span>
