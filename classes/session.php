@@ -98,10 +98,10 @@ class session {
                     'Authorization' => 'Bearer ' . $token,
                 ]
             );  
-            
+
             if($quizid) {
                 $sessions_per_quiz = [];
-                $records_per_quiz  = $DB->get_records(self::$SESSION_STORE_TABLE, ['quiz_id' => $quizid]);
+                $records_per_quiz  = $DB->get_records(self::$SESSION_STORE_TABLE, ['quiz_id' => $quizid]);                
                 foreach($records_per_quiz as $record) {
                     $sessions_per_quiz[] = $record->session_id;
                 }                
@@ -111,7 +111,7 @@ class session {
             
             return $sessions_request['content'];
         } catch (\Exception $e) {
-            die('Unable to list sessions. Check your credentials in SETTINGS section.');
+            die(get_string('error:unable_list_sessions', 'quizaccess_edusynch'));
         }     
     }
 
@@ -138,7 +138,7 @@ class session {
             
             return $sessions_request['content'];
         } catch (\Exception $e) {
-            die('Unable to get session details');
+            die(get_string('error:unable_session_details', 'quizaccess_edusynch'));
         }     
     }
 
@@ -166,7 +166,7 @@ class session {
             
             return $events_request['content'];
         } catch (\Exception $e) {
-            die('Unable to get session events');
+            die(get_string('error:unable_session_events', 'quizaccess_edusynch'));
         }     
     }   
     

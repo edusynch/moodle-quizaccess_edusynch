@@ -133,7 +133,7 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         if($has_permission_to_view_report) {
             $js = "
             var main_div = $('div[role=main]');
-            main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusynch/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">View EduSynch E-Proctoring reports</button></a>');
+            main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusynch/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">". get_string('sessions_list:button', 'quizaccess_edusynch') ."</button></a>');
             ";
 
             $PAGE->requires->js_init_code($js);
@@ -175,14 +175,14 @@ class quizaccess_edusynch extends quiz_access_rule_base {
                 }
             }
 
-            $header = $mform->createElement('header', 'edusynch', 'Edusynch E-Proctoring');
+            $header = $mform->createElement('header', 'edusynch', get_string('pluginname', 'quizaccess_edusynch'));
             $mform->insertElementBefore($header, 'security');
 
             $element = $mform->createElement(
                 'select',
                 'edusynch_requireeproctoring',
-                'Require E-Proctoring Plugin',
-                [0 => 'No', 1 => 'Yes']
+                get_string('config:require_for_quiz'),
+                [0 => get_string('misc:no', 'quizaccess_edusynch'), 1 => get_string('misc:yes', 'quizaccess_edusynch')]
             );
             $mform->insertElementBefore($element, 'security');
             $mform->setType('edusynch_requireeproctoring', PARAM_INT);

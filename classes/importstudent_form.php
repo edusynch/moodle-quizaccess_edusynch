@@ -27,9 +27,9 @@ class importstudent_form extends moodleform {
        
         $mform = $this->_form; 
 
-        $mform->addElement('filepicker', 'import_list', "CSV File", null, ['accepted_types' => ['text/csv']]); // Add elements to your form.
+        $mform->addElement('filepicker', 'import_list', get_string('config:import_students_file', 'quizaccess_edusynch'), null, ['accepted_types' => ['text/csv']]); // Add elements to your form.
 
-        $this->add_action_buttons(false, 'Import');
+        $this->add_action_buttons(false, get_string('config:import', 'quizaccess_edusynch'));
     }
 
     //Custom validation should be added here

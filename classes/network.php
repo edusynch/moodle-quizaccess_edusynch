@@ -114,7 +114,7 @@ class network {
             
             return $response;    
         } catch (\Exception $e) {
-            throw new \Exception('An error occurred: ' . $e->getMessage());
+            throw new \Exception(get_string('error:general', 'quizaccess_edusynch', $e->getMessage()));
         }
 
     }

@@ -4,7 +4,7 @@
  */
 ?>
 <div class="container">
-    <h4 class="mb-5">Session details - #<?php echo $session_details['id'] ?></h4>
+    <h4 class="mb-5"><?php echo get_string('session_report:session_details', 'quizaccess_edusynch') ?> - #<?php echo $session_details['id'] ?></h4>
     <div class="row">
         <div class="col">
             <div class="card">
@@ -21,16 +21,16 @@
                             </div>
                             <div class="col-sm-8 d-flex text-dark">
                                 <div class="pr-5">
-                                    <p class="mb-0">Start Time</p>
+                                    <p class="mb-0"><?php echo get_string('session_report:start_time', 'quizaccess_edusynch') ?></p>
                                     <p class="mb-0 font-weight-bold"> <?php echo date('H:i', strtotime($session_details['start_time'])) ?></p>
                                 </div>
                                 <div class="px-5 border-left">
-                                    <p class="mb-0">End Time</p>
+                                    <p class="mb-0"><?php echo get_string('session_report:end_time', 'quizaccess_edusynch') ?></p>
                                     <p class="mb-0 font-weight-bold"><?php echo $session_details['end_time'] ? date('Y-m-d H:i:s', strtotime($session_details['end_time'])) : '-' ?></p>
                                 </div>
                                 <div class="pl-5 border-left">
-                                    <p class="mb-0">Completed</p>
-                                    <p class="mb-0 font-weight-bold"><?php echo $session_details['completed'] ? 'Yes' : 'No' ?></p>
+                                    <p class="mb-0"><?php echo get_string('session_report:completed', 'quizaccess_edusynch') ?></p>
+                                    <p class="mb-0 font-weight-bold"><?php echo $session_details['completed'] ? get_string('misc:yes', 'quizaccess_edusynch') : get_string('misc:no', 'quizaccess_edusynch') ?></p>
                                 </div>
                             </div>
                         </div>
@@ -44,27 +44,27 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="font-weight-bold">Log</h4>
+                    <h4 class="font-weight-bold"><?php echo get_string('session_report:log', 'quizaccess_edusynch') ?></h4>
                 </div>
                 <div class="card-body">
                     <?php if (count($events)): ?>
                     <nav>
                         <ul class="pagination justify-content-end">
                             <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>>Previous</a>
+                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></a>
                             </li>
                             <?php for($page = 1; $page <= $total_pages; $page++): ?>
                             <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>.'&quizid=<?php echo $quizid ?>'&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
                             <?php endfor; ?>
                             <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>>Next</a>
+                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></a>
                             </li>
                         </ul>
                     </nav>        
                                    
                     <div class="d-flex mb-3">
-                        <p class="mb-0 font-weight-bold mr-5">Hour</p>
-                        <p class="mb-0 font-weight-bold">Type</p>
+                        <p class="mb-0 font-weight-bold mr-5"><?php echo get_string('session_report:hour', 'quizaccess_edusynch') ?></p>
+                        <p class="mb-0 font-weight-bold"><?php echo get_string('session_report:type', 'quizaccess_edusynch') ?></p>
                     </div>
 
                     <ul class="list-group list-group-flush">
@@ -79,18 +79,18 @@
                     <nav class="mt-3">
                         <ul class="pagination justify-content-end">
                             <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>>Previous</a>
+                                <a class="page-link" <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $prev_page .'"' ?>><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></a>
                             </li>
                             <?php for($page = 1; $page <= $total_pages; $page++): ?>
                             <li class="page-item <?php echo $page == $events_page ? 'active' : '' ?>"><a class="page-link" href="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>.'&quizid=<?php echo $quizid ?>'&events_page=<?php echo $page ?>"><?php echo $page ?></a></li>
                             <?php endfor; ?>
                             <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>>Next</a>
+                                <a class="page-link" <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=session&session_id='. $session_id .'&courseid='.$courseid.'&quizid='.$quizid.'&events_page=' . $next_page .'"' ?>><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></a>
                             </li>
                         </ul>
                     </nav> 
                     <?php else: ?>
-                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> There are no events for this session</div>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo get_string('session_report:no_logs', 'quizaccess_edusynch') ?></div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -101,7 +101,7 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="font-weight-bold">Screen Archive</h4>
+                    <h4 class="font-weight-bold"><?php echo get_string('session_report:screen_archive', 'quizaccess_edusynch') ?></h4>
                 </div>
                 <div class="card-body">
                     <?php if (count($photos)): ?>
@@ -122,16 +122,16 @@
                         <button class="carousel-control-prev" type="button" data-target="#carouselExampleIndicators"
                             data-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
+                            <span class="sr-only"><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></span>
                         </button>
                         <button class="carousel-control-next" type="button" data-target="#carouselExampleIndicators"
                             data-slide="next">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
+                            <span class="sr-only"><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></span>
                         </button>
                     </div>
                     <?php else: ?>
-                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> There are no screens for this session</div>
+                    <div class="alert alert-info"><i class="fa fa-info-circle"></i> <?php echo get_string('session_report:no_screens', 'quizaccess_edusynch') ?></div>
                     <?php endif; ?>
                 </div>
             </div>

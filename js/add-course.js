@@ -1,17 +1,17 @@
 var addCourseTemplate = `
   <div id="addCourse">
     <h6 class="text-black-50 mb-4 font-weight-bold mt-3" style="font-size: 20px;">
-      Add Course
-      <span class="font-weight-normal" style="font-size: 14px;"> (For save)</span>
+      `+$('#add-course-label').attr('data-label')+`
+      <span class="font-weight-normal" style="font-size: 14px;"> (`+$('#add-course-for-save-label').attr('data-label')+`)</span>
     </h6>
     <div class="course pb-2">
       <div class="course-header mb-1">
         <div class="row">
           <div class="col-sm-4">
-            <h6 class="font-weight-bold text-black-50">Course</h6>
+            <h6 class="font-weight-bold text-black-50">`+$('#course-label').attr('data-label')+`</h6>
           </div>
           <div class="col-sm-4">
-            <h6 class="font-weight-bold text-black-50">Quiz</h6>
+            <h6 class="font-weight-bold text-black-50">`+$('#quiz-label').attr('data-label')+`</h6>
           </div>
         </div>
       </div>
@@ -80,7 +80,7 @@ function loadCoursesSelect() {
 
   $(coursesSelect).change(selectCourse);
 
-  $('<option value="">Select Course</option>').appendTo(coursesSelect);
+  $('<option value="">'+$('#select-course-label').attr('data-label')+'</option>').appendTo(coursesSelect);
 
   if (!courses.length) {
     getCourses(function(coursesJson) {
@@ -117,7 +117,7 @@ function loadQuizzesSelect(quizzes, event) {
   $(quizzesSelect).empty();
   $(quizzesSelect).prop('disabled', false);
 
-  $('<option value="">Select Quiz</option>').appendTo(quizzesSelect);
+  $('<option value="">'+$('#select-quiz-label').attr('data-label')+'</option>').appendTo(quizzesSelect);
 
   populateSelectElement(quizzesSelect, quizzes);
 }

@@ -7,18 +7,18 @@ $host = $PAGE->url->get_host();
     <div class="tab-content">
 
         <?php if ($success): ?>
-        <div class="alert alert-success">Success!</div>
+        <div class="alert alert-success"><?php echo get_string('misc:success', 'quizaccess_edusynch') ?></div>
         <?php endif; ?>
 
         <div class="tab-pane fade show active" id="nav-settings" role="tabpanel">
-            <h4 class="mt-3">Keys</h4>
+            <h4 class="mt-3"><?php echo get_string('config:keys', 'quizaccess_edusynch') ?></h4>
 
             <form action="<?php echo EPROCTORING_URL  ?>?action=settings" method="POST" class="mt-3">
                 <?php if ($host == 'localhost' || strpos($host, 'edusynch.com') !== FALSE): ?>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="api_key">Student API: </label>
+                            <label for="api_key"><?php echo get_string('config:students_api', 'quizaccess_edusynch') ?>: </label>
                             <input class="form-control" type="text" id="student_api" name="student_api"
                                 value="<?php echo $student_api_value ? $student_api_value : 'https://api.edusynch.com' ?>">
                         </div>
@@ -28,7 +28,7 @@ $host = $PAGE->url->get_host();
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="api_key">CMS API: </label>
+                            <label for="api_key"><?php echo get_string('config:cms_api', 'quizaccess_edusynch') ?>: </label>
                             <input class="form-control" type="text" id="cms_api" name="cms_api"
                                 value="<?php echo $cms_api_value ? $cms_api_value : 'https://cmsapi.edusynch.com' ?>">
                         </div>
@@ -38,7 +38,7 @@ $host = $PAGE->url->get_host();
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="api_key">Events API: </label>
+                            <label for="api_key"><?php echo get_string('config:events_api', 'quizaccess_edusynch') ?>: </label>
                             <input class="form-control" type="text" id="events_api" name="events_api"
                                 value="<?php echo $events_api_value ? $events_api_value : 'https://events.edusynch.com' ?>">
                         </div>
@@ -50,7 +50,8 @@ $host = $PAGE->url->get_host();
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label for="api_key">API Key: </label>
+                            <label for="api_key"><?php echo get_string('config:api_key', 'quizaccess_edusynch') ?>:
+                            </label>
                             <input class="form-control" type="text" id="api_key" name="api_key"
                                 value="<?php echo $api_key_value ?>">
                         </div>
@@ -60,7 +61,7 @@ $host = $PAGE->url->get_host();
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="user">User: </label>
+                            <label for="user"><?php echo get_string('config:user', 'quizaccess_edusynch') ?>: </label>
                             <input class="form-control" type="text" id="user" name="user"
                                 value="<?php echo $user_value ?>">
                         </div>
@@ -68,29 +69,31 @@ $host = $PAGE->url->get_host();
 
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="password">Password: </label>
+                            <label for="password"><?php echo get_string('config:password', 'quizaccess_edusynch') ?>:
+                            </label>
                             <input class="form-control" type="password" id="password" name="password"
                                 value="<?php echo $password_value ?>">
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit"
+                    class="btn btn-primary"><?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
             </form>
 
             <hr>
-            <h4 class="mt-3">Import students</h4>
+            <h4 class="mt-3"><?php echo get_string('config:import_students', 'quizaccess_edusynch') ?></h4>
 
             <div class="row">
                 <div class="col-md-12">
                     <?php if($total_students > 0): ?>
                     <div class="alert alert-info">
-                        <i class="fa fa-info-circle"></i> You have <strong><?php echo $total_students ?></strong> students enabled.
+                        <i class="fa fa-info-circle"></i> <?php echo get_string('config:total_students', 'quizaccess_edusynch', $total_students) ?>
                     </div>
                     <?php endif; ?>
-                    
-                    Use the box below to import a .CSV file with your students data, like <a
-                        href="<?php echo EPROCTORING_PATH ?>students-import.csv">this example</a>
+
+                    <?php echo get_string('config:import_students_desc', 'quizaccess_edusynch') ?> <a
+                        href="<?php echo EPROCTORING_PATH ?>students-import.csv"><?php echo get_string('config:import_students_desc_link', 'quizaccess_edusynch') ?></a>
 
                     <br>
                     <?php echo $importform->render() ?>
@@ -99,14 +102,17 @@ $host = $PAGE->url->get_host();
 
 
             <hr>
-            <h4 class="mt-3">Courses enabled</h4>
-            <form id="quizzes-form" action="<?php echo EPROCTORING_URL  ?>?action=settings&subaction=quizzes" method="POST">
+            <h4 class="mt-3"><?php echo get_string('config:courses_enabled', 'quizaccess_edusynch') ?></h4>
+            <form id="quizzes-form" action="<?php echo EPROCTORING_URL  ?>?action=settings&subaction=quizzes"
+                method="POST">
                 <div class="row my-5">
                     <div class="col">
                         <div class="card">
                             <div class="card-header d-flex">
-                                <h4 class="font-weight-bold">Manage courses</h4>
-                                <button type="button" class="btn btn-sm btn-primary ml-auto" id="btnAddCourse">Add <i
+                                <h4 class="font-weight-bold">
+                                    <?php echo get_string('config:manage_courses', 'quizaccess_edusynch') ?></h4>
+                                <button type="button" class="btn btn-sm btn-primary ml-auto"
+                                    id="btnAddCourse"><?php echo get_string('config:add', 'quizaccess_edusynch') ?> <i
                                         class="fa fa-plus"></i>
                                 </button>
                             </div>
@@ -114,8 +120,9 @@ $host = $PAGE->url->get_host();
                                 <div id="addCourseContainer"></div>
                                 <div class="courses">
                                     <h6 class="text-black-50 mb-4 font-weight-bold" style="font-size: 20px;">
-                                        Courses
-                                        <span class="font-weight-normal" style="font-size: 14px;"> (List)</span>
+                                        <?php echo get_string('config:courses', 'quizaccess_edusynch') ?>
+                                        <span class="font-weight-normal" style="font-size: 14px;">
+                                            (<?php echo get_string('config:list_courses', 'quizaccess_edusynch') ?>)</span>
                                     </h6>
                                     <?php if (count($quizzes_enabled) > 0): ?>
 
@@ -123,8 +130,10 @@ $host = $PAGE->url->get_host();
                                         <table class="table">
                                             <thead>
                                                 <tr>
-                                                    <th>Course</th>
-                                                    <th>Quiz</th>
+                                                    <th><?php echo get_string('config:course', 'quizaccess_edusynch') ?>
+                                                    </th>
+                                                    <th><?php echo get_string('config:quiz', 'quizaccess_edusynch') ?>
+                                                    </th>
                                                     <th></th>
                                                 </tr>
                                             </thead>
@@ -135,7 +144,8 @@ $host = $PAGE->url->get_host();
                                                     <td><?php echo $quiz['name']; ?></td>
                                                     <td>
                                                         <button type="button"
-                                                            class="btn btn-outline-danger d-block ml-auto btn-delete-quiz" data-quiz="<?php echo $quiz['id'] ?>">
+                                                            class="btn btn-outline-danger d-block ml-auto btn-delete-quiz"
+                                                            data-quiz="<?php echo $quiz['id'] ?>">
                                                             <i class="fa fa-trash"></i>
                                                         </button>
                                                     </td>
@@ -148,12 +158,15 @@ $host = $PAGE->url->get_host();
                                 </div>
                                 <?php else: ?>
                                 <div class="empty-courses py-5">
-                                    <img class="d-block mx-auto mb-1" src="images/empty-courses.svg" alt="empty-courses">
-                                    <p class="text-center text-black-50">Please, add a course!</p>
+                                    <img class="d-block mx-auto mb-1" src="images/empty-courses.svg"
+                                        alt="empty-courses">
+                                    <p class="text-center text-black-50">
+                                        <?php echo get_string('config:no_courses', 'quizaccess_edusynch') ?></p>
                                 </div>
                                 <?php endif; ?>
 
-                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button type="submit"
+                                    class="btn btn-primary"><?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
                             </div>
                         </div>
                     </div>
@@ -165,4 +178,10 @@ $host = $PAGE->url->get_host();
     </div>
 </div>
 
+<span id="add-course-label" data-label="<?php echo get_string('config:add_course', 'quizaccess_edusynch') ?>"></span>
+<span id="add-course-for-save-label" data-label="<?php echo get_string('config:add_course_for_save', 'quizaccess_edusynch') ?>"></span>
+<span id="course-label" data-label="<?php echo get_string('config:course', 'quizaccess_edusynch') ?>"></span>
+<span id="quiz-label" data-label="<?php echo get_string('config:quiz', 'quizaccess_edusynch') ?>"></span>
+<span id="select-course-label" data-label="<?php echo get_string('config:select_course', 'quizaccess_edusynch') ?>"></span>
+<span id="select-quiz-label" data-label="<?php echo get_string('config:select_quiz', 'quizaccess_edusynch') ?>"></span>
 <script src="js/add-course.js"></script>

@@ -97,7 +97,7 @@ class user {
 
             return $students;
         } catch (\Exception $e) {
-            throw new \Exception('Unable to import students: ' . $e->getMessage());
+            throw new \Exception(get_string('error:general', 'quizaccess_edusynch', $e->getMessage()));
         }
     }       
 

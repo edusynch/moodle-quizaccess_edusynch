@@ -57,7 +57,7 @@ class student {
 
             return $token;
         } catch (\Exception $e) {
-            throw new \Exception('Unable to login student: ' . $e->getMessage());
+            throw new \Exception(get_string('error:general', 'quizaccess_edusynch', $e->getMessage()));
         }
     } 
 
