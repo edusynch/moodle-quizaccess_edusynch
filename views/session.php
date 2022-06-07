@@ -4,8 +4,11 @@
  */
 ?>
 <div class="container">
-    <h4 class="mb-5"><?php echo get_string('session_report:session_details', 'quizaccess_edusynch') ?> - #<?php echo $session_details['id'] ?></h4>
-    <div class="row">
+    <h4 class="mt-5"><?php echo get_string('session_report:session_details', 'quizaccess_edusynch') ?> - #<?php echo $session_details['id'] ?></h4>
+    <?php if(isset($quiz_data)): ?>
+        <small><?php echo $quiz_data->name ?></small>
+    <?php endif; ?>    
+    <div class="mt-5 row">
         <div class="col">
             <div class="card">
                 <div class="card-body py-4">
