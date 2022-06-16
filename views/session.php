@@ -16,8 +16,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-sm-4 d-flex">
-                                <img src="<?php echo $session_details['student']['avatar']["thumb"]["url"] ?>"
-                                    alt="avatar" width="48" height="48" class="rounded-circle">
+                                <?php echo $useravatar ?>
                                 <div class="pl-3">
                                     <p class="text-primary font-weight-bold mb-0">
                                         <?php echo $session_details['student']['name'] ?></p>

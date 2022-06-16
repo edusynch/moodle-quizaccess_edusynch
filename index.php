@@ -194,6 +194,11 @@ if ($action != 'settings' && !$config_key) {
         $total_pages        = $events_query['total_pages'];    
         
         $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
+
+        $user = new \stdClass();
+        // $additionalfields = explode(',', implode(',', \core_user\fields::get_picture_fields()));
+        $user = $DB->get_record('user', ['email' => $session_details['student']['email']]);
+        $useravatar = $OUTPUT->user_picture($user, array('courseid' => $courseid));        
     }
     
 }
