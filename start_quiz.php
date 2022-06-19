@@ -16,7 +16,7 @@ $page      = required_param('page', PARAM_INT);
 ?>
 <html>
     <head>
-        <title>E-Procotring check</title>
+        <title>E-Proctoring check</title>
     </head>
 
     <body>
