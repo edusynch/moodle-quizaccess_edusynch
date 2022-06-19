@@ -147,9 +147,13 @@ if ($action != 'settings' && !$config_key) {
             $quizzes_enabled = is_null($quizzes) ? [] : json_decode($quizzes->value, true);
 
             foreach($quizzes_enabled as &$qe) {
-            $query = $DB->get_record_sql("SELECT q.id, q.course, COUNT(s.id) AS total FROM mdl_quizaccess_edusynch_sessions s INNER JOIN mdl_quiz q ON s.quiz_id = q.id WHERE quiz_id = {$qe['id']}");
-                $qe['courseid']       = $query->course;
-                $qe['total_sessions'] = $query->total;
+                $sessions_query = $DB->count_records("quizaccess_edusynch_sessions", ['quiz_id' => $qe['id']]);
+                $qe['total_sessions'] = $sessions_query;
+
+                $quiz_query     = $DB->get_record("quiz", ['id' => $qe['id']], 'course');
+                if($quiz_query) {
+                    $qe['courseid']       = $quiz_query->course;
+                }
             }
         }
 
