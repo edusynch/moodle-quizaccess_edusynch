@@ -93,6 +93,9 @@ $string['EVENT_UI_EVENT'] = 'User Interface moved';
 $string['EVENT_START_SIMULATION'] = 'Exam started';
 $string['EVENT_FINISH_SIMULATION'] = 'Exam completed successfully';
 $string['EVENT_NEW_TAB_WINDOW'] = 'Opened a new window or tab';
+$string['EVENT_TEST_PAUSED'] = 'Exam paused';
+$string['EVENT_TEST_RESUMED'] = 'Exam resumed';
+$string['EVENT_MULTIPLE_DISPLAYS_DETECTED'] = 'Multiple screens detected';
 
 // Error messages
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
