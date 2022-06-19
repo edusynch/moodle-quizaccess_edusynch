@@ -181,7 +181,7 @@ class quizaccess_edusynch extends quiz_access_rule_base {
             $element = $mform->createElement(
                 'select',
                 'edusynch_requireeproctoring',
-                get_string('config:require_for_quiz'),
+                get_string('config:require_for_quiz', 'quizaccess_edusynch'),
                 [0 => get_string('misc:no', 'quizaccess_edusynch'), 1 => get_string('misc:yes', 'quizaccess_edusynch')]
             );
             $mform->insertElementBefore($element, 'security');
