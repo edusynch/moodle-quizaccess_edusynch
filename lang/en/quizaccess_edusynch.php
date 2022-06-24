@@ -96,6 +96,16 @@ $string['EVENT_NEW_TAB_WINDOW'] = 'Opened a new window or tab';
 $string['EVENT_TEST_PAUSED'] = 'Exam paused';
 $string['EVENT_TEST_RESUMED'] = 'Exam resumed';
 $string['EVENT_MULTIPLE_DISPLAYS_DETECTED'] = 'Multiple screens detected';
+$string['EVENT_SIMULATION_TIMEOUT'] = 'Simulation Timed Out';
+$string['EVENT_SIMULATION_EXPIRED'] = 'Simulation Expired';
+$string['EVENT_START_STREAMING'] = 'Video streaming started';
+$string['EVENT_STOP_STREAMING'] = 'Video streaming stopped';
+$string['EVENT_MORE_THAN_ONE_CAM'] = 'Multiple cameras detect';
+$string['EVENT_MULTIPLE_CAMS'] = 'Multiple cameras detect';
+$string['EVENT_MULTIPLE_DISPLAYS'] = 'Multiple screens detected';
+$string['EVENT_MULTIPLE_FACES'] = 'Multiple people detected on camera';
+$string['EVENT_NEW_TAB'] = 'User attempted to open new tabs and/or new windows';
+$string['EVENT_NO_FACE_DETECTED'] = 'No user detected';
 
 // Error messages
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
