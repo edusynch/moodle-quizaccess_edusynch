@@ -134,7 +134,15 @@ if ($action != 'settings' && !$config_key) {
     } else if ($action == 'sessions') {   
         global $COURSE, $USER, $CFG;
 
+        $current_date  = date_format(new DateTime(), 'Y-m-d');
+        $one_month_ago = date_format((new DateTime())->sub(DateInterval::createFromDateString('1 month')), 'Y-m-d');
+
         $current_page = optional_param('page', 1, PARAM_INT);
+        $start_date   = optional_param('start_date', $one_month_ago, PARAM_RAW);
+        $end_date     = optional_param('end_date', $current_date, PARAM_RAW);
+        $search       = optional_param('search', '', PARAM_RAW);
+
+        $quiz_selected = false;
 
         if(!is_siteadmin()) {
             $courseid     = required_param('courseid', PARAM_INT);
@@ -158,18 +166,23 @@ if ($action != 'settings' && !$config_key) {
         }
 
         if($courseid && $quizid) {
+            $quiz_selected = true;
+            
             $coursecontext  = context_course::instance($courseid);   
             require_capability('quizaccess/edusynch:view_report', $coursecontext);
         
-            $content       = \quizaccess_edusynch\session::list($current_page, $quizid);    
-            $sessions_list = array_filter($content['sessions'], function($array) use($content) {
-                return in_array($array['id'], $content['sessions_per_quiz']);
-            });
-        
-            $prev_page          = $content['prev_page'];    
-            $next_page          = $content['next_page'];    
-            $last_page          = $content['last_page'];    
-            $total_pages        = $content['total_pages']; 
+            $content       = \quizaccess_edusynch\session::list($current_page, $quizid, $start_date, $end_date, $search);   
+            
+            if($content) {
+                $sessions_list = array_filter($content['sessions'], function($array) use($content) {
+                    return in_array($array['id'], $content['sessions_per_quiz']);
+                });
+            
+                $prev_page          = $content['prev_page'];    
+                $next_page          = $content['next_page'];    
+                $last_page          = $content['last_page'];    
+                $total_pages        = $content['total_pages']; 
+            }
 
             $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
         }

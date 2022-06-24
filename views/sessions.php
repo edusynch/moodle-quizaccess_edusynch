@@ -1,12 +1,45 @@
 <div class="container">
     <h4 class="mt-3"><?php echo get_string('sessions_list:title', 'quizaccess_edusynch') ?></h4>
     <?php if(isset($quiz_data)): ?>
-        <small><?php echo $quiz_data->name ?></small>
+    <small><?php echo $quiz_data->name ?></small>
     <?php endif; ?>
     <div class="mt-3 tab-content">
 
-        <?php if (isset($sessions_list)): ?>
-        <?php if (count($sessions_list) > 0): ?>
+        <?php if ($quiz_selected): ?>
+        <form method="GET">
+            <input type="hidden" name="action" value="sessions">
+            <input type="hidden" name="quizid" value="<?php echo $quizid ?>">
+            <input type="hidden" name="courseid" value="<?php echo $courseid ?>">
+            <input type="hidden" name="page" value="<?php echo $current_page ?>">
+            <div class="row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <input placeholder="Search" type="text" class="form-control" name="search" value="<?php echo $search ?>">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input placeholder="From" type="date" value="<?php echo $start_date; ?>" class="form-control"
+                            name="start_date">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input placeholder="From" type="date" value="<?php echo $end_date; ?>" class="form-control"
+                            name="end_date">
+                    </div>
+                </div>
+
+                <div class="col-md-1 text-right">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <?php if (isset($sessions_list) && count($sessions_list) > 0): ?>
+
         <nav>
             <ul class="pagination justify-content-end">
                 <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
@@ -86,44 +119,45 @@
         <?php endif; ?>
 
         <?php else: ?>
-            <?php if(count($quizzes_enabled) > 0): ?>
-            <div class="alert alert-info"><i class="fa fa-info-circle"></i>
-                <?php echo get_string('sessions_list:select_course_and_quiz', 'quizaccess_edusynch') ?></div>
+        <?php if(count($quizzes_enabled) > 0): ?>
+        <div class="alert alert-info"><i class="fa fa-info-circle"></i>
+            <?php echo get_string('sessions_list:select_course_and_quiz', 'quizaccess_edusynch') ?></div>
 
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th><?php echo get_string('config:course', 'quizaccess_edusynch') ?>
-                            </th>
-                            <th><?php echo get_string('config:quiz', 'quizaccess_edusynch') ?>
-                            </th>
-                            <th><?php echo get_string('sessions_list:total_number', 'quizaccess_edusynch') ?></th>
-                            <th width="15%"><?php echo get_string('sessions_list:view_reports', 'quizaccess_edusynch') ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach($quizzes_enabled as $quiz): ?>
-                        <tr id="quiz-<?php echo $quiz['id'] ?>">
-                            <td><?php echo $quiz['course']; ?></td>
-                            <td><?php echo $quiz['name']; ?></td>
-                            <td><?php echo $quiz['total_sessions']; ?></td>
-                            <td>
-                                <a href="<?php echo EPROCTORING_URL . '?action=sessions&courseid='.$quiz['courseid'].'&quizid='.$quiz['id']?>" class="btn btn-outline-primary d-block"
-                                    data-quiz="<?php echo $quiz['id'] ?>">
-                                    <i class="fa fa-file-text-o"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        <?php endforeach ?>
-                    </tbody>
-                </table>
-            </div>
-            <?php else: ?>
-                <div class="alert alert-info"><i class="fa fa-info-circle"></i>
-                    <?php echo get_string('sessions_list:no_quiz_enabled', 'quizaccess_edusynch') ?>
-                </div>            
-            <?php endif; ?>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th><?php echo get_string('config:course', 'quizaccess_edusynch') ?>
+                        </th>
+                        <th><?php echo get_string('config:quiz', 'quizaccess_edusynch') ?>
+                        </th>
+                        <th><?php echo get_string('sessions_list:total_number', 'quizaccess_edusynch') ?></th>
+                        <th width="15%"><?php echo get_string('sessions_list:view_reports', 'quizaccess_edusynch') ?>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($quizzes_enabled as $quiz): ?>
+                    <tr id="quiz-<?php echo $quiz['id'] ?>">
+                        <td><?php echo $quiz['course']; ?></td>
+                        <td><?php echo $quiz['name']; ?></td>
+                        <td><?php echo $quiz['total_sessions']; ?></td>
+                        <td>
+                            <a href="<?php echo EPROCTORING_URL . '?action=sessions&courseid='.$quiz['courseid'].'&quizid='.$quiz['id']?>"
+                                class="btn btn-outline-primary d-block" data-quiz="<?php echo $quiz['id'] ?>">
+                                <i class="fa fa-file-text-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+        </div>
+        <?php else: ?>
+        <div class="alert alert-info"><i class="fa fa-info-circle"></i>
+            <?php echo get_string('sessions_list:no_quiz_enabled', 'quizaccess_edusynch') ?>
+        </div>
+        <?php endif; ?>
 
         <?php endif; ?>
     </div>

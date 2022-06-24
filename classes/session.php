@@ -80,7 +80,7 @@ class session {
      * @param   int     $page  The page wanted 
      * @return  array   List of sessions  
      */       
-    public static function list($page = 1, $quizid = null)
+    public static function list($page = 1, $quizid = null, $start_date, $end_date, $search = '')
     {
         global $DB;
 
@@ -92,7 +92,7 @@ class session {
             $sessions_request = network::sendRequest(
                 'GET', 
                 'cms',
-                'cms/v1/antifraud_sessions?page='. $page .'&paginates_per=' . $per_page,
+                'cms/v1/antifraud_sessions?page='. $page .'&paginates_per=' . $per_page . '&start_date='. $start_date .'&end_date='. $end_date .'&search=' . $search,
                 null,
                 [
                     'Authorization' => 'Bearer ' . $token,
@@ -111,7 +111,7 @@ class session {
             
             return $sessions_request['content'];
         } catch (\Exception $e) {
-            die(get_string('error:unable_list_sessions', 'quizaccess_edusynch'));
+            return false;
         }     
     }
 
