@@ -22,6 +22,8 @@ For general inquiries or to find out more about the integration procedure or sch
 
 Сompatible Moodle versions: 3.6.9, 3.6.10, 3.7.5 - 3.7.9, 3.8.2+, 3.9+, 3.10+, 4.0+
 
+This plugin was designed to be used together with the EduSynch E-Proctoring Extension for Google Chrome. This means that your students will need to use Google Chrome as their browser, and also install the EduSynch E-Proctoring Extension which can be found here: [https://chrome.google.com/webstore/detail/edusynch-e-proctoring-ext/lcibhobeeihkngcdkbobdkekiigcedkm]https://chrome.google.com/webstore/detail/edusynch-e-proctoring-ext/lcibhobeeihkngcdkbobdkekiigcedkm 
+
   ### Installation
 To use the EduSynch E-Proctoring plugin, you must install it.
 
