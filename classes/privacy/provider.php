@@ -17,7 +17,7 @@
  * privacy provider file
  * @package    quizaccess_edusynch
  * @category   quiz
- * @copyright  2022 Edusynch <contact@edusynch.com>
+ * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

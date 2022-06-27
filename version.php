@@ -13,11 +13,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * @package   quizaccess_edusynch
- * @copyright 2022, EduSynch <contact@edusynch.com>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Version description
+ * 
+ * @package    quizaccess_edusynch
+ * @category   quiz
+ * @copyright  2022 EduSynch <contact@edusynch.com>
+ * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();

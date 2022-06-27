@@ -29,7 +29,7 @@ To use the EduSynch E-Proctoring plugin, you must install it.
 
 ### Installation and setup
 
-After installing the plugin, you will see a new item on the side menu called EduSynch E-Proctoring.This is where you can setup/configure the plugin, as well as review data from each test session.
+After installing the plugin, you will see a new item on the side menu called EduSynch E-Proctoring. This is where you can setup/configure the plugin, as well as review data from each test session.
 
 To start using the plugin, click on the EduSynch E-Proctoring tab. You will then need to add 3 pieces of information:
 
