@@ -28,7 +28,7 @@ $plugin->version = 2022062400;
 $plugin->requires = 2015111600;
 $plugin->component = 'quizaccess_edusynch';
 $plugin->maturity = MATURITY_STABLE;
-$plugin->release = '1.2';
+$plugin->release = '1.3';
 
 $plugin->dependencies = [
     'mod_quiz' => ANY_VERSION,
