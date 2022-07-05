@@ -31,7 +31,14 @@
         &nbsp; <a href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>"><i class="fa fa-chevron-circle-left"></i> <?php echo get_string('session_report:back_to_list', 'quizaccess_edusynch') ?></a>
      </small>
     <?php endif; ?>
-    <div class="mt-5 row">
+    <?php if(isset($success_message)): ?>
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <div class="alert alert-success"><?php echo $success_message ?></div>
+            </div>
+        </div>
+    <?php endif; ?>
+    <div class="mt-3 row">
         <div class="col">
             <div class="card">
                 <div class="card-body py-4">
@@ -80,7 +87,7 @@
                                                     <option value="High" <?php echo $session_details['incident_level'] == 'High' ? 'selected' : ''?>><?php echo get_string('session_report:incident:high', 'quizaccess_edusynch')  ?></option>
                                                 </select>
                                                 &nbsp;
-                                                <button class="btn btn-sm btn-primary">Change</button>
+                                                <button class="btn btn-sm btn-primary"><i class="fa fa-save"></i></button>
                                             </div>
                                         </form>
                                     </p>

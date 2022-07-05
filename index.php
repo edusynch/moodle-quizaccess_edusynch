@@ -220,7 +220,8 @@ if ($action != 'settings' && !$config_key) {
             $incident_level  = optional_param('incident_level', null, PARAM_ALPHA);
             
             if($incident_level) {
-                \quizaccess_edusynch\session::change_incident($session_id, $incident_level);   
+                \quizaccess_edusynch\session::change_incident($session_id, $incident_level); 
+                $success_message = get_string('session_report:incident_level_changed', 'quizaccess_edusynch');  
             }
         }
 
