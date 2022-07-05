@@ -102,6 +102,7 @@ $string['session_report:hour'] = 'Hour';
 $string['session_report:type'] = 'Type';
 $string['session_report:video_archive'] = 'Video Archive';
 $string['session_report:no_videos'] = 'There are no videos for this session';
+$string['session_report:back_to_list'] = 'Back to list';
 
 // Session Events
 $string['EVENT_MOVE_FOCUS'] = 'Opened a new window or tab; Minimized the browser; Opened other program;';

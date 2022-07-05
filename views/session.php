@@ -26,7 +26,10 @@
     <h4 class="mt-5"><?php echo get_string('session_report:session_details', 'quizaccess_edusynch') ?> -
         #<?php echo $session_details['id'] ?></h4>
     <?php if(isset($quiz_data)): ?>
-    <small><?php echo $quiz_data->name ?></small>
+    <small> 
+        <?php echo $quiz_data->name ?>
+        &nbsp; <a href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>"><i class="fa fa-chevron-circle-left"></i> <?php echo get_string('session_report:back_to_list', 'quizaccess_edusynch') ?></a>
+     </small>
     <?php endif; ?>
     <div class="mt-5 row">
         <div class="col">
