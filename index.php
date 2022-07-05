@@ -216,6 +216,13 @@ if ($action != 'settings' && !$config_key) {
         $coursecontext  = context_course::instance($courseid);   
         require_capability('quizaccess/edusynch:view_report', $coursecontext);
     
+        if($subaction == 'changeincident') {
+            $incident_level  = optional_param('incident_level', null, PARAM_ALPHA);
+            
+            if($incident_level) {
+                \quizaccess_edusynch\session::change_incident($session_id, $incident_level);   
+            }
+        }
 
         $content      = \quizaccess_edusynch\session::show($session_id);    
         $events_query = \quizaccess_edusynch\session::events($session_id, $events_page);    
@@ -235,6 +242,9 @@ if ($action != 'settings' && !$config_key) {
         // $additionalfields = explode(',', implode(',', \core_user\fields::get_picture_fields()));
         $user = $DB->get_record('user', ['email' => $session_details['student']['email']]);
         $useravatar = $OUTPUT->user_picture($user, array('courseid' => $courseid));        
+
+
+
     }
     
 }

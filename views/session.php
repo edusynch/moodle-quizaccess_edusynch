@@ -65,6 +65,23 @@
                                         <?php echo $session_details['completed'] ? get_string('misc:yes', 'quizaccess_edusynch') : get_string('misc:no', 'quizaccess_edusynch') ?>
                                     </p>
                                 </div>
+                                <div class="pl-5">
+                                    <p class="mb-0">
+                                        <?php echo get_string('sessions_list:incident_level', 'quizaccess_edusynch') ?></p>
+                                    <p class="mb-0 font-weight-bold">
+                                        <form class="form-inline" method="POST" action="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>&events_page=1&subaction=changeincident">
+                                            <div class="input-group">
+                                                <select name="incident_level" class="form-control" id="incident-level-change" rel="<?php echo $session_details['id'] ?>">
+                                                    <option value="Low" <?php echo $session_details['incident_level'] == 'Low' ? 'selected' : ''?>><?php echo get_string('session_report:incident:low', 'quizaccess_edusynch')  ?></option>
+                                                    <option value="Medium" <?php echo $session_details['incident_level'] == 'Medium' ? 'selected' : ''?>><?php echo get_string('session_report:incident:medium', 'quizaccess_edusynch')  ?></option>
+                                                    <option value="High" <?php echo $session_details['incident_level'] == 'High' ? 'selected' : ''?>><?php echo get_string('session_report:incident:high', 'quizaccess_edusynch')  ?></option>
+                                                </select>
+                                                &nbsp;
+                                                <button class="btn btn-sm btn-primary">Change</button>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>                                
                             </div>
                         </div>
                     </div>

@@ -227,4 +227,37 @@ class session {
         }     
     }     
 
+    /**
+     * Changes the incident level of an antifraud session
+     *
+     * @param   int     $sessionid  The session ID 
+     * @param   string  $incident   The incident level string 
+     * @return  array   Updated session details  
+     */       
+    public static function change_incident($sessionid, $incident_level)
+    {       
+        global $DB;
+       
+        try {
+            $user_token = user::login();
+            
+            $session_request = network::sendRequest(
+                'PUT', 
+                'cms',
+                'cms/v1/antifraud_sessions/' . $sessionid,
+                ['incident_level' => $incident_level],
+                [
+                    'Authorization' => 'Bearer ' . $user_token,
+                ]
+            );
+
+            $session_id = $session_request['content']['id'];
+    
+            return ['success' => true, 'session_id' => $session_id];
+        } catch (\Exception $e) {
+            return ['success' => false, 'session_id' => null];
+        }
+
+    }    
+
 }
