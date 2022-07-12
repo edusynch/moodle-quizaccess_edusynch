@@ -26,6 +26,7 @@ require_login();
 
 global $CFG;
 
+
 $attemptid = required_param('attemptid', PARAM_INT);
 $cmid      = required_param('cmid', PARAM_INT);
 $page      = required_param('page', PARAM_INT);
