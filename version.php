@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022070501;
+$plugin->version = 2022071200;
 $plugin->requires = 2018120309;
 $plugin->component = 'quizaccess_edusynch';
 $plugin->maturity = MATURITY_STABLE;
