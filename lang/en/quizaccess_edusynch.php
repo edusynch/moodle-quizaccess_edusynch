@@ -67,6 +67,7 @@ $string['config:no_courses'] = 'Please, add a course!';
 $string['config:select_course'] = 'Select Course';
 $string['config:select_quiz'] = 'Select Quiz';
 $string['config:require_for_quiz'] = 'Require E-Proctoring Plugin';
+$string['config:no_settings'] = 'Please, visit <a href="{$a}">Settings Page</a> to set your credentials before continue.';
 
 // Navbar menu
 $string['navbar_menu:settings'] = 'Settings';

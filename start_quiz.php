@@ -35,7 +35,7 @@ $page      = required_param('page', PARAM_INT);
 ?>
 <html>
     <head>
-        <title>E-Proctoring check</title>
+        <title><?php echo get_string('pluginname', 'quizaccess_edusynch') ?></title>
     </head>
 
     <body>

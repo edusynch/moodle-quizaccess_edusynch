@@ -35,7 +35,7 @@ $SESSION->quizid = null;
 ?>
 <html>
 <head>
-<title>E-Procotring check</title>
+<title><?php echo get_string('pluginname', 'quizaccess_edusynch') ?></title>
 </head>
 
 <body>

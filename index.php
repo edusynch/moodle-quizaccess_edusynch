@@ -39,8 +39,8 @@ global $PAGE, $DB, $ADMIN, $SESSION;
 $context = context_system::instance();
 $PAGE->set_context($context);
 $PAGE->set_url('/mod/quiz/accessrule/edusynch/index.php');
-$PAGE->set_title('EduSynch E-Proctoring');
-$PAGE->set_heading('EduSynch E-Proctoring');
+$PAGE->set_title(get_string('pluginname', 'quizaccess_edusynch'));
+$PAGE->set_heading(get_string('pluginname', 'quizaccess_edusynch'));
 
 $config      = new \quizaccess_edusynch\config();
 $config_key  = $config->get_key('api_key');    
@@ -51,7 +51,8 @@ if ($action != 'settings' && !$config_key) {
 
     ?>
     <div class="alert alert-info mt-3">
-        <i class="fa fa-info-circle"></i> Please, visit <a href="<?php echo EPROCTORING_URL . '?action=settings' ?>">Settings Page</a> to set your credentials before continue.
+        <i class="fa fa-info-circle"></i> 
+        <?php echo get_string('config:no_settings', 'quizaccess_edusynch', EPROCTORING_URL . '?action=settings') ?>
     </div>
     <?php
     return;
