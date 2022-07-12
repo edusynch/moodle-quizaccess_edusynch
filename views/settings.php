@@ -38,7 +38,7 @@ $host = $PAGE->url->get_host();
             <h4 class="mt-3"><?php echo get_string('config:keys', 'quizaccess_edusynch') ?></h4>
 
             <form action="<?php echo EPROCTORING_URL  ?>?action=settings" method="POST" class="mt-3">
-                <?php if ($host == 'localhost' || strpos($host, 'edusynch.com') !== FALSE): ?>
+                <?php if (true || $host == 'localhost' || strpos($host, 'edusynch.com') !== FALSE): ?>
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">

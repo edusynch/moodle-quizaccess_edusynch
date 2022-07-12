@@ -71,12 +71,12 @@ if ($action != 'settings' && !$config_key) {
         }
     
         
-        $student_api   = optional_param('student_api', '', PARAM_RAW);
-        $cms_api       = optional_param('cms_api', '', PARAM_RAW);
-        $events_api    = optional_param('events_api', '', PARAM_RAW);
-        $api_key       = optional_param('api_key', '', PARAM_RAW);
-        $user          = optional_param('user', '', PARAM_RAW);
-        $password      = optional_param('password', '', PARAM_RAW);
+        $student_api   = optional_param('student_api', '', PARAM_URL);
+        $cms_api       = optional_param('cms_api', '', PARAM_URL);
+        $events_api    = optional_param('events_api', '', PARAM_URL);
+        $api_key       = optional_param('api_key', '', PARAM_ALPHANUMEXT);
+        $user          = optional_param('user', '', PARAM_EMAIL);
+        $password      = optional_param('password', '', PARAM_TEXT);
         $success       = optional_param('success', 0, PARAM_INT); 
 
         $importform = new \quizaccess_edusynch\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
@@ -158,9 +158,9 @@ if ($action != 'settings' && !$config_key) {
         $one_month_ago = date_format((new DateTime())->sub(DateInterval::createFromDateString('1 month')), 'Y-m-d');
 
         $current_page = optional_param('page', 1, PARAM_INT);
-        $start_date   = optional_param('start_date', $one_month_ago, PARAM_RAW);
-        $end_date     = optional_param('end_date', $current_date, PARAM_RAW);
-        $search       = optional_param('search', '', PARAM_RAW);
+        $start_date   = optional_param('start_date', $one_month_ago, PARAM_ALPHANUMEXT);
+        $end_date     = optional_param('end_date', $current_date, PARAM_ALPHANUMEXT);
+        $search       = optional_param('search', '', PARAM_ALPHANUMEXT || PARAM_EMAIL);
 
         $quiz_selected = false;
 

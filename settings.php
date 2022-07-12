@@ -28,7 +28,7 @@ require_once($CFG->libdir . '/adminlib.php');
 
 global $ADMIN;
 
-$section = optional_param('section', '', PARAM_RAW);
+$section = optional_param('section', '', PARAM_ALPHA);
 
 if ($section == 'modsettingsquizcatedusynch') {
     redirect(new moodle_url('/mod/quiz/accessrule/edusynch/index.php'));
