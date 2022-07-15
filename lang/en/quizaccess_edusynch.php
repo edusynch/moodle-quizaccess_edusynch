@@ -38,6 +38,8 @@ $string['misc:success'] = 'Success!';
 $string['misc:error'] = 'Error';
 $string['misc:yes'] = 'Yes';
 $string['misc:no'] = 'No';
+$string['misc:label_total_pages'] = 'of {$a}';
+
 
 // Config page
 $string['config:keys'] = 'Keys';
