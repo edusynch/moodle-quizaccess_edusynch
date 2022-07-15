@@ -64,23 +64,8 @@
 
         <?php if (isset($sessions_list) && count($sessions_list) > 0): ?>
 
-        <nav>
-            <ul class="pagination justify-content-end">
-                <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                    <a class="page-link"
-                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $prev_page .'"' ?>><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></a>
-                </li>
-                <?php for($page = 1; $page <= $total_pages; $page++): ?>
-                <li class="page-item <?php echo $page == $current_page ? 'active' : '' ?>"><a class="page-link"
-                        href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=<?php echo $page ?>"><?php echo $page ?></a>
-                </li>
-                <?php endfor; ?>
-                <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                    <a class="page-link"
-                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $next_page .'"' ?>><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></a>
-                </li>
-            </ul>
-        </nav>
+        <?php include 'views/pagination.php' ?>
+
 
         <div class="tab-pane fade show active" id="nav-sessions" role="tabpanel">
             <div class="table-responsive">
@@ -119,24 +104,7 @@
 
         </div>
 
-        <nav>
-            <ul class="pagination justify-content-end">
-                <li class="page-item <?php echo is_null($prev_page) ? 'disabled' : '' ?>">
-                    <a class="page-link"
-                        <?php echo is_null($prev_page) ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $prev_page .'"' ?>><?php echo get_string('misc:btn_prev', 'quizaccess_edusynch') ?></a>
-                </li>
-                <?php for($page = 1; $page <= $total_pages; $page++): ?>
-                <li class="page-item <?php echo $page == $current_page ? 'active' : '' ?>"><a class="page-link"
-                        href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=<?php echo $page ?>"><?php echo $page ?></a>
-                </li>
-                <?php endfor; ?>
-                <li class="page-item <?php echo $last_page ? 'disabled' : '' ?>">
-                    <a class="page-link"
-                        <?php echo $last_page ? '' : 'href="'. EPROCTORING_URL . '?action=sessions&courseid='.$courseid.'&quizid='.$quizid.'&page=' . $next_page .'"' ?>><?php echo get_string('misc:btn_next', 'quizaccess_edusynch') ?></a>
-                </li>
-            </ul>
-        </nav>
-
+         <?php include 'views/pagination.php' ?>
         <?php else: ?>
         <div class="alert alert-info"><i class="fa fa-info-circle"></i>
             <?php echo get_string('sessions_list:no_sessions', 'quizaccess_edusynch') ?></div>
