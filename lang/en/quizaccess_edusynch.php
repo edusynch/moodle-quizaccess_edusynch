@@ -131,6 +131,7 @@ $string['EVENT_MULTIPLE_DISPLAYS'] = 'Multiple screens detected';
 $string['EVENT_MULTIPLE_FACES'] = 'Multiple people detected on camera';
 $string['EVENT_NEW_TAB'] = 'User attempted to open new tabs and/or new windows';
 $string['EVENT_NO_FACE_DETECTED'] = 'No user detected';
+$string['EVENT_SESSION_FAILED_INFO'] = 'There was an error saving the session.';
 
 // Error messages
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
