@@ -109,7 +109,7 @@ $string['session_report:incident_level_changed'] = 'Incident level successfully 
 $string['session_report:back_to_list'] = 'Back to list';
 
 // Session Events
-$string['EVENT_MOVE_FOCUS'] = 'Opened a new window or tab; Minimized the browser; Opened other program;';
+$string['EVENT_MOVE_FOCUS'] = 'Changed focus away from testing window';
 $string['EVENT_CLOSED_WINDOW'] = 'Closed browser or tab; refreshed the page';
 $string['EVENT_OFFLINE'] = 'Lost connection';
 $string['EVENT_ONLINE'] = 'Connection established';
