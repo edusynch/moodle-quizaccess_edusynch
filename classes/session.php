@@ -68,13 +68,20 @@ class session {
         // Is Student enabled?
         try {
             $student_token = student::login($userid);
+
+            $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
             
             $session_request = network::sendRequest(
                 'POST', 
                 'student',
                 'antifraud/sessions/create',
                 [
-                    "ip_address" => $USER->lastip
+                    "ip_address" => $USER->lastip,
+                    "metadata" => [
+                        "userid" => $userid,                    
+                        "quizid" => $quizid,                    
+                        "courseid" => $quiz_data->course,                    
+                    ]
                 ],
                 [
                     'Authorization' => 'Bearer ' . $student_token,
