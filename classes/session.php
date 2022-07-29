@@ -63,7 +63,7 @@ class session {
      */       
     public static function create($userid, $quizid)
     {       
-        global $DB;
+        global $DB, $USER;
        
         // Is Student enabled?
         try {
@@ -73,7 +73,9 @@ class session {
                 'POST', 
                 'student',
                 'antifraud/sessions/create',
-                null,
+                [
+                    "ip_address" => $USER->lastip
+                ],
                 [
                     'Authorization' => 'Bearer ' . $student_token,
                 ]
