@@ -79,9 +79,15 @@ function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
         $final_array = [];
         foreach($quizzes_array as $quiz) {
             $quiz_info   = $DB->get_record('quiz', ['id' => $quiz]);
-            $course_info = $DB->get_record('course', ['id' => $quiz_info->course]);
-            $final_array[] = ['id' => $quiz, 'name' => $quiz_info->name, 'course' => $course_info->fullname];
+
+            if($quiz_info) {
+                $course_info = $DB->get_record('course', ['id' => $quiz_info->course]);
+                $final_array[] = ['id' => $quiz, 'name' => $quiz_info->name, 'course' => $course_info->fullname];
+            }
         }
-        $config->set_key('quizzes', json_encode($final_array));
+
+        if(count($final_array) > 0) {
+            $config->set_key('quizzes', json_encode($final_array));
+        }
     }
 }
