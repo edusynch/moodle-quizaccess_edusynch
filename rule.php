@@ -96,7 +96,6 @@ function quizaccess_edusynch_attempt_submitted_handler($event)
     $student_token = isset($SESSION->edusynch_token) ? $SESSION->edusynch_token : null;   
 
     if(!is_null($session_id) && !is_null($student_token)) {
-        $end_event = \quizaccess_edusynch\session::create_event_for($student_token, $session_id, 'FINISH_SIMULATION');
         $SESSION->edusynch_started   = null;        
         $SESSION->edusynch_token     = null;   
         $SESSION->userid = null;
