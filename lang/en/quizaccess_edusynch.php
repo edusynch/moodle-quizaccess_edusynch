@@ -108,30 +108,21 @@ $string['session_report:no_videos'] = 'There are no videos for this session';
 $string['session_report:incident_level_changed'] = 'Incident level successfully changed!';
 $string['session_report:back_to_list'] = 'Back to list';
 
-// Session Events
-$string['EVENT_MOVE_FOCUS'] = 'Changed focus away from testing window';
-$string['EVENT_CLOSED_WINDOW'] = 'Closed browser or tab; refreshed the page';
-$string['EVENT_OFFLINE'] = 'Lost connection';
-$string['EVENT_ONLINE'] = 'Connection established';
-$string['EVENT_ONLINE_SERVER'] = 'Connection established with socket';
-$string['EVENT_UI_EVENT'] = 'User Interface moved';
-$string['EVENT_START_SIMULATION'] = 'Exam started';
-$string['EVENT_FINISH_SIMULATION'] = 'Exam completed successfully';
-$string['EVENT_NEW_TAB_WINDOW'] = 'Opened a new window or tab';
-$string['EVENT_TEST_PAUSED'] = 'Exam paused';
-$string['EVENT_TEST_RESUMED'] = 'Exam resumed';
-$string['EVENT_MULTIPLE_DISPLAYS_DETECTED'] = 'Multiple screens detected';
-$string['EVENT_SIMULATION_TIMEOUT'] = 'Simulation Timed Out';
-$string['EVENT_SIMULATION_EXPIRED'] = 'Simulation Expired';
-$string['EVENT_START_STREAMING'] = 'Video streaming started';
-$string['EVENT_STOP_STREAMING'] = 'Video streaming stopped';
-$string['EVENT_MORE_THAN_ONE_CAM'] = 'Multiple cameras detect';
-$string['EVENT_MULTIPLE_CAMS'] = 'Multiple cameras detect';
-$string['EVENT_MULTIPLE_DISPLAYS'] = 'Multiple screens detected';
-$string['EVENT_MULTIPLE_FACES'] = 'Multiple people detected on camera';
-$string['EVENT_NEW_TAB'] = 'User attempted to open new tabs and/or new windows';
-$string['EVENT_NO_FACE_DETECTED'] = 'No user detected';
-$string['EVENT_SESSION_FAILED_INFO'] = 'There was an error saving the session.';
+// Events
+$string['EVENT_MULTIPLE_FACES_DETECTED'] = "Multiple people detected on camera";
+$string['EVENT_NO_FACE_DETECTED'] = "No user detected";
+$string['EVENT_NEW_TAB_WINDOW'] = "User attempted to open new tabs and/or new windows";
+$string['EVENT_START_STREAMING'] = "Video streaming started";
+$string['EVENT_STOP_STREAMING'] = "Video streaming stopped";
+$string['EVENT_MORE_THAN_ONE_CAM'] = "Multiple cameras detected";
+$string['EVENT_MULTIPLE_DISPLAYS_DETECTED'] = "Multiple screens detected";
+$string['EVENT_MOVE_FOCUS'] = "Moved focus away from testing window";
+$string['EVENT_CLOSED_WINDOW'] = "Closed browser or tab/refreshed the page via browser";
+$string['EVENT_CLOSED_WINDOW_OR_TAB'] = "Closed browser or tab/refreshed the page via keyboard";
+$string['EVENT_FINISH_SIMULATION'] = "Exam completed successfully";
+$string['EVENT_START_SIMULATION'] = "Exam started";
+$string['EVENT_TEST_PAUSED'] = "Exam paused";
+$string['EVENT_TEST_RESUMED'] = "Exam resumed";
 
 // Error messages
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
