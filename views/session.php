@@ -137,11 +137,22 @@
                     </div>
 
                     <ul class="list-group list-group-flush">
-                        <?php foreach($events as $event): ?>
+                        <?php 
+                        foreach($events as $event):   
+                            $useLink = false; 
+                            if(in_array($event['id'], $events_photos)) 
+                                $useLink = true;
+                        ?>
                         <li class="list-group-item p-0 py-3 d-flex border-bottom">
                             <p class="mb-0 mr-5"><?php echo date('H:i', strtotime($event['date'])) ?></p>
                             <p class="mb-0">
-                                <?php echo get_string_manager()->string_exists('EVENT_' . $event['type'], 'quizaccess_edusynch') ? get_string('EVENT_' . $event['type'], 'quizaccess_edusynch') : $event['type'] ?>
+                                <?php if($useLink): ?>                            
+                                <a href="javascript:;" onclick="changeCarouselToEvent('<?php echo $event['id'] ?>', '#carouselPhotoIndicators');"> <i class="fa fa-camera"></i>
+                                <?php endif ?>                            
+                                    <?php echo get_string_manager()->string_exists('EVENT_' . $event['type'], 'quizaccess_edusynch') ? get_string('EVENT_' . $event['type'], 'quizaccess_edusynch') : $event['type'] ?>
+                                <?php if($useLink): ?>                                                            
+                                </a>
+                                <?php endif ?>                            
                             </p>
                         </li>
                         <?php endforeach; ?>
@@ -186,13 +197,13 @@
                     <div id="carouselPhotoIndicators" class="carousel slide" data-ride="carousel">
                         <ol class="carousel-indicators">
                             <?php for($i = 0; $i < count($photos); $i++): ?>
-                            <li data-target="#carouselPhotoIndicators" data-slide-to="<?php echo $i ?>"
+                            <li     data-target="#carouselPhotoIndicators" data-slide-to="<?php echo $i ?>"
                                 <?php echo $i == 0 ? 'class="active"' : ''?>></li>
                             <?php endfor; ?>
                         </ol>
                         <div class="carousel-inner">
                             <?php for($i = 0; $i < count($photos); $i++): ?>
-                            <div class="carousel-item <?php echo $i == 0 ? 'active' : '' ?>">
+                            <div class="carousel-item <?php echo $i == 0 ? 'active' : '' ?>" data-event="<?php echo $photos[$i]['event_id'] ?>">
                                 <img src="<?php echo $photos[$i]['photo']['url'] ?>" class="d-block w-100"
                                     alt="<?php echo $photos[$i]['photo_type'] ?>">
                             </div>
@@ -266,3 +277,4 @@
         </div>
     </div>
 </div>
+<script src="js/session-view.js"></script>

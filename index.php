@@ -228,7 +228,11 @@ if ($action != 'settings' && !$config_key) {
 
         $content      = \quizaccess_edusynch\session::show($session_id);    
         $events_query = \quizaccess_edusynch\session::events($session_id, $events_page);    
-        
+
+        $events_photos = array_unique(array_map(function($a) {
+            return $a['event_id'];
+        }, $content['photos']));
+
         $session_details    = $content['session'];    
         $photos             = $content['photos'];    
         $videos             = $content['videos'];    

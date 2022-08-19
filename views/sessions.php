@@ -154,3 +154,4 @@
         <?php endif; ?>
     </div>
 </div>
+<script src="js/session-view.js"></script>
