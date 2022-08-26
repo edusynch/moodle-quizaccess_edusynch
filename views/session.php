@@ -75,7 +75,7 @@
                                         <?php echo $session_details['completed'] ? get_string('misc:yes', 'quizaccess_edusynch') : get_string('misc:no', 'quizaccess_edusynch') ?>
                                     </p>
                                 </div>
-                                <div class="pl-5">
+                                <div class="pl-5" id="reviewed-wrapper" data-url="<?php echo EPROCTORING_PATH ?>ajax.php?action=review&sessionid=<?php echo $session_details['id'] ?>">
                                     <input data-onstyle="success" data-toggle="toggle" data-on="<?php echo get_string('misc:yes', 'quizaccess_edusynch') ?>" data-off="<?php echo get_string('misc:no', 'quizaccess_edusynch') ?>"type="checkbox" id="mark-reviewed" onclick="markAsReviewed('<?php echo $session_details['id'] ?>')" <?php echo $session_details['reviewed'] ? ' checked' : '' ?>>
                                     <label for="mark-reviewed"><?php echo get_string('sessions_list:reviewed', 'quizaccess_edusynch') ?></label>
                                 </div>                                
