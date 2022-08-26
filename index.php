@@ -217,12 +217,13 @@ if ($action != 'settings' && !$config_key) {
         $coursecontext  = context_course::instance($courseid);   
         require_capability('quizaccess/edusynch:view_report', $coursecontext);
     
-        if($subaction == 'changeincident') {
+        if($subaction == 'changeincidentcomments') {
             $incident_level  = optional_param('incident_level', null, PARAM_ALPHA);
+            $comments  = optional_param('comments', null, PARAM_ALPHA);
             
-            if($incident_level) {
-                \quizaccess_edusynch\session::change_incident($session_id, $incident_level); 
-                $success_message = get_string('session_report:incident_level_changed', 'quizaccess_edusynch');  
+            if($incident_level || $comments) {
+                \quizaccess_edusynch\session::update($session_id, ['incident_level' => $incident_level, 'comments' => $comments]); 
+                $success_message = get_string('session_report:session_updated', 'quizaccess_edusynch');  
             }
         }
 

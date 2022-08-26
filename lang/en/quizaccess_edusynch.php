@@ -109,6 +109,8 @@ $string['session_report:no_videos'] = 'There are no videos for this session';
 $string['session_report:incident_level_changed'] = 'Incident level successfully changed!';
 $string['session_report:review_changed'] = 'Session review updated!';
 $string['session_report:back_to_list'] = 'Back to list';
+$string['session_report:comments'] = 'Comments';
+$string['session_report:session_updated'] = 'Session updated!';
 
 // Events
 $string['EVENT_MULTIPLE_FACES_DETECTED'] = "Multiple people detected on camera";

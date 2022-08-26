@@ -34,7 +34,7 @@
      </small>
     <?php endif; ?>
     <div class="row mt-1" id="success-container" style="<?php echo isset($success_message) ? '' : 'display: none;' ?>">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="alert alert-success" id="success-message"><?php echo isset($success_message) ? $success_message : '' ?></div>
         </div>
     </div>
@@ -76,30 +76,35 @@
                                     </p>
                                 </div>
                                 <div class="pl-5">
-                                    <p class="mb-0">
-                                        <?php echo get_string('sessions_list:incident_level', 'quizaccess_edusynch') ?></p>
-                                    <p class="mb-0 font-weight-bold">
-                                        <form class="form-inline" method="POST" action="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>&events_page=1&subaction=changeincident">
-                                            <div class="input-group">
-                                                <select name="incident_level" class="form-control" id="incident-level-change" rel="<?php echo $session_details['id'] ?>">
-                                                    <option value="Low" <?php echo $session_details['incident_level'] == 'Low' ? 'selected' : ''?>><?php echo get_string('session_report:incident:low', 'quizaccess_edusynch')  ?></option>
-                                                    <option value="Medium" <?php echo $session_details['incident_level'] == 'Medium' ? 'selected' : ''?>><?php echo get_string('session_report:incident:medium', 'quizaccess_edusynch')  ?></option>
-                                                    <option value="High" <?php echo $session_details['incident_level'] == 'High' ? 'selected' : ''?>><?php echo get_string('session_report:incident:high', 'quizaccess_edusynch')  ?></option>
-                                                </select>
-                                                &nbsp;
-                                                <button class="btn btn-sm btn-primary"><i class="fa fa-save"></i></button>
-                                            </div>
-                                        </form>
-                                    </p>
+                                    <input data-onstyle="success" data-toggle="toggle" data-on="<?php echo get_string('misc:yes', 'quizaccess_edusynch') ?>" data-off="<?php echo get_string('misc:no', 'quizaccess_edusynch') ?>"type="checkbox" id="mark-reviewed" onclick="markAsReviewed('<?php echo $session_details['id'] ?>')" <?php echo $session_details['reviewed'] ? ' checked' : '' ?>>
+                                    <label for="mark-reviewed"><?php echo get_string('sessions_list:reviewed', 'quizaccess_edusynch') ?></label>
                                 </div>                                
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-6" id="reviewed-wrapper" data-url="<?php echo EPROCTORING_PATH ?>ajax.php?action=review&sessionid=<?php echo $session_details['id'] ?>">
-                                <input data-onstyle="success" data-toggle="toggle" data-on="<?php echo get_string('misc:yes', 'quizaccess_edusynch') ?>" data-off="<?php echo get_string('misc:no', 'quizaccess_edusynch') ?>"type="checkbox" id="mark-reviewed" onclick="markAsReviewed('<?php echo $session_details['id'] ?>')" <?php echo $session_details['reviewed'] ? ' checked' : '' ?>>
-                                <label for="mark-reviewed"><?php echo get_string('sessions_list:reviewed', 'quizaccess_edusynch') ?></label>
+                        <form method="POST" action="<?php echo EPROCTORING_URL ?>?action=session&session_id=<?php echo $session_id?>&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>&events_page=1&subaction=changeincidentcomments">
+                            <div class="row mt-3">
+                                <div class="col-10">
+                                    <label for="session-comments"><?php echo get_string('session_report:comments', 'quizaccess_edusynch') ?></label>
+                                    <textarea name="comments" class="form-control" rows="5" id="session-comments"><?php echo $session_details['antifraud_comments'] ?></textarea>
+                                </div>
+                                <div class="col-2">
+                                        <label for="incident-level-change"><?php echo get_string('sessions_list:incident_level', 'quizaccess_edusynch') ?></label>
+                                        <div class="input-group">
+                                            <select name="incident_level" class="form-control" id="incident-level-change" rel="<?php echo $session_details['id'] ?>">
+                                                <option value="Low" <?php echo $session_details['incident_level'] == 'Low' ? 'selected' : ''?>><?php echo get_string('session_report:incident:low', 'quizaccess_edusynch')  ?></option>
+                                                <option value="Medium" <?php echo $session_details['incident_level'] == 'Medium' ? 'selected' : ''?>><?php echo get_string('session_report:incident:medium', 'quizaccess_edusynch')  ?></option>
+                                                <option value="High" <?php echo $session_details['incident_level'] == 'High' ? 'selected' : ''?>><?php echo get_string('session_report:incident:high', 'quizaccess_edusynch')  ?></option>
+                                                </select>
+                                                                        &nbsp;
+                                        </div>
+                                </div>                            
                             </div>
-                        </div>
+                            <div class="row mt-2">
+                                <div class="col-12 text-right">
+                                    <button class="btn btn-xl btn-primary"><i class="fa fa-save"></i> <?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
