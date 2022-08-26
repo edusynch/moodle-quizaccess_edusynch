@@ -123,7 +123,7 @@ $string['EVENT_FINISH_SIMULATION'] = "Exam completed successfully";
 $string['EVENT_START_SIMULATION'] = "Exam started";
 $string['EVENT_TEST_PAUSED'] = "Exam paused";
 $string['EVENT_TEST_RESUMED'] = "Exam resumed";
-$string['EVENT_TEST_SUSPENDED_CAMERA'] = "User / some error suspended the camera";
+$string['EVENT_SUSPENDED_CAMERA'] = "User / some error suspended the camera";
 
 // Error messages
 $string['error:unable_list_sessions'] = 'Unable to list sessions. Check your credentials in SETTINGS section.';
