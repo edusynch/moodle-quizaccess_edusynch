@@ -219,7 +219,7 @@ if ($action != 'settings' && !$config_key) {
     
         if($subaction == 'changeincidentcomments') {
             $incident_level  = optional_param('incident_level', null, PARAM_ALPHA);
-            $comments  = optional_param('comments', null, PARAM_ALPHA);
+            $comments        = optional_param('comments', null, PARAM_TEXT);
             
             if($incident_level || $comments) {
                 \quizaccess_edusynch\session::update($session_id, ['incident_level' => $incident_level, 'comments' => $comments]); 
