@@ -23,6 +23,7 @@
  */
 
 ?>
+<link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
 <div class="container">
     <h4 class="mt-5"><?php echo get_string('session_report:session_details', 'quizaccess_edusynch') ?> -
         #<?php echo $session_details['id'] ?></h4>
@@ -32,13 +33,11 @@
         &nbsp; <a href="<?php echo EPROCTORING_URL ?>?action=sessions&courseid=<?php echo $courseid ?>&quizid=<?php echo $quizid ?>"><i class="fa fa-chevron-circle-left"></i> <?php echo get_string('session_report:back_to_list', 'quizaccess_edusynch') ?></a>
      </small>
     <?php endif; ?>
-    <?php if(isset($success_message)): ?>
-        <div class="row mt-1">
-            <div class="col-md-12">
-                <div class="alert alert-success"><?php echo $success_message ?></div>
-            </div>
+    <div class="row mt-1" id="success-container" style="<?php echo isset($success_message) ? '' : 'display: none;' ?>">
+        <div class="col-md-12">
+            <div class="alert alert-success" id="success-message"><?php echo isset($success_message) ? $success_message : '' ?></div>
         </div>
-    <?php endif; ?>
+    </div>
     <div class="mt-3 row">
         <div class="col">
             <div class="card">
@@ -93,6 +92,12 @@
                                         </form>
                                     </p>
                                 </div>                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6" id="reviewed-wrapper" data-url="<?php echo EPROCTORING_PATH ?>ajax.php?action=review&sessionid=<?php echo $session_details['id'] ?>">
+                                <input data-onstyle="success" data-toggle="toggle" data-on="<?php echo get_string('misc:yes', 'quizaccess_edusynch') ?>" data-off="<?php echo get_string('misc:no', 'quizaccess_edusynch') ?>"type="checkbox" id="mark-reviewed" onclick="markAsReviewed('<?php echo $session_details['id'] ?>')" <?php echo $session_details['reviewed'] ? ' checked' : '' ?>>
+                                <label for="mark-reviewed"><?php echo get_string('sessions_list:reviewed', 'quizaccess_edusynch') ?></label>
                             </div>
                         </div>
                     </div>
@@ -278,3 +283,4 @@
     </div>
 </div>
 <script src="js/session-view.js"></script>
+<script src="js/bootstrap4-toggle.min.js"></script>

@@ -55,3 +55,15 @@ if ($action == 'courses') {
     
     echo json_encode($return);
 }
+else if ($action == 'review') {
+    $sessionid  = required_param('sessionid', PARAM_INT);
+    $reviewed   = required_param('reviewed', PARAM_INT);
+
+    $update = \quizaccess_edusynch\session::toggle_revision($sessionid, $reviewed); 
+
+    if($update['success']) {
+        echo json_encode(['success' => true, 'message' => get_string('session_report:review_changed', 'quizaccess_edusynch')]);
+    } else {
+        echo json_encode(['success' => false, 'message' => '']);
+    }
+}

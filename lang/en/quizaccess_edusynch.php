@@ -88,6 +88,7 @@ $string['sessions_list:select_course_and_quiz'] = 'Select course and quiz below 
 $string['sessions_list:total_number'] = 'Total Sessions';
 $string['sessions_list:view_reports'] = 'View Reports';
 $string['sessions_list:no_quiz_enabled'] = 'There are no quizzes enabled to E-Proctoring. Enable at least one in SETTINGS page';
+$string['sessions_list:reviewed'] = 'Reviewed';
 
 // Session report
 $string['session_report:session_details'] = 'Session details';
@@ -106,6 +107,7 @@ $string['session_report:type'] = 'Type';
 $string['session_report:video_archive'] = 'Video Archive';
 $string['session_report:no_videos'] = 'There are no videos for this session';
 $string['session_report:incident_level_changed'] = 'Incident level successfully changed!';
+$string['session_report:review_changed'] = 'Session review updated!';
 $string['session_report:back_to_list'] = 'Back to list';
 
 // Events

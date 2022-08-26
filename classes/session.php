@@ -170,6 +170,39 @@ class session {
     }
 
     /**
+     * Updates an antifraud session
+     *
+     * @param   int     $sessionid  The session ID 
+     * @param   array   $params     Params to update 
+     * @return  array   Updated session details  
+     */       
+    public static function update($sessionid, $params)
+    {       
+        global $DB;
+       
+        try {
+            $user_token = user::login();
+            
+            $session_request = network::sendRequest(
+                'PUT', 
+                'cms',
+                'cms/v1/antifraud_sessions/' . $sessionid,
+                $params,
+                [
+                    'Authorization' => 'Bearer ' . $user_token,
+                ]
+            );
+
+            $session = $session_request['content'];
+    
+            return ['success' => true, 'session' => $session];
+        } catch (\Exception $e) {
+            return ['success' => false, 'session' => null];
+        }
+
+    }            
+
+    /**
      * Lists the antifraud session events
      *
      * @param   int     $session_id  The session ID 
@@ -245,28 +278,19 @@ class session {
      */       
     public static function change_incident($sessionid, $incident_level)
     {       
-        global $DB;
-       
-        try {
-            $user_token = user::login();
-            
-            $session_request = network::sendRequest(
-                'PUT', 
-                'cms',
-                'cms/v1/antifraud_sessions/' . $sessionid,
-                ['incident_level' => $incident_level],
-                [
-                    'Authorization' => 'Bearer ' . $user_token,
-                ]
-            );
-
-            $session_id = $session_request['content']['id'];
-    
-            return ['success' => true, 'session_id' => $session_id];
-        } catch (\Exception $e) {
-            return ['success' => false, 'session_id' => null];
-        }
-
+        return session::update($sessionid, ['incident_level' => $incident_level]);
     }    
+
+    /**
+     * Toggles the reviwed flag
+     *
+     * @param   int     $sessionid  The session ID 
+     * @param   bool    $reviewed   Reviewed flag 
+     * @return  array   Updated session details  
+     */       
+    public static function toggle_revision($sessionid, $reviewed)
+    {       
+        return session::update($sessionid, ['reviewed' => ($reviewed === 0 ? false : true)]);
+    }        
 
 }

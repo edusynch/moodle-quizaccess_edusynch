@@ -75,6 +75,7 @@
                         <th><?php echo get_string('sessions_list:student', 'quizaccess_edusynch') ?></th>
                         <th><?php echo get_string('sessions_list:date', 'quizaccess_edusynch') ?></th>
                         <th><?php echo get_string('sessions_list:incident_level', 'quizaccess_edusynch') ?></th>
+                        <th><?php echo get_string('sessions_list:reviewed', 'quizaccess_edusynch') ?></th>
                         <th class="text-center"><?php echo get_string('sessions_list:actions', 'quizaccess_edusynch') ?>
                         </th>
                     </thead>
@@ -90,6 +91,15 @@
                             <td class="align-middle text-dark text-center lead">
                                 <span
                                     class="badge badge-<?php echo $session['incident_level'] == 'Low' ? 'success' : ($session['incident_level'] == 'Medium' ? 'warning' : 'danger') ?> session-status"><?php echo get_string('session_report:incident:' .strtolower($session['incident_level']), 'quizaccess_edusynch')  ?></span>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <?php if($session['reviewed']): ?>
+                                    <i class="fa fa-check"></i>
+                                    <?php else: ?>
+                                    -
+                                    <?php endif ?>
+                                </div>
                             </td>
                             <td class="text-center">
                                 <a href="<?php echo EPROCTORING_URL . '?action=session&session_id=' . $session['id'] . '&courseid='.$courseid.'&quizid='.$quizid ?>"
