@@ -90,7 +90,7 @@
                                 <?php echo date('Y-m-d H:i', strtotime($session['start_time'])) ?></td>
                             <td class="align-middle text-dark text-center lead">
                                 <span
-                                    class="badge badge-<?php echo $session['incident_level'] == 'Low' ? 'success' : ($session['incident_level'] == 'Medium' ? 'warning' : 'danger') ?> session-status"><?php echo get_string('session_report:incident:' .strtolower($session['incident_level']), 'quizaccess_edusynch')  ?></span>
+                                    class="badge badge-<?php echo quizaccess_edusynch\session::get_incident_level_html_class_for($session['incident_level']) ?> session-status"><?php echo get_string('session_report:incident:' .strtolower($session['incident_level']), 'quizaccess_edusynch')  ?></span>
                             </td>
                             <td>
                                 <div class="text-center">

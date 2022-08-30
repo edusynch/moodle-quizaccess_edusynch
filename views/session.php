@@ -94,6 +94,7 @@
                                                 <option value="Low" <?php echo $session_details['incident_level'] == 'Low' ? 'selected' : ''?>><?php echo get_string('session_report:incident:low', 'quizaccess_edusynch')  ?></option>
                                                 <option value="Medium" <?php echo $session_details['incident_level'] == 'Medium' ? 'selected' : ''?>><?php echo get_string('session_report:incident:medium', 'quizaccess_edusynch')  ?></option>
                                                 <option value="High" <?php echo $session_details['incident_level'] == 'High' ? 'selected' : ''?>><?php echo get_string('session_report:incident:high', 'quizaccess_edusynch')  ?></option>
+                                                <option value="Invalid" <?php echo $session_details['incident_level'] == 'Invalid' ? 'selected' : ''?>><?php echo get_string('session_report:incident:invalid', 'quizaccess_edusynch')  ?></option>
                                                 </select>
                                                                         &nbsp;
                                         </div>

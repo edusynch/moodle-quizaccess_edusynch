@@ -293,4 +293,23 @@ class session {
         return session::update($sessionid, ['reviewed' => ($reviewed === 0 ? false : true)]);
     }        
 
+    /**
+     * Returns a HTML reviwed flag
+     *
+     * @param   int     $sessionid  The session ID 
+     * @param   bool    $reviewed   Reviewed flag 
+     * @return  array   Updated session details  
+     */      
+    public static function get_incident_level_html_class_for($incident_level)
+    {
+        $incident_classes = [
+            'Low' => 'success',
+            'Medium' => 'warning',
+            'High' => 'danger',
+            'Invalid' => 'secondary',
+        ];
+
+        return array_key_exists($incident_level, $incident_classes) ? $incident_classes[$incident_level] : 'default';
+    }
+
 }

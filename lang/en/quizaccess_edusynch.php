@@ -99,6 +99,7 @@ $string['session_report:log'] = 'Log';
 $string['session_report:incident:low'] = 'Low';
 $string['session_report:incident:medium'] = 'Medium';
 $string['session_report:incident:high'] = 'High';
+$string['session_report:incident:invalid'] = 'Invalid';
 $string['session_report:screen_archive'] = 'Screen Archive';
 $string['session_report:no_screens'] = 'There are no screenshots for this session';
 $string['session_report:no_logs'] = 'There are no events for this session';
