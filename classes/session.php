@@ -284,13 +284,14 @@ class session {
     /**
      * Toggles the reviwed flag
      *
-     * @param   int     $sessionid  The session ID 
-     * @param   bool    $reviewed   Reviewed flag 
+     * @param   int     $sessionid        The session ID 
+     * @param   bool    $reviewed         Reviewed flag 
+     * @param   string  $incident_level   Incident Level 
      * @return  array   Updated session details  
      */       
-    public static function toggle_revision($sessionid, $reviewed)
+    public static function toggle_revision($sessionid, $reviewed, $incident_level)
     {       
-        return session::update($sessionid, ['reviewed' => ($reviewed === 0 ? false : true)]);
+        return session::update($sessionid, ['reviewed' => ($reviewed === 0 ? false : true), 'incident_level' => $incident_level]);
     }        
 
     /**
