@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <div class="form-group">
-                        <input placeholder="Search" type="text" class="form-control" name="search" value="<?php echo $search ?>">
+                        <input placeholder="<?php echo get_string('sessions_list:search', 'quizaccess_edusynch') ?>" type="text" class="form-control" name="search" value="<?php echo $search ?>">
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="col-md-1 text-right">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <button type="submit" class="btn btn-primary"><?php echo get_string('sessions_list:filter', 'quizaccess_edusynch') ?></button>
                 </div>
             </div>
         </form>

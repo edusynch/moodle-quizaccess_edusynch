@@ -89,6 +89,8 @@ $string['sessions_list:total_number'] = 'Total Sessions';
 $string['sessions_list:view_reports'] = 'View Reports';
 $string['sessions_list:no_quiz_enabled'] = 'There are no quizzes enabled to E-Proctoring. Enable at least one in SETTINGS page';
 $string['sessions_list:reviewed'] = 'Reviewed';
+$string['sessions_list:filter'] = 'Filter';
+$string['sessions_list:search'] = 'Search';
 
 // Session report
 $string['session_report:session_details'] = 'Session details';
