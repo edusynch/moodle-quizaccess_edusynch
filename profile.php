@@ -53,7 +53,7 @@ if ($action == 'show') {
             'address'   => $user->address,
             'city'      => $user->city,
             'country'   => $user->country,
-            'name'      => "{$user->firstname} {$user->lastnam}",
+            'name'      => "{$user->firstname} {$user->lastname}",
         ]]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Profile not found']);
