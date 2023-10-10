@@ -74,6 +74,7 @@ $string['config:no_settings'] = 'Please, visit <a href="{$a}">Settings Page</a> 
 // Navbar menu
 $string['navbar_menu:settings'] = 'Settings';
 $string['navbar_menu:sessions'] = 'Sessions';
+$string['navbar_menu:lti'] = 'LTI';
 
 // Sessions list
 $string['sessions_list:title'] = 'Sessions list';
