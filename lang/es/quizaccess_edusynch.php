@@ -44,6 +44,8 @@ $string['misc:label_total_pages'] = 'de {$a}';
 // Config page
 $string['config:keys'] = 'Claves';
 $string['config:api_key'] = 'Clave de API';
+$string['config:token'] = 'Token';
+$string['config:generate_token'] = 'Generar Token';
 $string['config:students_api'] = 'API de Estudiantes';
 $string['config:cms_api'] = 'API de CMS';
 $string['config:events_api'] = 'API de Eventos';

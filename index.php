@@ -32,6 +32,7 @@ define('EPROCTORING_URL', EPROCTORING_PATH . 'index.php');
 require_login();
 
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
+$generate   = optional_param('generate', '', PARAM_ALPHA);
 $subaction  = optional_param('subaction', '', PARAM_ALPHA);
 
 global $PAGE, $DB, $ADMIN, $SESSION, $USER;
@@ -69,12 +70,18 @@ if ($action != 'settings' && !$config_key) {
         if($application_info['success']) {
             $total_students   = intval($application_info['data']['total_students']);
         }
-    
+
+        if ($generate == 'token') {
+            $string = sha1(rand());
+            $token = substr($string, 0, 70);
+            $config->set_key('oauth_token', $token);
+        }
         
         $student_api   = optional_param('student_api', '', PARAM_URL);
         $cms_api       = optional_param('cms_api', '', PARAM_URL);
         $events_api    = optional_param('events_api', '', PARAM_URL);
         $api_key       = optional_param('api_key', '', PARAM_ALPHANUMEXT);
+        $token         = optional_param('token', '', PARAM_ALPHANUMEXT);
         $user          = optional_param('user', '', PARAM_EMAIL);
         $password      = optional_param('password', '', PARAM_TEXT);
         $success       = optional_param('success', 0, PARAM_INT); 
@@ -89,15 +96,18 @@ if ($action != 'settings' && !$config_key) {
             $cms_api      = $config->get_key('cms_api');    
             $events_api   = $config->get_key('events_api');    
             $api_key      = $config->get_key('api_key');    
+            $token        = $config->get_key('token');
             $user         = $config->get_key('user');    
-            $password     = $config->get_key('password');    
+            $password     = $config->get_key('password');
+            $token        = $config->get_key('oauth_token');
             
             $student_api_value  = $student_api ? $student_api->value : null;    
             $cms_api_value      = $cms_api ? $cms_api->value : null;    
             $events_api_value   = $events_api ? $events_api->value : null;    
             $api_key_value      = $api_key ? $api_key->value : null;    
             $user_value         = $user ? $user->value : null;    
-            $password_value     = $password ? $password->value : null;    
+            $password_value     = $password ? $password->value : null;
+            $token_value        = $token ? $token->value : null;
         } else {
             $config->set_key('api_key', $api_key);
             $config->set_key('user', $user);

@@ -104,6 +104,22 @@ $host = $PAGE->url->get_host();
                     class="btn btn-primary"><?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
             </form>
 
+            <form action="<?php echo EPROCTORING_URL  ?>?action=settings&generate=token" method="POST" class="mt-3">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="token"><?php echo get_string('config:token', 'quizaccess_edusynch') ?>:
+                            </label>
+                            <input class="form-control" type="text" id="token" name="token"
+                                value="<?php echo $token_value ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="btn btn-primary"><?php echo get_string('config:generate_token', 'quizaccess_edusynch') ?></button>
+            </form>
+
             <hr>
             <h4 class="mt-3"><?php echo get_string('config:import_students', 'quizaccess_edusynch') ?></h4>
 
@@ -208,3 +224,4 @@ $host = $PAGE->url->get_host();
 <span id="select-course-label" data-label="<?php echo get_string('config:select_course', 'quizaccess_edusynch') ?>"></span>
 <span id="select-quiz-label" data-label="<?php echo get_string('config:select_quiz', 'quizaccess_edusynch') ?>"></span>
 <script src="js/add-course.js"></script>
+
