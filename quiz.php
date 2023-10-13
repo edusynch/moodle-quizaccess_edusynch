@@ -14,13 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Course actions
+ * Quiz actions
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
+use quizaccess_edusynch\quiz;
+
 header('Content-Type: application/json');
 
 require_once(__DIR__ . '/../../../../config.php');
@@ -28,6 +31,7 @@ require_once(__DIR__ . '/../../../../config.php');
 global $PAGE, $DB;
 
 $action = required_param('action', PARAM_ALPHA);
+$course_id = required_param('courseId', PARAM_INT);
 $token_param = required_param('token', PARAM_ALPHANUMEXT);
 
 $config = new \quizaccess_edusynch\config();
@@ -35,19 +39,24 @@ $config = new \quizaccess_edusynch\config();
 $token = $config->get_key('oauth_token');
 
 if ($token->value !== $token_param) {
-    header("HTTP/1.1 401 Unauthorized");
+    header('HTTP/1.1 401 Unauthorized');
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     die;
 }
 
 
 if ($action == 'show') {
-    $courses = $DB->get_records("course");
-    $parsed_courses = [];
-    foreach ($courses as $course) {
-        array_push($parsed_courses, ['id' => $course->id, 'name' => $course->fullname]);
+    $quizzes = $DB->get_records('quiz', ['course' => $course_id]);
+    $parsed_quizzes = [];
+    
+    foreach ($quizzes as $quiz) {
+        array_push($parsed_quizzes, [
+            'id' => $quiz->id,
+            'title' => $quiz->name,
+            'course_id' => $course_id,
+        ]);
     }
 
-    echo json_encode(['success' => true, 'courses' => $parsed_courses]);
+    echo json_encode(['success' => true, 'quizzes' => $parsed_quizzes]);
 }
 
