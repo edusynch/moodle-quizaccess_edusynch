@@ -54,6 +54,7 @@ if ($action == 'show') {
             'id' => $quiz->id,
             'title' => $quiz->name,
             'course_id' => $course_id,
+            'created_at' => date('Y-m-d H:i:s', $course->timecreated),
         ]);
     }
 
