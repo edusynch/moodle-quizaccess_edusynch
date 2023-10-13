@@ -30,13 +30,12 @@ require_once(__DIR__ . '/../../../../config.php');
 
 global $PAGE, $DB;
 
-$action = required_param('action', PARAM_ALPHA);
-$course_id = required_param('courseId', PARAM_INT);
+$action      = required_param('action', PARAM_ALPHA);
+$course_id   = required_param('courseId', PARAM_INT);
 $token_param = required_param('token', PARAM_ALPHANUMEXT);
 
 $config = new \quizaccess_edusynch\config();
-
-$token = $config->get_key('oauth_token');
+$token  = $config->get_key('oauth_token');
 
 if ($token->value !== $token_param) {
     header('HTTP/1.1 401 Unauthorized');
@@ -44,16 +43,16 @@ if ($token->value !== $token_param) {
     die;
 }
 
-
 if ($action == 'show') {
-    $quizzes = $DB->get_records('quiz', ['course' => $course_id]);
+    $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
     $parsed_quizzes = [];
     
     foreach ($quizzes as $quiz) {
         array_push($parsed_quizzes, [
-            'id' => $quiz->id,
-            'title' => $quiz->name,
-            'course_id' => $course_id,
+            'id'         => $quiz->id,
+            'title'      => $quiz->name,
+            'acces_code' => $quiz->password,
+            'course_id'  => $course_id,
             'created_at' => date('Y-m-d H:i:s', $course->timecreated),
         ]);
     }
