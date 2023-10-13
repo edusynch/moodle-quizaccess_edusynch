@@ -49,11 +49,11 @@ if ($action == 'show') {
     
     foreach ($quizzes as $quiz) {
         array_push($parsed_quizzes, [
-            'id'         => $quiz->id,
-            'title'      => $quiz->name,
-            'acces_code' => $quiz->password,
-            'course_id'  => $course_id,
-            'created_at' => date('Y-m-d H:i:s', $course->timecreated),
+            'id'          => $quiz->id,
+            'title'       => $quiz->name,
+            'access_code' => $quiz->password,
+            'course_id'   => $course_id,
+            'created_at'  => date('Y-m-d H:i:s', $course->timecreated),
         ]);
     }
 
