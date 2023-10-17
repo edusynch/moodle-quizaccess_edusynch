@@ -61,7 +61,6 @@ if ($action == 'show') {
         ];
     } else {
         $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
-        print_r($course_id);
         $parsed_quizzes = [];
 
         foreach ($quizzes as $quiz) {
@@ -87,8 +86,8 @@ if ($action == 'show') {
 
     $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
 
-    if (isset($description)) $quiz->intro = $description;
-    if (isset($timeclose)) $quiz->timeclose = $timeclose;
+    if (!empty($description)) $quiz->intro = $description;
+    if (!empty($timeclose)) $quiz->timeclose = $timeclose;
 
     $DB->update_record('quiz', $quiz);
 
