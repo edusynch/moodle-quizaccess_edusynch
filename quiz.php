@@ -22,8 +22,6 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use quizaccess_edusynch\quiz;
-
 require_once(__DIR__ . '/../../../../config.php');
 
 global $PAGE, $DB;
@@ -56,6 +54,9 @@ if ($action == 'show') {
                 'course_id'   => $quiz->course,
                 'intro'       => $quiz->intro,
                 'created_at'  => date('Y-m-d H:i:s', $quiz->timecreated),
+                'timeopen'    => $quiz->timeopen,
+                'timelimit'   => $quiz->timelimit,
+                'timeclose'   => $quiz->timeclose,
             ],
         ];
     } else {
@@ -81,12 +82,14 @@ if ($action == 'show') {
     echo json_encode($response);
 } else if ($action == 'update') {
     $quiz_id     = required_param('id', PARAM_INT);
-    $description = required_param('description', PARAM_ALPHANUMEXT);
+    $description = optional_param('description', '', PARAM_ALPHANUMEXT);
+    $timeclose   = optional_param('timeclose', '', PARAM_INT);
 
     $quiz = new \stdClass;
 
     $quiz->id = $quiz_id;
-    $quiz->intro = $description;
+    if (isset($description)) $quiz->intro = $description;
+    if (isset($timeclose)) $quiz->timeclose = $timeclose;
 
     $DB->update_record('quiz', $quiz);
 
