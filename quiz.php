@@ -85,9 +85,8 @@ if ($action == 'show') {
     $description = optional_param('description', '', PARAM_ALPHANUMEXT);
     $timeclose   = optional_param('timeclose', '', PARAM_INT);
 
-    $quiz = new \stdClass;
+    $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
 
-    $quiz->id = $quiz_id;
     if (isset($description)) $quiz->intro = $description;
     if (isset($timeclose)) $quiz->timeclose = $timeclose;
 
