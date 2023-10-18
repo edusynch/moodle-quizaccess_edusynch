@@ -21,6 +21,7 @@
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 function quizaccess_edusynch_attempt_viewed_handler($event)
 {
     global $DB, $SESSION, $USER, $CFG;
@@ -134,7 +135,7 @@ function quizaccess_edusynch_course_module_instance_list_viewed_handler($event)
 
 function quizaccess_edusynch_course_module_viewed_handler($event)
 {
-    global $PAGE, $SESSION, $COURSE, $CFG;
+    global $DB, $PAGE, $SESSION, $COURSE, $CFG;
 
     $context    = context_course::instance($COURSE->id);
     $userid     = $event->userid; 
@@ -156,9 +157,33 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             $PAGE->requires->js_init_code($js);
         }
 
-    }
-    
+        $expiration_datetime = new DateTime('now');
+        $expiration_now      = $expiration_datetime->format('Y-m-d H:i:s');
+        $token_string        = null;
 
+        $token_record = $DB->get_record_sql(
+            'SELECT * FROM {quizaccess_edusynch_tokens} WHERE user_id = :user_id AND expiration > :expiration',
+            [
+                'user_id' => $userid,
+                'expiration' => $expiration_now,
+            ]
+            );
+
+        if (!$token_record) {
+            $expiration_datetime->add(new DateInterval('PT10M'));
+
+            $new_token_record             = new \stdClass;
+            $new_token_record->user_id    = $userid;
+            $new_token_record->token      = md5("user_id=$userid,quiz_id=$quizid,date=$expiration_now");
+            $new_token_record->expiration = $expiration_datetime->format('Y-m-d H:i:s');
+            $DB->insert_record('quizaccess_edusynch_tokens', $new_token_record);
+            $token_string = $new_token_record->token;
+        } else {
+            $token_string = $token_record->token;
+        }
+
+        echo "<script type=\"text/javascript\">window.token=\"$token_string\"</script>";
+    }
 }
 
 function quizaccess_edusynch_attempt_abandoned_handler($event)
@@ -208,3 +233,4 @@ class quizaccess_edusynch extends quiz_access_rule_base {
 
     }
 }
+
