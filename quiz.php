@@ -22,16 +22,11 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use quizaccess_edusynch\quiz;
-
-header('Content-Type: application/json');
-
 require_once(__DIR__ . '/../../../../config.php');
 
 global $PAGE, $DB;
 
 $action      = required_param('action', PARAM_ALPHA);
-$course_id   = required_param('courseId', PARAM_INT);
 $token_param = required_param('token', PARAM_ALPHANUMEXT);
 
 $config = new \quizaccess_edusynch\config();
@@ -44,6 +39,8 @@ if ($token->value !== $token_param) {
 }
 
 if ($action == 'show') {
+    $course_id   = required_param('courseId', PARAM_INT);
+
     $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
     $parsed_quizzes = [];
     
@@ -53,10 +50,25 @@ if ($action == 'show') {
             'title'       => $quiz->name,
             'access_code' => $quiz->password,
             'course_id'   => $course_id,
+            'intro'       => $quiz->intro,
             'created_at'  => date('Y-m-d H:i:s', $course->timecreated),
         ]);
     }
 
+    header('Content-Type: application/json');
     echo json_encode(['success' => true, 'quizzes' => $parsed_quizzes]);
+} else if ($action == 'update') {
+    $quiz_id     = required_param('id', PARAM_INT);
+    $description = required_param('description', PARAM_ALPHANUMEXT);
+
+    $quiz = new \stdClass;
+
+    $quiz->id = $quiz_id;
+    $quiz->intro = $description;
+
+    $DB->update_record('quiz', $quiz);
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
 }
 
