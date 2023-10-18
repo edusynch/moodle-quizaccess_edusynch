@@ -30,5 +30,9 @@
   <li class="nav-item">
     <a class="nav-link <?php echo in_array($action, ['session','sessions']) ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=sessions"><?php echo get_string('navbar_menu:sessions', 'quizaccess_edusynch') ?></a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link <?php echo $action == 'lti' ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=lti"><?php echo get_string('navbar_menu:lti', 'quizaccess_edusynch') ?></a>
+  </li>
 </ul>
 <?php endif; ?>
+

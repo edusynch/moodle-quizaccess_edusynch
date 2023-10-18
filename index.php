@@ -34,7 +34,7 @@ require_login();
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
 $subaction  = optional_param('subaction', '', PARAM_ALPHA);
 
-global $PAGE, $DB, $ADMIN, $SESSION;
+global $PAGE, $DB, $ADMIN, $SESSION, $USER;
 
 $context = context_system::instance();
 $PAGE->set_context($context);
@@ -252,6 +252,19 @@ if ($action != 'settings' && !$config_key) {
 
 
 
+    } else if ($action == 'lti') {
+        $user_id   = $USER->id;
+        $user_role = $USER->role;
+        $cms_api   = $config->get_key('cms_api'); 
+
+        $role_assignamens = $DB->get_records("role_assignments", ['userId' => $user_id]);
+        $roles = [];
+        foreach ($role_assignamens as $role_assignamen) {
+            $result = $DB->get_record('role', ['id' => $role_assignamen->roleid]);
+            array_push($roles, ucfirst($result->archetype));
+        }
+
+        $lis_outcome_service_url = $PAGE->url;
     }
     
 }
@@ -263,3 +276,4 @@ include 'views/navbars.php';
 include 'views/' . $action . '.php';
 
 echo $OUTPUT->footer();
+
