@@ -22,6 +22,8 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use quizaccess_edusynch\quiz;
+
 require_once(__DIR__ . '/../../../../config.php');
 
 global $PAGE, $DB;
@@ -39,24 +41,44 @@ if ($token->value !== $token_param) {
 }
 
 if ($action == 'show') {
-    $course_id   = required_param('courseId', PARAM_INT);
+    $response  = [];
+    $course_id = optional_param('courseId', '', PARAM_INT);
+    $quiz_id   = optional_param('quizId', '', PARAM_INT);
 
-    $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
-    $parsed_quizzes = [];
-    
-    foreach ($quizzes as $quiz) {
-        array_push($parsed_quizzes, [
-            'id'          => $quiz->id,
-            'title'       => $quiz->name,
-            'access_code' => $quiz->password,
-            'course_id'   => $course_id,
-            'intro'       => $quiz->intro,
-            'created_at'  => date('Y-m-d H:i:s', $course->timecreated),
-        ]);
+    if (!empty($quiz_id)) {
+        $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
+        $response = [
+            'success' => true,
+            'quiz'    => [
+                'id'          => $quiz->id,
+                'title'       => $quiz->name,
+                'access_code' => $quiz->password,
+                'course_id'   => $quiz->course,
+                'intro'       => $quiz->intro,
+                'created_at'  => date('Y-m-d H:i:s', $quiz->timecreated),
+            ],
+        ];
+    } else {
+        $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
+        print_r($course_id);
+        $parsed_quizzes = [];
+
+        foreach ($quizzes as $quiz) {
+            array_push($parsed_quizzes, [
+                'id'          => $quiz->id,
+                'title'       => $quiz->name,
+                'access_code' => $quiz->password,
+                'course_id'   => $course_id,
+                'intro'       => $quiz->intro,
+                'created_at'  => date('Y-m-d H:i:s', $quiz->timecreated),
+            ]);
+        }
+
+        $response = ['success' => true, 'quizzes' => $parsed_quizzes];
     }
 
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'quizzes' => $parsed_quizzes]);
+    echo json_encode($response);
 } else if ($action == 'update') {
     $quiz_id     = required_param('id', PARAM_INT);
     $description = required_param('description', PARAM_ALPHANUMEXT);
