@@ -216,53 +216,7 @@ if ($action != 'settings' && !$config_key) {
 
             $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
         }
-      
-    
-    } else if ($action == 'session') {   
-        $courseid    = required_param('courseid', PARAM_INT);
-        $quizid      = required_param('quizid', PARAM_INT);
-        $session_id  = required_param('session_id', PARAM_INT);
-        $events_page = optional_param('events_page', 1, PARAM_INT);
-
-        $coursecontext  = context_course::instance($courseid);   
-        require_capability('quizaccess/edusynch:view_report', $coursecontext);
-    
-        if($subaction == 'changeincidentcomments') {
-            $incident_level  = optional_param('incident_level', null, PARAM_ALPHA);
-            $comments        = optional_param('comments', null, PARAM_TEXT);
-            
-            if($incident_level || $comments) {
-                \quizaccess_edusynch\session::update($session_id, ['incident_level' => $incident_level, 'comments' => $comments]); 
-                $success_message = get_string('session_report:session_updated', 'quizaccess_edusynch');  
-            }
-        }
-
-        $content      = \quizaccess_edusynch\session::show($session_id);    
-        $events_query = \quizaccess_edusynch\session::events($session_id, $events_page);    
-
-        $events_photos = array_unique(array_map(function($a) {
-            return $a['event_id'];
-        }, $content['photos']));
-
-        $session_details    = $content['session'];    
-        $photos             = $content['photos'];    
-        $videos             = $content['videos'];    
-        $events             = $events_query['events'];    
-        $prev_page          = $events_query['prev_page'];    
-        $next_page          = $events_query['next_page'];    
-        $last_page          = $events_query['last_page'];    
-        $total_pages        = $events_query['total_pages'];    
-        
-        $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
-
-        $user = new \stdClass();
-        // $additionalfields = explode(',', implode(',', \core_user\fields::get_picture_fields()));
-        $user = $DB->get_record('user', ['email' => $session_details['student']['email']]);
-        $useravatar = $OUTPUT->user_picture($user, array('courseid' => $courseid));        
-
-
-
-    } else if ($action == 'lti') {
+    } else if ($action == 'launch') {
         $user_id   = $USER->id;
         $user_role = $USER->role;
         $cms_api   = $config->get_key('cms_api'); 

@@ -26,9 +26,10 @@
 <link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
 <div class="container">
     <div class="row mt-3">
-        <iframe class="row mt-3" style="width: 100%;" src="<?php echo $cms_api->value ?>/launch?&user_id=<?php echo $user_id ?>&roles=<?php echo implode(',', $roles) ?>&launch_presentation_return_url=<?php echo $PAGE->url ?>&custom_moodle_user_id=<?php echo $user_id ?>" title="W3Schools Free Online Web Tutorials"></iframe>
+        <iframe class="row mt-3" style="width: 100%; height: 700px" src="https://develop.lti.edusynch.com/launch?&user_id=<?php echo $user_id ?>&roles=<?php echo implode(',', $roles) ?>&launch_presentation_return_url=<?php echo $PAGE->url ?>&custom_moodle_user_id=<?php echo $user_id ?>" title="W3Schools Free Online Web Tutorials"></iframe>
     </div>
 </div>
 <script src="js/session-view.js"></script>
 <script src="js/bootstrap4-toggle.min.js"></script>
+
 
