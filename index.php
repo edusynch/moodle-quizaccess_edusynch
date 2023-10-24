@@ -228,7 +228,9 @@ if ($action != 'settings' && !$config_key) {
             array_push($roles, ucfirst($result->archetype));
         }
 
-        $lis_outcome_service_url = $PAGE->url;
+        $domain      = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
+        $token       = $config->get_key('oauth_token');
+        $token_value = $token ? $token->value : null;
     }
     
 }
