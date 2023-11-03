@@ -36,9 +36,12 @@ if ($action == 'validate') {
     $token = $config->get_key('oauth_token');
 
     if ($token->value === $token_param) {
+        header('Content-Type: application/json');
         echo json_encode(['success' => true, 'message' => 'Valid token']);
     } else {
+        header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Invalid token']);
     }
 }
+
 

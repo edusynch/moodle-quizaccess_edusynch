@@ -29,12 +29,14 @@ global $PAGE, $DB;
 
 $config = new \quizaccess_edusynch\config();
 
-$action = required_param('action', PARAM_ALPHA);
+$action      = required_param('action', PARAM_ALPHA);
+$token_param = required_param('token', PARAM_ALPHANUMEXT);
 
-$headers = apache_request_headers();
+$config = new \quizaccess_edusynch\config();
+$token  = $config->get_key('oauth_token');
 
-if (is_null($headers['Authorization'])) {
-    header("HTTP/1.1 401 Unauthorized");
+if ($token->value !== $token_param) {
+    header('HTTP/1.1 401 Unauthorized');
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     die;
 }
@@ -45,6 +47,7 @@ if ($action == 'show') {
     $user = $DB->get_record('user', ['id' => $userId]); 
 
     if ($user) {
+        header('Content-Type: application/json');
         echo json_encode(['success' => true, 'user' => [
             'username'  => $user->username,
             'firstname' => $user->firstname,
@@ -56,7 +59,9 @@ if ($action == 'show') {
             'name'      => "{$user->firstname} {$user->lastname}",
         ]]);
     } else {
+        header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Profile not found']);
     }
 }
+
 

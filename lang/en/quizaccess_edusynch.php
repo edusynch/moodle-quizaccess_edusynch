@@ -76,7 +76,7 @@ $string['config:no_settings'] = 'Please, visit <a href="{$a}">Settings Page</a> 
 // Navbar menu
 $string['navbar_menu:settings'] = 'Settings';
 $string['navbar_menu:sessions'] = 'Sessions';
-$string['navbar_menu:lti'] = 'LTI';
+$string['navbar_menu:launch'] = 'Launch';
 
 // Sessions list
 $string['sessions_list:title'] = 'Sessions list';
@@ -147,3 +147,4 @@ $string['privacy:metadata:quizaccess_edusynch:antifraud_api:firstname'] = 'We us
 $string['privacy:metadata:quizaccess_edusynch:antifraud_api:lastname'] = 'We use lastname to store the student\'s last name in our data base. This is for admins to be able to further identify the student.';
 $string['privacy:metadata:quizaccess_edusynch:antifraud_api:email'] = 'We use email to store the student\'s email address. This is the cornerstone of the student\'s account, in that Admin\'s will typically use the email address as the primary unique identifier of the student.';
 $string['privacy:metadata:quizaccess_edusynch:antifraud_api'] = 'We use this our antifraud_api to determine if the user tried to open new tabs, moved focus away from the browser, or performed any other action that is not permitted by the plugin in order to prevent cheating.';
+
