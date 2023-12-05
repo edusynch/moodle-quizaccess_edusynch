@@ -182,7 +182,7 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             $token_string = $token_record->token;
         }
 
-        echo "<script type=\"text/javascript\">window.token=\"$token_string\"</script>";
+        echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
     }
 }
 
