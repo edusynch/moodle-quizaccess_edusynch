@@ -44,7 +44,7 @@ $PAGE->set_title(get_string('pluginname', 'quizaccess_edusynch'));
 $PAGE->set_heading(get_string('pluginname', 'quizaccess_edusynch'));
 
 $config      = new \quizaccess_edusynch\config();
-$config_key  = $config->get_key('api_key');    
+$config_key  = $config->get_key('oauth_token');    
 
 if ($action != 'settings' && !$config_key) {
     echo $OUTPUT->header();
@@ -63,165 +63,24 @@ if ($action != 'settings' && !$config_key) {
     
         global $PAGE;
     
-        $application_info = \quizaccess_edusynch\user::get_application_info();
-
-        $total_students   = 0;
-        
-        if($application_info['success']) {
-            $total_students   = intval($application_info['data']['total_students']);
-        }
-
         if ($generate == 'token') {
             $string = sha1(rand());
             $token = substr($string, 0, 70);
             $config->set_key('oauth_token', $token);
         }
         
-        $student_api   = optional_param('student_api', '', PARAM_URL);
-        $cms_api       = optional_param('cms_api', '', PARAM_URL);
-        $events_api    = optional_param('events_api', '', PARAM_URL);
-        $api_key       = optional_param('api_key', '', PARAM_ALPHANUMEXT);
-        $token         = optional_param('token', '', PARAM_ALPHANUMEXT);
-        $user          = optional_param('user', '', PARAM_EMAIL);
-        $password      = optional_param('password', '', PARAM_TEXT);
-        $success       = optional_param('success', 0, PARAM_INT); 
+        $token         = optional_param('token', '', PARAM_ALPHANUMEXT);    
+        $success = (bool) $success;  
 
-        $importform = new \quizaccess_edusynch\importstudent_form(EPROCTORING_URL . '?action=settings&subaction=import');
+        $token        = $config->get_key('oauth_token');
+        $token_value  = $token ? $token->value : null;
     
-        $success = (bool) $success;
-        $quizzes       = $config->get_key('quizzes');    
-    
-        if($api_key == '') {
-            $student_api  = $config->get_key('student_api');    
-            $cms_api      = $config->get_key('cms_api');    
-            $events_api   = $config->get_key('events_api');    
-            $api_key      = $config->get_key('api_key');    
-            $token        = $config->get_key('token');
-            $user         = $config->get_key('user');    
-            $password     = $config->get_key('password');
-            $token        = $config->get_key('oauth_token');
-            
-            $student_api_value  = $student_api ? $student_api->value : null;    
-            $cms_api_value      = $cms_api ? $cms_api->value : null;    
-            $events_api_value   = $events_api ? $events_api->value : null;    
-            $api_key_value      = $api_key ? $api_key->value : null;    
-            $user_value         = $user ? $user->value : null;    
-            $password_value     = $password ? $password->value : null;
-            $token_value        = $token ? $token->value : null;
-        } else {
-            $config->set_key('api_key', $api_key);
-            $config->set_key('user', $user);
-            $config->set_key('password', $password);
-            $api_key_value  = $api_key;
-            $user_value     = $user;
-            $password_value = $password;
-    
-            if(!empty($student_api) && !empty($cms_api) && !empty($events_api)) {
-                $config->set_key('student_api', $student_api);              
-                $config->set_key('cms_api', $cms_api);   
-                $config->set_key('events_api', $events_api);   
-            }
-    
-            $student_api_value  = $student_api;
-            $cms_api_value      = $cms_api;
-            $events_api_value   = $events_api;        
-            $success = true;
-        }
-    
-        $quizzes_enabled = is_null($quizzes) ? [] : json_decode($quizzes->value, true);
-    
-        if($subaction == 'import') {
-            global $USER;
-    
-            $file = required_param('import_list', PARAM_FILE); 
-    
-            $fs = get_file_storage();
-            $context = context_user::instance($USER->id);
-            $files = $fs->get_area_files($context->id, 'user', 'draft', $file, 'id DESC', false);
-    
-            $tempfile = reset($files)->copy_content_to_temp();
-            $import_list = \quizaccess_edusynch\user::import_students($tempfile);    
-    
-            redirect(EPROCTORING_URL . '?action=settings&success=1');
-         } else if ($subaction == 'quizzes') {
-            $quizzes = optional_param_array('quizzes', [], PARAM_INT);    
-        
-            if(count($quizzes) > 0) {
-                $quizzes = array_unique($quizzes);
-            }
-    
-            $quizzes_array = [];
-            foreach($quizzes as $quiz) {
-                $quiz_info   = $DB->get_record('quiz', ['id' => $quiz]);
-                $course_info = $DB->get_record('course', ['id' => $quiz_info->course]);
-                $quizzes_array[] = ['id' => $quiz, 'name' => $quiz_info->name, 'course' => $course_info->fullname];
-            }
-            $config->set_key('quizzes', json_encode($quizzes_array));
-    
-            redirect(EPROCTORING_URL . '?action=settings&success=1');
-         }
-    
-    } else if ($action == 'sessions') {   
-        global $COURSE, $USER, $CFG;
-
-        $current_date  = date_format(new DateTime(), 'Y-m-d');
-        $one_month_ago = date_format((new DateTime())->sub(DateInterval::createFromDateString('1 month')), 'Y-m-d');
-
-        $current_page = optional_param('page', 1, PARAM_INT);
-        $start_date   = optional_param('start_date', $one_month_ago, PARAM_ALPHANUMEXT);
-        $end_date     = optional_param('end_date', $current_date, PARAM_ALPHANUMEXT);
-        $search       = optional_param('search', '', PARAM_ALPHANUMEXT || PARAM_EMAIL);
-
-        $quiz_selected = false;
-
-        if(!is_siteadmin()) {
-            $courseid     = required_param('courseid', PARAM_INT);
-            $quizid       = required_param('quizid', PARAM_INT);
-        } else {
-            $courseid     = optional_param('courseid', null, PARAM_INT);
-            $quizid       = optional_param('quizid', null, PARAM_INT); 
-            
-            $quizzes      = $config->get_key('quizzes');    
-            $quizzes_enabled = is_null($quizzes) ? [] : json_decode($quizzes->value, true);
-
-            foreach($quizzes_enabled as &$qe) {
-                $sessions_query = $DB->count_records("quizaccess_edusynch_sessions", ['quiz_id' => $qe['id']]);
-                $qe['total_sessions'] = $sessions_query;
-
-                $quiz_query     = $DB->get_record("quiz", ['id' => $qe['id']], 'course');
-                if($quiz_query) {
-                    $qe['courseid']       = $quiz_query->course;
-                }
-            }
-        }
-
-        if($courseid && $quizid) {
-            $quiz_selected = true;
-            
-            $coursecontext  = context_course::instance($courseid);   
-            require_capability('quizaccess/edusynch:view_report', $coursecontext);
-        
-            $content       = \quizaccess_edusynch\session::list($current_page, $quizid, $start_date, $end_date, $search);   
-            
-            if($content) {
-                $sessions_list = array_filter($content['sessions'], function($array) use($content) {
-                    return in_array($array['id'], $content['sessions_per_quiz']);
-                });
-            
-                $prev_page          = $content['prev_page'];    
-                $next_page          = $content['next_page'];    
-                $last_page          = $content['last_page'];    
-                $total_pages        = $content['total_pages']; 
-            }
-
-            $quiz_data = $DB->get_record('quiz', ['id' => $quizid]);
-        }
-    } else if ($action == 'launch') {
+    }  else if ($action == 'launch') {
         $user_id   = $USER->id;
         $user_role = $USER->role;
         $cms_api   = $config->get_key('cms_api'); 
 
-        $role_assignamens = $DB->get_records("role_assignments", ['userId' => $user_id]);
+        $role_assignamens = $DB->get_records("role_assignments", ['userid' => $user_id]);
         $roles = [];
         foreach ($role_assignamens as $role_assignamen) {
             $result = $DB->get_record('role', ['id' => $role_assignamen->roleid]);
