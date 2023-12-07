@@ -30,23 +30,8 @@ function quizaccess_edusynch_attempt_viewed_handler($event)
     $attemptid    = $event->objectid;
     $cmid         = $event->contextinstanceid;
     $currentpage  = optional_param('page', 0, PARAM_INT);
-    
-    $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
-    $quiz_enabled = \quizaccess_edusynch\quiz::is_enabled($quizid);
 
-    if($quiz_enabled) {
-        $is_eproctoring_started = isset($SESSION->edusynch_started) ? $SESSION->edusynch_started : false;
 
-        if(!$is_eproctoring_started) 
-        {
-            $SESSION->edusynch_redirect  = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
-            $SESSION->edusynch_attemptid = $attemptid;
-            $SESSION->edusynch_cmid      = $cmid;
-            $SESSION->userid                        = $userid;
-            $SESSION->quizid                        = $quizid;            
-            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusynch/setup_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage);
-        }
-    }
 }
 
 function quizaccess_edusynch_attempt_preview_started_handler($event)
@@ -69,18 +54,6 @@ function quizaccess_edusynch_attempt_started_handler($event)
     $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
     $quiz_enabled = \quizaccess_edusynch\quiz::is_enabled($quizid);
     $currentpage  = 0;
-
-    if($quiz_enabled) {
-        $is_eproctoring_started = isset($SESSION->edusynch_started) ? $SESSION->edusynch_started : false;
-
-        if(!$is_eproctoring_started) 
-        {
-            $SESSION->edusynch_redirect = 'mod/quiz/attempt.php?attempt=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage;
-            $SESSION->userid                       = $userid;
-            $SESSION->quizid                       = $quizid;
-            redirect($CFG->wwwroot . '/mod/quiz/accessrule/edusynch/setup_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $currentpage);
-        }
-    }
     
 }
 
@@ -182,7 +155,7 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             $token_string = $token_record->token;
         }
 
-        echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
+        echo "<script type=\"text/javascript\">window.token=\"$token_string\"</script>";
     }
 }
 
