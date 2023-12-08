@@ -39,8 +39,7 @@ if ($token->value !== $token_param) {
     die;
 }
 
-
-if ($action == 'show') {
+if ($action == 'list') {
     $courses        = $DB->get_records("course");
     $parsed_courses = [];
 
@@ -54,6 +53,18 @@ if ($action == 'show') {
 
     header('Content-Type: application/json');
     echo json_encode(['success' => true, 'courses' => $parsed_courses]);
+} else if ($action == 'show') {
+    $courseId       = required_param('id', PARAM_INT);
+    $course        = $DB->get_record("course", ['id' => intval($courseId)]);
+
+    $course = [
+        'id'         => $course->id,
+        'name'       => $course->fullname,
+        'created_at' => date('Y-m-d H:i:s', $course->timecreated),
+    ];
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'course' => $course]);
 }
 
 
