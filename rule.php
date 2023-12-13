@@ -112,51 +112,46 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
 
     $context    = context_course::instance($COURSE->id);
     $userid     = $event->userid; 
-    $quizid     = $event->objectid; 
+    $quizid     = $event->objectid;
     
-    $quiz_enabled    = \quizaccess_edusynch\quiz::is_enabled($quizid);
 
-    if($quiz_enabled) {
-        $PAGE->requires->jquery();
+    $PAGE->requires->jquery();
 
-        $has_permission_to_view_report = has_capability('quizaccess/edusynch:view_report', $context);
+    $expiration_datetime = new DateTime('now');
+    $expiration_now      = $expiration_datetime->format('Y-m-d H:i:s');
+    $token_string        = null;
 
-        if($has_permission_to_view_report) {
-            $js = "
-            var main_div = $('div[role=main]');
-            main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusynch/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">". get_string('sessions_list:button', 'quizaccess_edusynch') ."</button></a>');
-            ";
-
-            $PAGE->requires->js_init_code($js);
-        }
-
-        $expiration_datetime = new DateTime('now');
-        $expiration_now      = $expiration_datetime->format('Y-m-d H:i:s');
-        $token_string        = null;
-
+    try {
         $token_record = $DB->get_record_sql(
             'SELECT * FROM {quizaccess_edusynch_tokens} WHERE user_id = :user_id AND expiration > :expiration',
             [
                 'user_id' => $userid,
                 'expiration' => $expiration_now,
             ]
-            );
-
-        if (!$token_record) {
-            $expiration_datetime->add(new DateInterval('PT10M'));
-
-            $new_token_record             = new \stdClass;
-            $new_token_record->user_id    = $userid;
-            $new_token_record->token      = md5("user_id=$userid,quiz_id=$quizid,date=$expiration_now");
-            $new_token_record->expiration = $expiration_datetime->format('Y-m-d H:i:s');
-            $DB->insert_record('quizaccess_edusynch_tokens', $new_token_record);
-            $token_string = $new_token_record->token;
-        } else {
-            $token_string = $token_record->token;
-        }
-
-        echo "<script type=\"text/javascript\">window.token=\"$token_string\"</script>";
+        );
+    
+    } catch (Exception $e) {
+        die($e->getMessage());
     }
+
+    
+
+
+    
+    if (!$token_record) {
+        $expiration_datetime->add(new DateInterval('PT10M'));
+
+        $new_token_record             = new \stdClass;
+        $new_token_record->user_id    = $userid;
+        $new_token_record->token      = md5("user_id=$userid,quiz_id=$quizid,date=$expiration_now");
+        $new_token_record->expiration = $expiration_datetime->format('Y-m-d H:i:s');
+        $DB->insert_record('quizaccess_edusynch_tokens', $new_token_record);
+        $token_string = $new_token_record->token;
+    } else {
+        $token_string = $token_record->token;
+    }
+
+    echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
 }
 
 function quizaccess_edusynch_attempt_abandoned_handler($event)
