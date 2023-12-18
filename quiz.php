@@ -62,6 +62,8 @@ if ($action == 'show') {
     } else {
         $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
         $parsed_quizzes = [];
+        $page           = optional_param('page', 1, PARAM_INT);
+        $paginates_per  = optional_param('paginates_per', 10, PARAM_INT);
 
         foreach ($quizzes as $quiz) {
             array_push($parsed_quizzes, [
@@ -77,7 +79,21 @@ if ($action == 'show') {
             ]);
         }
 
-        $response = ['success' => true, 'quizzes' => $parsed_quizzes];
+        $total_pages  = ceil(count($parsed_quizzes) / $paginates_per);
+        $current_page = $page;
+        $next_page    = $current_page < $total_pages ? $current_page + 1 : $total_pages;
+        $prev_page    = $current_page > 1 ? $current_page - 1 : 1;
+        $offset       = ($current_page - 1) * $paginates_per;
+        $quizzes      = array_slice($parsed_quizzes, $offset, $paginates_per);
+
+        $response = [
+            'success'      => true,
+            'total_pages'  => $total_pages,
+            'current_page' => $current_page,
+            'next_page'    => $next_page,
+            'prev'         => $prev_page,
+            'quizzes'      => $quizzes,
+        ];
     }
 
     header('Content-Type: application/json');
