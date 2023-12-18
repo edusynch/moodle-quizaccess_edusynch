@@ -86,11 +86,13 @@ if ($action == 'show') {
     $quiz_id     = required_param('id', PARAM_INT);
     $description = optional_param('description', '', PARAM_ALPHANUMEXT);
     $timeclose   = optional_param('timeclose', '', PARAM_INT);
+    $access_code = optional_param('access_code', '', PARAM_ALPHANUMEXT);
 
     $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
 
     if (!empty($description)) $quiz->intro = $description;
     if (!empty($timeclose)) $quiz->timeclose = $timeclose;
+    if (!empty($access_code)) $quiz->password = $access_code;
 
     $DB->update_record('quiz', $quiz);
 
