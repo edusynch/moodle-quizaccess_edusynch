@@ -48,7 +48,7 @@ if ($action == 'list') {
             'id'         => $course->id,
             'name'       => $course->fullname,
             'created_at' => date('Y-m-d H:i:s', $course->timecreated),
-            'published'  => $course->visible,
+            'published'  => $course->visible == "1" ? true : false,
         ]);
     }
 
@@ -62,7 +62,7 @@ if ($action == 'list') {
         'id'         => $course->id,
         'name'       => $course->fullname,
         'created_at' => date('Y-m-d H:i:s', $course->timecreated),
-        'published'  => $course->visible,
+        'published'  => $course->visible == "1" ? true : false,
     ];
 
     header('Content-Type: application/json');
