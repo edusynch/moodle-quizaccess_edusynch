@@ -24,16 +24,6 @@
 
 require_once(__DIR__ . '/../../../../config.php');
 
-function isPubliched($quiz) {
-    $published = true;
-    $timeclose = (int) $quiz->timeclose;
-    if ($timeclose !== 0 && $timeclose < time()) {
-        $published = false;
-    }
-
-    return $published;
-}
-
 global $PAGE, $DB;
 
 $action      = required_param('action', PARAM_ALPHA);
@@ -55,8 +45,6 @@ if ($action == 'show') {
 
     if (!empty($quiz_id)) {
         $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
-        $published = isPubliched($quiz);
-
         $response = [
             'success' => true,
             'quiz'    => [
@@ -69,7 +57,6 @@ if ($action == 'show') {
                 'timeopen'    => $quiz->timeopen,
                 'timelimit'   => $quiz->timelimit,
                 'timeclose'   => $quiz->timeclose,
-                'published'   => $published,
             ],
         ];
     } else {
@@ -77,8 +64,6 @@ if ($action == 'show') {
         $parsed_quizzes = [];
 
         foreach ($quizzes as $quiz) {
-            $published = $published = isPubliched($quiz);
-
             array_push($parsed_quizzes, [
                 'id'          => $quiz->id,
                 'title'       => $quiz->name,
@@ -89,7 +74,6 @@ if ($action == 'show') {
                 'timeopen'    => $quiz->timeopen,
                 'timelimit'   => $quiz->timelimit,
                 'timeclose'   => $quiz->timeclose,
-                'published'   => $published,
             ]);
         }
 
