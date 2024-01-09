@@ -117,22 +117,18 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             ]
         );
 
-        echo "<script type=\"text/javascript\">
-            // Finish attempt
+        $js = "
             var div = document.querySelectorAll('.quizstartbuttondiv')[0].parentNode;
             var form = div.querySelectorAll('form')[0];
             var btn = form.querySelectorAll('button[type=submit]')[0];
             
             btn.setAttribute('data-eproctoring', 'submit');
-            </script>
+
+            var btnsub = document.getElementById(\"id_submitbutton\");
+            btnsub.setAttribute('data-eproctoring', 'start');            
         ";        
 
-        echo "<script type=\"text/javascript\">
-        // Start attempt
-        var btn = document.getElementById(\"id_submitbutton\");
-        btn.setAttribute('data-eproctoring', 'start');
-        </script>
-        ";   
+        $PAGE->requires->js_init_code($js);
     
     } catch (Exception $e) {
         die($e->getMessage());
