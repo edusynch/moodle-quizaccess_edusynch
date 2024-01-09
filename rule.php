@@ -85,20 +85,7 @@ function quizaccess_edusynch_report_viewed_handler($event)
 
 function quizaccess_edusynch_attempt_reviewed_handler($event)
 {
-    global $SESSION;
-    
-    $session_id    = isset($SESSION->edusynch_sessionid) ? $SESSION->edusynch_sessionid : null;        
 
-    if(!is_null($session_id)) {
-        echo "<script type=\"text/javascript\">
-        var body = document.querySelectorAll('body')[0];
-        
-        body.setAttribute('data-proctoring', 'expired');
-        </script>
-        ";   
-        
-        $SESSION->edusynch_sessionid = null;
-    }
 }
 
 function quizaccess_edusynch_course_module_instance_list_viewed_handler($event)
@@ -129,6 +116,23 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
                 'expiration' => $expiration_now,
             ]
         );
+
+        echo "<script type=\"text/javascript\">
+            // Finish attempt
+            var div = document.querySelectorAll('.quizstartbuttondiv')[0].parentNode;
+            var form = div.querySelectorAll('form')[0];
+            var btn = form.querySelectorAll('button[type=submit]')[0];
+            
+            btn.setAttribute('data-eproctoring', 'submit');
+            </script>
+        ";        
+
+        echo "<script type=\"text/javascript\">
+        // Start attempt
+        var btn = document.getElementById(\"id_submitbutton\");
+        btn.setAttribute('data-eproctoring', 'start');
+        </script>
+        ";   
     
     } catch (Exception $e) {
         die($e->getMessage());
