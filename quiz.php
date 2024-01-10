@@ -48,8 +48,7 @@ if ($action == 'show') {
             'SELECT {course_modules}.id AS `quiz_id`, {quiz}.* FROM {quiz}, {course_modules}, {modules} 
             
             WHERE 
-            {course_modules}.course = :course_id
-            AND {course_modules}.id = :quiz_id
+            {course_modules}.id = :quiz_id
             AND {course_modules}.module = {modules}.id 
             AND {modules}.name = :module_name
             AND mdl_course_modules.instance = mdl_quiz.id
@@ -57,7 +56,6 @@ if ($action == 'show') {
             [
                 'module_name' => 'quiz',
                 'quiz_id' => $quiz_id,
-                'course_id' => $course_id,
             ]
         );  
 
