@@ -33,3 +33,4 @@ $plugin->release = 'KGP_20231205';
 $plugin->dependencies = [
     'mod_quiz' => ANY_VERSION,
 ];
+
