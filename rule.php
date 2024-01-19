@@ -144,15 +144,21 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             var form = div.querySelectorAll('form')[0];
             var btn = form.querySelectorAll('button[type=submit]')[0];
              
-            // Insert iframe
-            if(document.head.dataset.eproctoring != 'true') {
-                {$framechecker}
-            } else {
-                btn.setAttribute('data-eproctoring', 'submit');
-    
-                var btnsub = document.getElementById(\"id_submitbutton\");
-                btnsub.setAttribute('data-eproctoring', 'start');   
-            }         
+            btn.style.display = 'none';
+
+            setTimeout(function(){
+                // Insert iframe 
+                if(document.head.dataset.eproctoring != 'true') {
+                    {$framechecker}
+                } else {
+                    btn.style.display = '';
+                    btn.setAttribute('data-eproctoring', 'submit');
+        
+                    var btnsub = document.getElementById(\"id_submitbutton\");
+                    btnsub.setAttribute('data-eproctoring', 'start');   
+                }    
+            }, 3000);
+     
         ";        
 
         echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
