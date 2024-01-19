@@ -26,6 +26,9 @@ namespace quizaccess_edusynch;
 use quizaccess_edusynch\config;
 use quizaccess_edusynch\helpers;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/quiz/accessrule/edusynch/vendor/autoload.php');
