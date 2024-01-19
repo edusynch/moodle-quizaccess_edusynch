@@ -119,7 +119,7 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         $login_request = \quizaccess_edusynch\network::sendRequest(
             'POST', 
             'lti',
-            $lti_url->value . '/auth/v1/authentications/login',
+            $lti_url->value . '/auth/v1/authentications/login', 
             ['payload' => json_encode($payload)],
             ['Content-Type' => 'form-data']
         );    
@@ -133,13 +133,13 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         if($quizProctored) {
             $json_encode_response = json_encode($login_request);
             $framechecker = "
-            window.LOGIN_LTI = JSON.parse('{$json_encode_response}');
             div.innerHTML='<iframe id=\"edusynch-app\" style=\"border: 0;\" src=\"https://checker.edusynch.com/\" width=\"100%\" height=\"920\"></iframe>';
             ";
         }
 
 
         $js = "
+            window.LOGIN_LTI = JSON.parse('{$json_encode_response}');
             var div = document.querySelectorAll('.quizstartbuttondiv')[0].parentNode;
             var form = div.querySelectorAll('form')[0];
             var btn = form.querySelectorAll('button[type=submit]')[0];
@@ -164,8 +164,16 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
 
         $PAGE->requires->js_init_code($js);                  
-    } catch (Exception $e) {
+    } catch (\Exception $e) {
         // Form free
+        $error = json_encode($e->getMessage());
+
+        $js = "
+            console.log('ERROR: {$error}');
+        ";        
+
+
+        $PAGE->requires->js_init_code($js);        
     }
 
 }
