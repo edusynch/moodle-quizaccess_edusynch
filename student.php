@@ -48,6 +48,7 @@ if ($action == 'list') {
 
     foreach ($users as $user) {
         array_push($parsed_users,  [
+          'id'        => $user->id,
           'username'  => $user->username,
           'firstname' => $user->firstname,
           'lastname'  => $user->lastname,
