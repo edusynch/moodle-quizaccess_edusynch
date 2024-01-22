@@ -51,6 +51,23 @@ $host = $PAGE->url->get_host();
                     class="btn btn-primary"><?php echo get_string('config:generate_token', 'quizaccess_edusynch') ?></button>
             </form>
 
+            <?php if (strpos($_SERVER['SERVER_NAME'], 'edusynch.com') !== false): ?>
+                <form action="<?php echo EPROCTORING_URL  ?>?action=settings&lti_url=save" method="POST" class="mt-3">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label for="token"><?php echo get_string('config:url', 'quizaccess_edusynch') ?>:
+                                </label>
+                                <input class="form-control" type="text" id="url" name="url"
+                                    value="<?php echo $lti_url_value ?>">
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit"
+                        class="btn btn-primary"><?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
+                </form>
+            <?php endif; ?>
         </div>
 
     </div>
