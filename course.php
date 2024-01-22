@@ -29,6 +29,7 @@ global $PAGE, $DB;
 
 $action      = required_param('action', PARAM_ALPHA);
 $token_param = required_param('token', PARAM_ALPHANUMEXT);
+$search_term = optional_param('search_term', '', PARAM_ALPHANUMEXT);
 
 $config = new \quizaccess_edusynch\config();
 $token  = $config->get_key('oauth_token');
@@ -40,7 +41,17 @@ if ($token->value !== $token_param) {
 }
 
 if ($action == 'list') {
-    $courses        = $DB->get_records("course");
+    $couses         = [];
+    $likefullname   = $DB->sql_like('fullname', ':fullname');
+    if (empty($search_term)) {
+        $courses = $DB->get_records("course");
+    } else {
+        $courses = $DB->get_records_sql(
+            "SELECT * FROM {course} WHERE {$likefullname}",
+            ['fullname' => '%' . $DB->sql_like_escape($search_term) . '%'],
+        );
+    }
+    
     $parsed_courses = [];
 
     foreach ($courses as $course) {
@@ -53,7 +64,7 @@ if ($action == 'list') {
     }
 
     header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'courses' => $parsed_courses]);
+    echo json_encode(['success' => "%{$search_term}%", 'courses' => $parsed_courses]);
 } else if ($action == 'show') {
     $courseId       = required_param('id', PARAM_INT);
     $course        = $DB->get_record("course", ['id' => intval($courseId)]);
@@ -68,4 +79,5 @@ if ($action == 'list') {
     header('Content-Type: application/json');
     echo json_encode(['success' => true, 'course' => $course]);
 }
+
 
