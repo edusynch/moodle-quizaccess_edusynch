@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Course actions
+ * Student actions
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
@@ -29,7 +29,6 @@ global $PAGE, $DB;
 
 $action      = required_param('action', PARAM_ALPHA);
 $token_param = required_param('token', PARAM_ALPHANUMEXT);
-$search_term = optional_param('search_term', '', PARAM_ALPHANUMEXT);
 
 $config = new \quizaccess_edusynch\config();
 $token  = $config->get_key('oauth_token');
@@ -41,43 +40,27 @@ if ($token->value !== $token_param) {
 }
 
 if ($action == 'list') {
-    $couses         = [];
-    $likefullname   = $DB->sql_like('fullname', ':fullname');
-    if (empty($search_term)) {
-        $courses = $DB->get_records("course");
-    } else {
-        $courses = $DB->get_records_sql(
-            "SELECT * FROM {course} WHERE {$likefullname}",
-            ['fullname' => '%' . $DB->sql_like_escape($search_term) . '%'],
-        );
-    }
+    $users = $DB->get_records_sql(
+      "SELECT DISTINCT {user}.* FROM {user} INNER JOIN {role_assignments} ON {role_assignments}.userid = {user}.id INNER JOIN {role} ON {role}.id = {role_assignments}.roleid WHERE {role}.archetype = 'student'"
+    );
     
-    $parsed_courses = [];
+    $parsed_users = [];
 
-    foreach ($courses as $course) {
-        array_push($parsed_courses, [
-            'id'         => $course->id,
-            'name'       => $course->fullname,
-            'created_at' => date('Y-m-d H:i:s', $course->timecreated),
-            'published'  => $course->visible == "1" ? true : false,
-        ]);
+    foreach ($users as $user) {
+        array_push($parsed_users,  [
+          'id'        => $user->id,
+          'username'  => $user->username,
+          'firstname' => $user->firstname,
+          'lastname'  => $user->lastname,
+          'email'     => $user->email,
+          'address'   => $user->address,
+          'city'      => $user->city,
+          'country'   => $user->country,
+          'name'      => "{$user->firstname} {$user->lastname}",
+      ]);
     }
 
     header('Content-Type: application/json');
-    echo json_encode(['success' => "%{$search_term}%", 'courses' => $parsed_courses]);
-} else if ($action == 'show') {
-    $courseId       = required_param('id', PARAM_INT);
-    $course        = $DB->get_record("course", ['id' => intval($courseId)]);
-
-    $course = [
-        'id'         => $course->id,
-        'name'       => $course->fullname,
-        'created_at' => date('Y-m-d H:i:s', $course->timecreated),
-        'published'  => $course->visible == "1" ? true : false,
-    ];
-
-    header('Content-Type: application/json');
-    echo json_encode(['success' => true, 'course' => $course]);
+    echo json_encode(['success' => true, 'students' => $parsed_users]);
 }
-
 
