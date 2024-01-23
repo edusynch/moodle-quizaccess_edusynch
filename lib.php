@@ -35,7 +35,8 @@ function quizaccess_edusynch_render_navbar_output() {
     $url = new \moodle_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
     $icon = new \pix_icon('i/hide', '');
     $node = navigation_node::create($title, $url, navigation_node::TYPE_CUSTOM, null, null, $icon);
-    $PAGE->navigation->add($node);
+    $node->showinflatnavigation = true;
+    $PAGE->navigation->add_node($node);
 
     return '';
 }
