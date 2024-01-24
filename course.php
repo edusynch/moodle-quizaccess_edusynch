@@ -64,7 +64,7 @@ if ($action == 'list') {
     }
 
     header('Content-Type: application/json');
-    echo json_encode(['success' => "%{$search_term}%", 'courses' => $parsed_courses]);
+    echo json_encode(['success' => true, 'courses' => $parsed_courses]);
 } else if ($action == 'show') {
     $courseId       = required_param('id', PARAM_INT);
     $course        = $DB->get_record("course", ['id' => intval($courseId)]);
