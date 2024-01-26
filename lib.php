@@ -31,15 +31,18 @@ function quizaccess_edusynch_render_navbar_output() {
         return '';
     }
 
+    $title = "EduSynch E-Proctoring";
+    $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
+    $icon = new \pix_icon('i/hide', '');
+    $node = \navigation_node::create($title, $url, \navigation_node::TYPE_CUSTOM, null, null, $icon);
     $version = explode(".", $CFG->release);
     if ($version[0] < '4') {
-        $title = "EduSynch E-Proctoring";
-        $url = new \moodle_url('/mod/quiz/accessrule/edusyncheproctoring/index.php');
-        $icon = new \pix_icon('i/hide', '');
-        $node = navigation_node::create($title, $url, navigation_node::TYPE_CUSTOM, null, null, $icon);
         $PAGE->flatnav->add($node);
 
         return '';
+    } else {
+        $node->showinflatnavigation = true;
+        $PAGE->navigation->add_node($node);
     }
 }
 
