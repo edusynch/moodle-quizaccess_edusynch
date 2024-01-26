@@ -90,39 +90,92 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
                 'user_id' => $userid,
                 'expiration' => $expiration_now,
             ]
-        );
+        ); 
+
+        $config        = new \quizaccess_edusynch\config();
+        $lti_url       = $config->get_key('lti_url');       
+
+        if (!$token_record) {
+            $expiration_datetime->add(new DateInterval('PT10M'));
+
+            $new_token_record             = new \stdClass;
+            $new_token_record->user_id    = $userid;
+            $new_token_record->token      = md5("user_id=$userid,quiz_id=$quizid,date=$expiration_now");
+            $new_token_record->expiration = $expiration_datetime->format('Y-m-d H:i:s');
+            $DB->insert_record('quizaccess_edusynch_tokens', $new_token_record);
+            $token_string = $new_token_record->token;
+        } else {
+            $token_string = $token_record->token;
+        }
+
+        $payload = [
+            'provider' => 'moodle',
+            'url' => 'http' . (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+            'student_data' => [
+                'token' => $token_string
+            ]
+        ];
+
+        $login_request = \quizaccess_edusynch\network::sendRequest(
+            'POST', 
+            'lti',
+            $lti_url->value . '/auth/v1/authentications/login', 
+            ['payload' => json_encode($payload)],
+            ['Content-Type' => 'form-data']
+        );    
+
+            
+        $framechecker = "";
+        $quizProctored = false;
+        if(array_key_exists("content", $login_request) && $login_request["content"]["enabled"]) 
+            $quizProctored = true;
+
+        if($quizProctored) {
+            $json_encode_response = json_encode($login_request);
+            $framechecker = "
+            div.innerHTML='<iframe id=\"edusynch-app\" style=\"border: 0;\" src=\"https://checker.edusynch.com/\" width=\"100%\" height=\"920\"></iframe>';
+            ";
+        }
+
 
         $js = "
+            window.LOGIN_LTI = JSON.parse('{$json_encode_response}');
             var div = document.querySelectorAll('.quizstartbuttondiv')[0].parentNode;
             var form = div.querySelectorAll('form')[0];
             var btn = form.querySelectorAll('button[type=submit]')[0];
-            
-            btn.setAttribute('data-eproctoring', 'submit');
+             
+            btn.style.display = 'none';
 
-            var btnsub = document.getElementById(\"id_submitbutton\");
-            btnsub.setAttribute('data-eproctoring', 'start');            
+            setTimeout(function(){
+                // Insert iframe 
+                if(document.head.dataset.eproctoring != 'true') {
+                    {$framechecker}
+                } else {
+                    btn.style.display = '';
+                    btn.setAttribute('data-eproctoring', 'submit');
+        
+                    var btnsub = document.getElementById(\"id_submitbutton\");
+                    btnsub.setAttribute('data-eproctoring', 'start');   
+                }    
+            }, 3000);
+     
         ";        
 
-        $PAGE->requires->js_init_code($js);
-    
-    } catch (Exception $e) {
-        // die($e->getMessage());
+        echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
+
+        $PAGE->requires->js_init_code($js);                  
+    } catch (\Exception $e) {
+        // Form free
+        $error = json_encode($e->getMessage());
+
+        $js = "
+            console.log('ERROR: {$error}');
+        ";        
+
+
+        $PAGE->requires->js_init_code($js);        
     }
 
-    if (!$token_record) {
-        $expiration_datetime->add(new DateInterval('PT10M'));
-
-        $new_token_record             = new \stdClass;
-        $new_token_record->user_id    = $userid;
-        $new_token_record->token      = md5("user_id=$userid,quiz_id=$quizid,date=$expiration_now");
-        $new_token_record->expiration = $expiration_datetime->format('Y-m-d H:i:s');
-        $DB->insert_record('quizaccess_edusynch_tokens', $new_token_record);
-        $token_string = $new_token_record->token;
-    } else {
-        $token_string = $token_record->token;
-    }
-
-    echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
 }
 
 function quizaccess_edusynch_attempt_abandoned_handler($event)
