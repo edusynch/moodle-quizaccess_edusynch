@@ -46,6 +46,8 @@ if ($action == 'list') {
     
     $parsed_users = [];
 
+    // {$_SERVER['REQUEST_URI']}
+
     foreach ($users as $user) {
         array_push($parsed_users,  [
           'id'        => $user->id,
@@ -57,6 +59,7 @@ if ($action == 'list') {
           'city'      => $user->city,
           'country'   => $user->country,
           'name'      => "{$user->firstname} {$user->lastname}",
+          'avatar'    => "{$CFG->wwwroot}/user/pix.php/{$user->id}/f1.jpg",
       ]);
     }
 
