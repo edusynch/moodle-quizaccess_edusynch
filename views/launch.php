@@ -26,7 +26,7 @@
 <link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
 <div class="container">
     <div class="row mt-3">
-        <iframe class="row mt-3" style="width: 100%; height: 700px" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=Administrator&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle"></iframe>
+        <iframe class="row mt-3" style="width: 100%; height: 700px" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=Administrator&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle&launch_presentation_locale=<?php echo $locale ?>"></iframe>
     </div>
 </div>
 <script src="js/session-view.js"></script>
