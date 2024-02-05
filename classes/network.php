@@ -26,6 +26,9 @@ namespace quizaccess_edusynch;
 use quizaccess_edusynch\config;
 use quizaccess_edusynch\helpers;
 
+use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ServerException;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/quiz/accessrule/edusynch/vendor/autoload.php');
@@ -101,6 +104,9 @@ class network {
                 case 'events':
                     $api_url = $events_api;
                 break;
+                case 'lti':
+                    $api_url = ''; // filled dynamic
+                break;
             }
 
             $default_headers = ['Content-Type' => array_key_exists('Content-Type', $headers) ? $headers['Content-Type'] : 'application/json'];
@@ -113,9 +119,17 @@ class network {
             if($body && count($body) > 0) {
                 if($default_headers['Content-Type'] != 'application/json') {
                     unset($request_config['headers']['Content-Type']); // Auto-seted by Guzzle
-                    $request_config['multipart'] = [
-                        ['name' => 'file', 'contents' => \GuzzleHttp\Psr7\Utils::tryFopen($body['file'],'r'), 'filename' => $body['filename']]
-                    ];
+                    
+                    if($default_headers['Content-Type'] == 'multipart/form-data') {
+                        $request_config['multipart'] = [
+                            ['name' => 'file', 'contents' => \GuzzleHttp\Psr7\Utils::tryFopen($body['file'],'r'), 'filename' => $body['filename']]
+                        ];
+                    }
+
+                    if($default_headers['Content-Type'] == 'form-data') {
+                        $request_config['form_params'] = $body;
+                    }                    
+
                 } else {
                     $request_config['json'] = $body;
                 }
@@ -123,7 +137,7 @@ class network {
     
             $request = $client->request(
                 $method, 
-                $api_url . '/' . $url,
+                empty($api_url) ? $url : ($api_url . '/' . $url),
                 $request_config
             );
             
