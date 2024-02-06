@@ -127,7 +127,7 @@ if ($action == 'show') {
     echo json_encode($response);
 } else if ($action == 'update') {
     $quiz_id     = required_param('id', PARAM_INT);
-    $description = optional_param('description', '', PARAM_ALPHANUMEXT);
+    $description = optional_param('description', '', PARAM_TEXT);
     $timeclose   = optional_param('timeclose', '', PARAM_INT);
     $access_code = optional_param('access_code', '', PARAM_ALPHANUMEXT);
 
