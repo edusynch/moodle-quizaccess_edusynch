@@ -33,6 +33,7 @@ require_login();
 
 $action     = optional_param('action', 'settings', PARAM_ALPHA);
 $generate   = optional_param('generate', '', PARAM_ALPHA);
+$lti_url    = optional_param('lti_url', '', PARAM_ALPHA);
 $subaction  = optional_param('subaction', '', PARAM_ALPHA);
 
 global $PAGE, $DB, $ADMIN, $SESSION, $USER;
@@ -68,17 +69,25 @@ if ($action != 'settings' && !$config_key) {
             $token = substr($string, 0, 70);
             $config->set_key('oauth_token', $token);
         }
+
+        if ($lti_url == 'save') {
+            $lti_url = optional_param('url', '', PARAM_TEXT);
+            $config->set_key('lti_url', $lti_url);
+        }
         
         $token         = optional_param('token', '', PARAM_ALPHANUMEXT);    
         $success = (bool) $success;  
 
-        $token        = $config->get_key('oauth_token');
-        $token_value  = $token ? $token->value : null;
+        $token         = $config->get_key('oauth_token');
+        $lti_url       = $config->get_key('lti_url');
+        $token_value   = $token ? $token->value : null;
+        $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     
     }  else if ($action == 'launch') {
         $user_id   = $USER->id;
         $user_role = $USER->role;
-        $cms_api   = $config->get_key('cms_api'); 
+        $cms_api   = $config->get_key('cms_api');
+        $lti_url   = $config->get_key('lti_url');
 
         $role_assignamens = $DB->get_records("role_assignments", ['userid' => $user_id]);
         $roles = [];
@@ -87,9 +96,10 @@ if ($action != 'settings' && !$config_key) {
             array_push($roles, ucfirst($result->archetype));
         }
 
-        $domain      = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
-        $token       = $config->get_key('oauth_token');
-        $token_value = $token ? $token->value : null;
+        $domain        = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
+        $token         = $config->get_key('oauth_token');
+        $token_value   = $token ? $token->value : null;
+        $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     }
     
 }

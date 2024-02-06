@@ -44,11 +44,25 @@ if ($action == 'show') {
     $quiz_id   = optional_param('quizId', '', PARAM_INT);
 
     if (!empty($quiz_id)) {
-        $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
+        $quiz = $DB->get_record_sql(
+            'SELECT {course_modules}.id AS `quiz_id`, {quiz}.* FROM {quiz}, {course_modules}, {modules} 
+            
+            WHERE 
+            {course_modules}.id = :quiz_id
+            AND {course_modules}.module = {modules}.id 
+            AND {modules}.name = :module_name
+            AND mdl_course_modules.instance = mdl_quiz.id
+            ',
+            [
+                'module_name' => 'quiz',
+                'quiz_id' => $quiz_id,
+            ]
+        );  
+
         $response = [
             'success' => true,
             'quiz'    => [
-                'id'          => $quiz->id,
+                'id'          => $quiz->quiz_id,
                 'title'       => $quiz->name,
                 'access_code' => $quiz->password,
                 'course_id'   => $quiz->course,
@@ -60,14 +74,27 @@ if ($action == 'show') {
             ],
         ];
     } else {
-        $quizzes        = $DB->get_records('quiz', ['course' => $course_id]);
+        $quizzes = $DB->get_records_sql(
+            'SELECT {course_modules}.id AS `quiz_id`, {quiz}.* FROM {quiz}, {course_modules}, {modules} 
+            
+            WHERE 
+            {course_modules}.course = :course_id
+            AND {course_modules}.module = {modules}.id 
+            AND {modules}.name = :module_name
+            AND mdl_course_modules.instance = mdl_quiz.id
+            ',
+            [
+                'module_name' => 'quiz',
+                'course_id' => $course_id,
+            ]
+        );  
         $parsed_quizzes = [];
         $page           = optional_param('page', 1, PARAM_INT);
         $paginates_per  = optional_param('paginates_per', 10, PARAM_INT);
 
         foreach ($quizzes as $quiz) {
             array_push($parsed_quizzes, [
-                'id'          => $quiz->id,
+                'id'          => $quiz->quiz_id,
                 'title'       => $quiz->name,
                 'access_code' => $quiz->password,
                 'course_id'   => $course_id,
@@ -104,7 +131,23 @@ if ($action == 'show') {
     $timeclose   = optional_param('timeclose', '', PARAM_INT);
     $access_code = optional_param('access_code', '', PARAM_ALPHANUMEXT);
 
-    $quiz     = $DB->get_record('quiz', ['id' => $quiz_id]);
+
+    $module = $DB->get_record_sql(
+        'SELECT {course_modules}.id AS `quiz_id`, {quiz}.* FROM {quiz}, {course_modules}, {modules} 
+        
+        WHERE 
+        {course_modules}.id = :quiz_id
+        AND {course_modules}.module = {modules}.id 
+        AND {modules}.name = :module_name
+        AND mdl_course_modules.instance = mdl_quiz.id
+        ',
+        [
+            'module_name' => 'quiz',
+            'quiz_id' => $quiz_id,
+        ]
+    );     
+
+    $quiz     = $DB->get_record('quiz', ['id' => $module->id]);
 
     if (!empty($description)) $quiz->intro = $description;
     if (!empty($timeclose)) $quiz->timeclose = $timeclose;

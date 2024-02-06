@@ -48,7 +48,6 @@ function quizaccess_edusynch_render_navbar_output() {
 
 function quizaccess_edusynch_before_footer()
 {
-
 }
 
 function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
@@ -104,4 +103,5 @@ function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
         }
     }
 }
+
 

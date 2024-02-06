@@ -24,13 +24,6 @@
 
 function quizaccess_edusynch_attempt_viewed_handler($event)
 {
-    global $DB, $SESSION, $USER, $CFG;
-
-    $userid       = $event->userid; 
-    $attemptid    = $event->objectid;
-    $cmid         = $event->contextinstanceid;
-    $currentpage  = optional_param('page', 0, PARAM_INT);
-
 
 }
 
@@ -46,14 +39,7 @@ function quizaccess_edusynch_attempt_regraded_handler($event)
 
 function quizaccess_edusynch_attempt_started_handler($event)
 {
-    global $DB, $SESSION, $USER, $CFG;
 
-    $userid       = $event->userid; 
-    $attemptid    = $event->objectid;
-    $cmid         = $event->contextinstanceid;
-    $quizid       = $DB->get_record('quiz_attempts', ['id' => $attemptid])->quiz; 
-    $quiz_enabled = \quizaccess_edusynch\quiz::is_enabled($quizid);
-    $currentpage  = 0;
     
 }
 
@@ -64,17 +50,6 @@ function quizaccess_edusynch_attempt_summary_viewed_handler($event)
 
 function quizaccess_edusynch_attempt_submitted_handler($event)
 {
-    global $SESSION;
-
-    $session_id    = isset($SESSION->edusynch_sessionid) ? $SESSION->edusynch_sessionid : null;        
-    $student_token = isset($SESSION->edusynch_token) ? $SESSION->edusynch_token : null;   
-
-    if(!is_null($session_id) && !is_null($student_token)) {
-        $SESSION->edusynch_started   = null;        
-        $SESSION->edusynch_token     = null;   
-        $SESSION->userid = null;
-        $SESSION->quizid = null;        
-    }
 
 }
 
@@ -85,20 +60,7 @@ function quizaccess_edusynch_report_viewed_handler($event)
 
 function quizaccess_edusynch_attempt_reviewed_handler($event)
 {
-    global $SESSION;
-    
-    $session_id    = isset($SESSION->edusynch_sessionid) ? $SESSION->edusynch_sessionid : null;        
 
-    if(!is_null($session_id)) {
-        echo "<script type=\"text/javascript\">
-        var body = document.querySelectorAll('body')[0];
-        
-        body.setAttribute('data-proctoring', 'expired');
-        </script>
-        ";   
-        
-        $SESSION->edusynch_sessionid = null;
-    }
 }
 
 function quizaccess_edusynch_course_module_instance_list_viewed_handler($event)
@@ -112,35 +74,26 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
 
     $context    = context_course::instance($COURSE->id);
     $userid     = $event->userid; 
-    $quizid     = $event->objectid; 
+    $quizid     = $event->objectid;
     
-    $quiz_enabled    = \quizaccess_edusynch\quiz::is_enabled($quizid);
 
-    if($quiz_enabled) {
-        $PAGE->requires->jquery();
+    $PAGE->requires->jquery();
 
-        $has_permission_to_view_report = has_capability('quizaccess/edusynch:view_report', $context);
+    $expiration_datetime = new DateTime('now');
+    $expiration_now      = $expiration_datetime->format('Y-m-d H:i:s');
+    $token_string        = null;
 
-        if($has_permission_to_view_report) {
-            $js = "
-            var main_div = $('div[role=main]');
-            main_div.append('<div class=\"text-center\"><a class=\"btn btn-warning\" href=\"$CFG->wwwroot/mod/quiz/accessrule/edusynch/index.php?action=sessions&courseid=$COURSE->id&quizid=$quizid\">". get_string('sessions_list:button', 'quizaccess_edusynch') ."</button></a>');
-            ";
-
-            $PAGE->requires->js_init_code($js);
-        }
-
-        $expiration_datetime = new DateTime('now');
-        $expiration_now      = $expiration_datetime->format('Y-m-d H:i:s');
-        $token_string        = null;
-
+    try {
         $token_record = $DB->get_record_sql(
             'SELECT * FROM {quizaccess_edusynch_tokens} WHERE user_id = :user_id AND expiration > :expiration',
             [
                 'user_id' => $userid,
                 'expiration' => $expiration_now,
             ]
-            );
+        ); 
+
+        $config        = new \quizaccess_edusynch\config();
+        $lti_url       = $config->get_key('lti_url');       
 
         if (!$token_record) {
             $expiration_datetime->add(new DateInterval('PT10M'));
@@ -155,55 +108,78 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
             $token_string = $token_record->token;
         }
 
-        echo "<script type=\"text/javascript\">window.token=\"$token_string\"</script>";
+        $payload = [
+            'provider' => 'moodle',
+            'url' => 'http' . (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],
+            'student_data' => [
+                'token' => $token_string
+            ]
+        ];
+
+        $login_request = \quizaccess_edusynch\network::sendRequest(
+            'POST', 
+            'lti',
+            $lti_url->value . '/auth/v1/authentications/login', 
+            ['payload' => json_encode($payload)],
+            ['Content-Type' => 'form-data']
+        );    
+
+            
+        $framechecker = "";
+        $quizProctored = false;
+        if(array_key_exists("content", $login_request) && $login_request["content"]["enabled"]) 
+            $quizProctored = true;
+
+        if($quizProctored) {
+            $json_encode_response = json_encode($login_request);
+            $framechecker = "
+            div.innerHTML='<iframe id=\"edusynch-app\" style=\"border: 0;\" src=\"https://checker.edusynch.com/\" width=\"100%\" height=\"920\"></iframe>';
+            ";
+        }
+
+
+        $js = "
+            window.LOGIN_LTI = JSON.parse('{$json_encode_response}');
+            var div = document.querySelectorAll('.quizstartbuttondiv')[0].parentNode;
+            var form = div.querySelectorAll('form')[0];
+            var btn = form.querySelectorAll('button[type=submit]')[0];
+             
+            btn.style.display = 'none';
+
+            setTimeout(function(){
+                // Insert iframe 
+                if(document.head.dataset.eproctoring != 'true') {
+                    {$framechecker}
+                } else {
+                    btn.style.display = '';
+                    btn.setAttribute('data-eproctoring', 'submit');
+        
+                    var btnsub = document.getElementById(\"id_submitbutton\");
+                    btnsub.setAttribute('data-eproctoring', 'start');   
+                }    
+            }, 3000);
+     
+        ";        
+
+        echo "<script type=\"text/javascript\">window.EDUSYNCH_TOKEN=\"$token_string\"</script>";
+
+        $PAGE->requires->js_init_code($js);                  
+    } catch (\Exception $e) {
+        // Form free
+        $error = json_encode($e->getMessage());
+
+        $js = "
+            console.log('ERROR: {$error}');
+        ";        
+
+
+        $PAGE->requires->js_init_code($js);        
     }
+
 }
 
 function quizaccess_edusynch_attempt_abandoned_handler($event)
 {
     // TODO
-}
-
-class quizaccess_edusynch extends quiz_access_rule_base {
-    public static function add_settings_form_fields(mod_quiz_mod_form $quizform, MoodleQuickForm $mform) {
-        global $COURSE;
-        
-        $context    = context_course::instance($COURSE->id);
-        
-        if(has_capability('quizaccess/edusynch:enable_quiz', $context)) {
-            
-            $eproctoring_required = 0;
-            $form_data = $quizform->get_current(); 
-
-            if(isset($form_data->id) && !is_null($form_data->id)) {
-                $config          = new \quizaccess_edusynch\config();
-                $enabled_quizzes = $config->get_key('quizzes');
-                
-                if(!is_null($enabled_quizzes)) {
-                    $quizzes = json_decode($enabled_quizzes->value, true);
-                    foreach($quizzes as $quiz) {
-                        if($quiz['id'] == $form_data->id) {
-                            $eproctoring_required = 1;
-                            continue;
-                        }
-                    }
-                }
-            }
-
-            $header = $mform->createElement('header', 'edusynch', get_string('pluginname', 'quizaccess_edusynch'));
-            $mform->insertElementBefore($header, 'security');
-
-            $element = $mform->createElement(
-                'select',
-                'edusynch_requireeproctoring',
-                get_string('config:require_for_quiz', 'quizaccess_edusynch'),
-                [0 => get_string('misc:no', 'quizaccess_edusynch'), 1 => get_string('misc:yes', 'quizaccess_edusynch')]
-            );
-            $mform->insertElementBefore($element, 'security');
-            $mform->setType('edusynch_requireeproctoring', PARAM_INT);
-            $mform->setDefault('edusynch_requireeproctoring', $eproctoring_required);
-        }
-
-    }
 }
 

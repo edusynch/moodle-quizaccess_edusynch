@@ -45,6 +45,7 @@ $string['misc:label_total_pages'] = 'of {$a}';
 $string['config:keys'] = 'Keys';
 $string['config:api_key'] = 'API Key';
 $string['config:token'] = 'Token';
+$string['config:url'] = 'LTI url';
 $string['config:generate_token'] = 'Generate Token';
 $string['config:students_api'] = 'Students API';
 $string['config:cms_api'] = 'CMS API';
