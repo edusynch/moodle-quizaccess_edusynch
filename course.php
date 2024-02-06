@@ -42,7 +42,7 @@ if ($token->value !== $token_param) {
 
 if ($action == 'list') {
     $couses         = [];
-    $likefullname   = $DB->sql_like('fullname', ':fullname');
+    $likefullname   = $DB->sql_like('fullname', ':fullname', false);
     if (empty($search_term)) {
         $courses = $DB->get_records("course");
     } else {
