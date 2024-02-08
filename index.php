@@ -86,6 +86,7 @@ if ($action != 'settings' && !$config_key) {
     }  else if ($action == 'launch') {
         $user_id   = $USER->id;
         $user_role = $USER->role;
+        $locale    = $USER->lang;
         $cms_api   = $config->get_key('cms_api');
         $lti_url   = $config->get_key('lti_url');
 
