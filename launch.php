@@ -1,4 +1,4 @@
-<?php
+<?php 
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * LTI view
+ * Launch
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
@@ -22,13 +22,23 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-?>
-<link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
-<div class="container-fluid">
-    <div class="row mt-3">
-        <iframe class="row mt-3" style="width: 100%; height: 700px; border: none;" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=Administrator&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle&launch_presentation_locale=<?php echo $locale ?>&token=<?php echo $token_string ?>"></iframe>
-    </div>
-</div>
-<script src="js/session-view.js"></script>
-<script src="js/bootstrap4-toggle.min.js"></script>
+require_once(__DIR__ . '/../../../../config.php');
+
+global $PAGE, $DB;
+
+$arguments = file_get_contents('php://input');
+$payload = json_decode($arguments, true);
+
+$quizaccess_auth = $DB->get_record('quizaccess_edusynch_auth', ['token' => $payload['token']]);
+
+if ($quizaccess_auth) {
+  header('Content-Type: application/json');
+  echo json_encode(['user_id' => $quizaccess_auth->user_id]);
+  return;
+}
+
+header("HTTP/1.1 400 Bad Request");
+header('Content-Type: application/json');
+echo json_encode(['error' => 'User not found']);
+return;
 
