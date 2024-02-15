@@ -45,7 +45,7 @@ $PAGE->set_title(get_string('pluginname', 'quizaccess_edusynch'));
 $PAGE->set_heading(get_string('pluginname', 'quizaccess_edusynch'));
 
 $config      = new \quizaccess_edusynch\config();
-$config_key  = $config->get_key('oauth_token');    
+$config_key  = $config->get_key('oauth_token');
 
 if ($action != 'settings' && !$config_key) {
     echo $OUTPUT->header();
@@ -96,6 +96,12 @@ if ($action != 'settings' && !$config_key) {
             $result = $DB->get_record('role', ['id' => $role_assignamen->roleid]);
             array_push($roles, ucfirst($result->archetype));
         }
+        $apply_role = 'Learner';
+
+        if (in_array('Editingteacher', $roles))
+            $apply_role = 'Instructor';
+        if (is_siteadmin() || in_array('Manager', $roles))
+            $apply_role = 'Administrator';
 
         $domain        = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
         $token         = $config->get_key('oauth_token');
