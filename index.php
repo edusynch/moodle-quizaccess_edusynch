@@ -90,6 +90,12 @@ if ($action != 'settings' && !$config_key) {
         $cms_api   = $config->get_key('cms_api');
         $lti_url   = $config->get_key('lti_url');
 
+        $new_token_record          = new \stdClass;
+        $new_token_record->user_id = $user_id;
+        $new_token_record->token   = md5("user_id=$userid");
+        $token_string              = $new_token_record->token;
+        $DB->insert_record('quizaccess_edusynch_auth', $new_token_record);
+
         $role_assignamens = $DB->get_records("role_assignments", ['userid' => $user_id]);
         $roles = [];
         foreach ($role_assignamens as $role_assignamen) {
