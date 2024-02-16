@@ -1,4 +1,4 @@
-<?php
+<?php 
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Version description
+ * Launch
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
@@ -22,15 +22,23 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+require_once(__DIR__ . '/../../../../config.php');
 
-$plugin->version = 2024021601;
-$plugin->requires = 2018120309;
-$plugin->component = 'quizaccess_edusynch';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'JKR_20240216';
+global $PAGE, $DB;
 
-$plugin->dependencies = [
-    'mod_quiz' => ANY_VERSION,
-];
+$arguments = file_get_contents('php://input');
+$payload = json_decode($arguments, true);
+
+$quizaccess_auth = $DB->get_record('quizaccess_edusynch_auth', ['token' => $payload['token']]);
+
+if ($quizaccess_auth) {
+  header('Content-Type: application/json');
+  echo json_encode(['user_id' => $quizaccess_auth->user_id]);
+  return;
+}
+
+header("HTTP/1.1 400 Bad Request");
+header('Content-Type: application/json');
+echo json_encode(['error' => 'User not found']);
+return;
 
