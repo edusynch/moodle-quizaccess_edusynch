@@ -25,14 +25,11 @@
 function quizaccess_edusynch_render_navbar_output() {
     global $PAGE, $CFG;
 
-    $context = context_system::instance();
-
-    if (!is_siteadmin()) {
-        return '';
-    }
-
     $title = "EduSynch E-Proctoring";
     $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
+    if (!is_siteadmin()) {
+        $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch');
+    }
     $icon = new \pix_icon('i/hide', '');
     $node = \navigation_node::create($title, $url, \navigation_node::TYPE_CUSTOM, null, null, $icon);
     $version = explode(".", $CFG->release);
@@ -103,5 +100,4 @@ function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
         }
     }
 }
-
 
