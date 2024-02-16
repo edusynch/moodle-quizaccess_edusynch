@@ -72,5 +72,27 @@ function xmldb_quizaccess_edusynch_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023121300, 'quizaccess', 'edusynch');
     }    
 
+    if ($oldversion < 2024021601) {
+
+        // Define table quizaccess_edusynch_sessions to be created.
+        $table = new xmldb_table('quizaccess_edusynch_auth');
+
+        // Adding fields to table quizaccess_edusynch_tokens.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('user_id', XMLDB_TYPE_INTEGER, '20', null, XMLDB_NOTNULL, null, null);
+        $table->add_field('token', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table quizaccess_edusynch_tokens.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for quizaccess_edusynch_sessions.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // edusynch savepoint reached.
+        upgrade_plugin_savepoint(true, 2024021601, 'quizaccess', 'edusynch');
+    }        
+
     return true;
 }
