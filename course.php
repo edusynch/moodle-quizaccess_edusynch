@@ -41,9 +41,23 @@ if ($token->value !== $token_param) {
 }
 
 if ($action == 'list') {
+    $user_id        = optional_param('user_id', '', PARAM_INT);
     $couses         = [];
     $likefullname   = $DB->sql_like('fullname', ':fullname', false);
-    if (empty($search_term)) {
+    if (isset($user_id)) {
+        $courses = $DB->get_records_sql(
+            'SELECT {course}.* FROM {course}, {user_enrolments}, {enrol} , {user}
+                WHERE
+                {user}.id = :user_id
+                AND {user}.id = {user_enrolments}.userid
+                AND {user_enrolments}.enrolid = {enrol}.id
+                AND {enrol}.courseid = {course}.id
+            ',
+            [
+                'user_id' => $user_id,
+            ]
+        );
+    } else if (empty($search_term)) {
         $courses = $DB->get_records("course");
     } else {
         $courses = $DB->get_records_sql(
@@ -79,5 +93,4 @@ if ($action == 'list') {
     header('Content-Type: application/json');
     echo json_encode(['success' => true, 'course' => $course]);
 }
-
 
