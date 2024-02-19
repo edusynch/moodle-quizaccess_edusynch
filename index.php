@@ -85,15 +85,15 @@ if ($action != 'settings' && !$config_key) {
     
     }  else if ($action == 'launch') {
         $course_id = $_GET['id'];
-        $user_id   = 5;
+        $user_id   = $USER->id;
         $user_role = $USER->role;
         $locale    = $USER->lang;
         $cms_api   = $config->get_key('cms_api');
         $lti_url   = $config->get_key('lti_url');
 
         $new_token_record          = new \stdClass;
-        $new_token_record->user_id = 5;
-        $new_token_record->token   = md5("user_id=$userid");
+        $new_token_record->user_id = $user_id;
+        $new_token_record->token   = md5("user_id=$user_id");
         $token_string              = $new_token_record->token;
         $DB->insert_record('quizaccess_edusynch_auth', $new_token_record);
 
