@@ -29,6 +29,9 @@ function quizaccess_edusynch_render_navbar_output() {
     $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
     if (!is_siteadmin()) {
         $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['id']);
+        if (str_contains($PAGE->url, 'accessrule/edusynch')) {
+            $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['course_id']);
+        }
     }
     $icon = new \pix_icon('i/hide', '');
     $node = \navigation_node::create($title, $url, \navigation_node::TYPE_CUSTOM, null, null, $icon);
@@ -42,7 +45,7 @@ function quizaccess_edusynch_render_navbar_output() {
     }
 
     if ($version[0] < '4') {
-        if (!is_siteadmin() && !in_array('Manager', $roles) && !str_contains($PAGE->url, 'course') && !str_contains($PAGE->url, 'edusynch')) {
+        if (!is_siteadmin() && !in_array('Manager', $roles) && !str_contains($PAGE->url, 'course') && !str_contains($PAGE->url, 'accessrule/edusynch')) {
             return;
         }
 
