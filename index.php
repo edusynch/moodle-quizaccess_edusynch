@@ -84,7 +84,7 @@ if ($action != 'settings' && !$config_key) {
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     
     }  else if ($action == 'launch') {
-        $course_id = $_GET['id'];
+        $course_id = $_GET['course_id'];
         $user_id   = $USER->id;
         $user_role = $USER->role;
         $locale    = $USER->lang;
