@@ -46,7 +46,7 @@ function quizaccess_edusynch_render_navbar_output() {
     }
 
     if ($version[0] < '4') {
-        if (!is_siteadmin() && !in_array('Manager', $roles) && (!str_contains($PAGE->url, 'course') || !str_contains($PAGE->url, 'edusynch'))) {
+        if (!is_siteadmin() && !in_array('Manager', $roles) && !str_contains($PAGE->url, 'course') && !str_contains($PAGE->url, 'edusynch')) {
             return;
         }
 
