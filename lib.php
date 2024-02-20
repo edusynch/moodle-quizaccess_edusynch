@@ -28,7 +28,11 @@ function quizaccess_edusynch_render_navbar_output() {
     $title = "EduSynch E-Proctoring";
     $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
     if (!is_siteadmin()) {
-        $url = new \moodle_url("/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=" . $_GET['id']);
+        $course_id = $_GET['id'];
+        if (str_contains($PAGE->url, 'edusynch')) {
+            $course_id = $_GET['course_id'];
+        }
+        $url = new \moodle_url("/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=" . $course_id);
     }
     $icon = new \pix_icon('i/hide', '');
     $node = \navigation_node::create($title, $url, \navigation_node::TYPE_CUSTOM, null, null, $icon);
@@ -42,7 +46,7 @@ function quizaccess_edusynch_render_navbar_output() {
     }
 
     if ($version[0] < '4') {
-        if (!is_siteadmin() && !in_array('Manager', $roles) && (!str_contains($PAGE->url, 'course'))) {
+        if (!is_siteadmin() && !in_array('Manager', $roles) && (!str_contains($PAGE->url, 'course') || !str_contains($PAGE->url, 'edusynch'))) {
             return;
         }
 
