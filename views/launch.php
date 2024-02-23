@@ -26,7 +26,7 @@
 <link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
 <div class="container-fluid">
     <div class="row mt-3">
-        <iframe class="row mt-3" style="width: 100%; height: 700px; border: none;" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=<?php echo $apply_role ?>&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle&launch_presentation_locale=<?php echo $locale ?>&token=<?php echo $token_string ?>"></iframe>
+        <iframe class="row mt-3" style="width: 100%; height: 700px; border: none;" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=<?php echo $apply_role ?>&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle&launch_presentation_locale=<?php echo $locale ?>&token=<?php echo $token_string ?>&course_id=<?php echo $course_id ?>&token_value=<?php echo $token_value ?>"></iframe>
     </div>
 </div>
 <script src="js/session-view.js"></script>

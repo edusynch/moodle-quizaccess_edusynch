@@ -47,6 +47,11 @@ $PAGE->set_heading(get_string('pluginname', 'quizaccess_edusynch'));
 $config      = new \quizaccess_edusynch\config();
 $config_key  = $config->get_key('oauth_token');
 
+function generateToken() {
+    $string = sha1(rand());
+    return substr($string, 0, 70);
+}
+
 if ($action != 'settings' && !$config_key) {
     echo $OUTPUT->header();
     include 'views/navbars.php';
@@ -63,12 +68,6 @@ if ($action != 'settings' && !$config_key) {
         require_capability('quizaccess/edusynch:edit_settings', $context);
     
         global $PAGE;
-    
-        if ($generate == 'token') {
-            $string = sha1(rand());
-            $token = substr($string, 0, 70);
-            $config->set_key('oauth_token', $token);
-        }
 
         if ($lti_url == 'save') {
             $lti_url = optional_param('url', '', PARAM_TEXT);
@@ -80,10 +79,12 @@ if ($action != 'settings' && !$config_key) {
 
         $token         = $config->get_key('oauth_token');
         $lti_url       = $config->get_key('lti_url');
-        $token_value   = $token ? $token->value : null;
+        $token_value   = $token ? $token->value : generateToken();
+        $saved_token   = $token ? substr_replace($token->value, '***********', 5) : '';
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     
     }  else if ($action == 'launch') {
+        $course_id = $_GET['course_id'];
         $user_id   = $USER->id;
         $user_role = $USER->role;
         $locale    = $USER->lang;
@@ -92,7 +93,7 @@ if ($action != 'settings' && !$config_key) {
 
         $new_token_record          = new \stdClass;
         $new_token_record->user_id = $user_id;
-        $new_token_record->token   = md5("user_id=$userid");
+        $new_token_record->token   = md5("user_id=$user_id");
         $token_string              = $new_token_record->token;
         $DB->insert_record('quizaccess_edusynch_auth', $new_token_record);
 
@@ -111,7 +112,7 @@ if ($action != 'settings' && !$config_key) {
 
         $domain        = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
         $token         = $config->get_key('oauth_token');
-        $token_value   = $token ? $token->value : null;
+        $token_value   = $token ? $token->value : generateToken();
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     }
     
