@@ -28,7 +28,6 @@ $host = $PAGE->url->get_host();
 ?>
 
     <div class="tab-content">
-
         <?php if ($success): ?>
         <div class="alert alert-success"><?php echo get_string('misc:success', 'quizaccess_edusynch') ?></div>
         <?php endif; ?>
@@ -42,7 +41,7 @@ $host = $PAGE->url->get_host();
                             <label for="token"><?php echo get_string('config:token', 'quizaccess_edusynch') ?>:
                             </label>
                             <input class="form-control" type="text" id="token" name="token"
-                                value="<?php echo $token_value ?>">
+                                value="<?php echo $saved_token ?>">
                         </div>
                     </div>
                 </div>

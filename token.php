@@ -25,15 +25,15 @@ header('Content-Type: application/json');
 
 require_once(__DIR__ . '/../../../../config.php');
 
-global $PAGE, $DB;
+global $PAGE, $DB, $CFG;
 
 $config = new \quizaccess_edusynch\config();
 
 $action = required_param('action', PARAM_ALPHA);
-$token_param = required_param('token', PARAM_ALPHANUMEXT);
 
 if ($action == 'validate') {
-    $token = $config->get_key('oauth_token');
+    $token_param = required_param('token', PARAM_ALPHANUMEXT);
+    $token       = $config->get_key('oauth_token');
 
     if ($token->value === $token_param) {
         header('Content-Type: application/json');
@@ -44,4 +44,18 @@ if ($action == 'validate') {
     }
 }
 
+if ($action == 'install') {
+    $arguments = file_get_contents('php://input');
+    $payload = json_decode($arguments, true);
+    if (!is_siteadmin($payload['user_id'])) {
+        header("HTTP/1.1 401 Unauthorized");
+        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+        die;
+    }
+
+    $config->set_key('oauth_token', $payload['token']);
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
+}
 
