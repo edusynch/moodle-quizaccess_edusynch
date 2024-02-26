@@ -84,6 +84,7 @@ if ($action != 'settings' && !$config_key) {
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     
     }  else if ($action == 'launch') {
+        $course_id = $_GET['course_id'];
         $user_id   = $USER->id;
         $user_role = $USER->role;
         $locale    = $USER->lang;
@@ -92,7 +93,7 @@ if ($action != 'settings' && !$config_key) {
 
         $new_token_record          = new \stdClass;
         $new_token_record->user_id = $user_id;
-        $new_token_record->token   = md5("user_id=$userid");
+        $new_token_record->token   = md5("user_id=$user_id");
         $token_string              = $new_token_record->token;
         $DB->insert_record('quizaccess_edusynch_auth', $new_token_record);
 

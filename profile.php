@@ -57,11 +57,11 @@ if ($action == 'show') {
             'city'      => $user->city,
             'country'   => $user->country,
             'name'      => "{$user->firstname} {$user->lastname}",
+            'id'        => $user->id,
         ]]);
     } else {
         header('Content-Type: application/json');
         echo json_encode(['success' => false, 'message' => 'Profile not found']);
     }
 }
-
 
