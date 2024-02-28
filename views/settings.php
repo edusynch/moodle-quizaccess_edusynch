@@ -41,7 +41,7 @@ $host = $PAGE->url->get_host();
                             <label for="token"><?php echo get_string('config:token', 'quizaccess_edusynch') ?>:
                             </label>
                             <input class="form-control" type="text" id="token" name="token"
-                                value="<?php echo $saved_token ?>">
+                                value="<?php echo $token_value ?>">
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ $host = $PAGE->url->get_host();
                     class="btn btn-primary"><?php echo get_string('config:generate_token', 'quizaccess_edusynch') ?></button>
             </form>
 
-            <?php if (strpos($_SERVER['SERVER_NAME'], 'localhost') !== false): ?>
+            <?php if (strpos($_SERVER['SERVER_NAME'], 'edusynch') !== false): ?>
                 <form action="<?php echo EPROCTORING_URL  ?>?action=settings&lti_url=save" method="POST" class="mt-3">
                     <div class="row">
                         <div class="col-md-8">
@@ -81,7 +81,8 @@ $host = $PAGE->url->get_host();
 
 <span id="data-auth" data-label="<?php echo $_SESSION["USER"]->id ?>"></span>
 <span id="data-url" data-label="<?php echo $lti_url_value ?>"></span>
-<span id="data-draft-token" data-label="<?php echo $token_value ?>"></span>
+<span id="data-draft-token" data-label="<?php echo $draft_token ?>"></span>
+<span id="data-saved-token" data-label="<?php echo $saved_token ?>"></span>
 
 <script src="js/add-course.js"></script>
 <script src="js/add-token.js"></script>

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * oAuth actions
+ * URL actions
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
@@ -31,32 +31,12 @@ $config = new \quizaccess_edusynch\config();
 
 $action = required_param('action', PARAM_ALPHA);
 
-if ($action == 'validate') {
-    $token_param = required_param('token', PARAM_ALPHANUMEXT);
-    $token       = $config->get_key('oauth_token');
-
-    if ($token->value === $token_param) {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => true, 'message' => 'Valid token']);
-    } else {
-        header('Content-Type: application/json');
-        echo json_encode(['success' => false, 'message' => 'Invalid token']);
-    }
-}
-
-if ($action == 'install') {
+if ($action == 'save') {
     $arguments = file_get_contents('php://input');
     $payload = json_decode($arguments, true);
-    if (!is_siteadmin($payload['user_id'])) {
-        header("HTTP/1.1 401 Unauthorized");
-        echo json_encode(['success' => false, 'message' => 'Unauthorized']);
-        die;
-    }
+    $config->set_key('lti_url', $payload['url']);
 
-    $config->set_key('oauth_token', $payload['token']);
-
-
-    header('Location: ' . new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch'));
-    return;
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
 }
 

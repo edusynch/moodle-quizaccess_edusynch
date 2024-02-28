@@ -80,8 +80,11 @@ if ($action != 'settings' && !$config_key) {
         $token         = $config->get_key('oauth_token');
         $lti_url       = $config->get_key('lti_url');
         $token_value   = $token ? $token->value : generateToken();
-        $saved_token   = $token ? substr_replace($token->value, '***********', 5) : '';
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
+        $lti_url_value = strpos($_SERVER['SERVER_NAME'], 'edusynch') !== false ? $lti_url_value : null;
+
+        $draft_token   = generateToken();
+        $saved_token   = $token ? substr_replace($token->value, '***********', 5) : '';
     
     }  else if ($action == 'launch') {
         $course_id = $_GET['course_id'];
