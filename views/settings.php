@@ -22,6 +22,13 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 ?>
+
+<style>
+    .container {
+        background: #E2E8EE;
+        max-width: 100vw;
+    }
+</style>
 <div class="container">
     <?php 
 $host = $PAGE->url->get_host();
