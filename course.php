@@ -44,7 +44,7 @@ if ($action == 'list') {
     $user_id        = optional_param('user_id', '', PARAM_INT);
     $couses         = [];
     $likefullname   = $DB->sql_like('fullname', ':fullname', false);
-    if (isset($user_id)) {
+    if (!empty($user_id)) {
         $courses = $DB->get_records_sql(
             'SELECT {course}.* FROM {course}, {user_enrolments}, {enrol} , {user}
                 WHERE
