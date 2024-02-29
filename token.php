@@ -54,9 +54,10 @@ if ($action == 'install') {
     }
 
     $config->set_key('oauth_token', $payload['token']);
+    $url = new moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch');
 
-
-    header('Location: ' . new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch'));
-    return;
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true, 'url' => $url->__toString()]);
+    die;
 }
 

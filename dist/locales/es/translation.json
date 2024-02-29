@@ -1,0 +1,28 @@
+{
+  "token-settings": {
+    "title": "Token Settings",
+    "token-setup": "Token Setup",
+    "welcome-message": "Welcome to EduSynch E-Proctoring",
+    "welcome-description": "To get started on your academic journey, the first step is to generate a unique access token. This token will serve as your key to unlocking a seamless and protected testing environment.",
+    "generate-token": "Generate Token",
+    "generate-new-token-message": "To enhance the security of your account, you have the option to generate a new token. Please be aware that doing so will result in the deactivation of your current token, rendering it unusable. Additionally, all data linked to the previous token, such as session history and preferences, will be reset.",
+    "leave-page-warning": "Once you leave this page you won't be able to retrieve the full token anymore, you will have to generate again to get a new value.",
+    "token": "Token",
+    "edusynch-proctoring": "EduSynch E-Proctoring",
+    "lti-url": {
+      "title": "LTI URL",
+      "save": "Save URL"
+    }
+  },
+  "confirmation-modal": {
+    "title": "You are about to generate a new token",
+    "description": "This Token is unique. Once you leave this page you won’t be able to retrieve the full token anymore, you will have to generate again to get a new value.",
+    "click-continue": "Click on Continue if you wish to proceed.",
+    "read-instructions": "I have read and accept the instructions above.",
+    "confirm": "Confirm",
+    "loading-text": "Please wait..."
+  },
+  "footer": {
+    "copyright": "Copyright © <strong>Dokimi</strong>, Inc. All rights reserved"
+  }
+}
