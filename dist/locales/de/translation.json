@@ -1,0 +1,28 @@
+{
+  "token-settings": {
+    "title": "Token Settings",
+    "token-setup": "Zeichen Aufstellen",
+    "welcome-message": "Willkommen bei EduSynch E-Proctoring",
+    "welcome-description": "Um Ihre akademische Reise zu beginnen, besteht der erste Schritt darin, ein eindeutiges Zugriffstoken zu generieren. Dieses Token dient als Ihr Schlüssel zum Freischalten einer nahtlosen und geschützten Testumgebung.",
+    "generate-token": "Token generieren",
+    "generate-new-token-message": "Um die Sicherheit Ihres Kontos zu erhöhen, haben Sie die Möglichkeit, einen neuen Token zu generieren. Bitte beachten Sie, dass dies zur Deaktivierung Ihres aktuellen Tokens führt und ihn unbrauchbar macht. Darüber hinaus werden alle mit dem vorherigen Token verknüpften Daten wie Sitzungsverlauf und Präferenzen zurückgesetzt.",
+    "leave-page-warning": "Sobald Sie diese Seite verlassen, können Sie nicht mehr den vollständigen Token abrufen. Sie müssen ihn erneut generieren, um einen neuen Wert zu erhalten.",
+    "token": "Zeichen",
+    "edusynch-proctoring": "EduSynch E-Proctoring",
+    "lti-url": {
+      "title": "LTI URL",
+      "save": "URL speichern"
+    }
+  },
+  "confirmation-modal": {
+    "title": "You are about to generate a new token",
+    "description": "This Token is unique. Once you leave this page you won’t be able to retrieve the full token anymore, you will have to generate again to get a new value.",
+    "click-continue": "Click on <strong>Continue</strong> if you wish to proceed.",
+    "read-instructions": "I have read and accept the instructions above.",
+    "confirm": "Confirm",
+    "loading-text": "Please wait..."
+  },
+  "footer": {
+    "copyright": "Copyright © <strong>Dokimi</strong>, Inc. All rights reserved"
+  }
+}
