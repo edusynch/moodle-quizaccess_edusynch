@@ -84,7 +84,7 @@ if ($action != 'settings' && !$config_key) {
         $lti_url_value = strpos($_SERVER['SERVER_NAME'], 'edusynch.com') !== false ? $lti_url_value : null;
 
         $draft_token   = generateToken();
-        $saved_token   = $token ? substr_replace($token->value, '***********', 5) : '';
+        $saved_token   = $token ? $token->value : '';
         $moodle_url    = new moodle_url('/mod/quiz/accessrule/edusynch/');
     
     }  else if ($action == 'launch') {
@@ -116,7 +116,7 @@ if ($action != 'settings' && !$config_key) {
 
         $domain        = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
         $token         = $config->get_key('oauth_token');
-        $saved_token   = $token ? substr_replace($token->value, '***********', 5) : '';
+        $saved_token   = $token ? $token->value : '';
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     }
     
