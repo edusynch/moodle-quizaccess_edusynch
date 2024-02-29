@@ -29,7 +29,7 @@ function quizaccess_edusynch_render_navbar_output() {
     $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
     if (!is_siteadmin()) {
         $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['id']);
-        if (str_contains($PAGE->url, 'accessrule/edusynch')) {
+        if (strpos($PAGE->url, 'accessrule/edusynch') === true) {
             $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['course_id']);
         }
     }
