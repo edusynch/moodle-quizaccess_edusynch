@@ -47,6 +47,11 @@ $PAGE->set_heading(get_string('pluginname', 'quizaccess_edusynch'));
 $config      = new \quizaccess_edusynch\config();
 $config_key  = $config->get_key('oauth_token');
 
+function generateToken() {
+    $string = sha1(rand());
+    return substr($string, 0, 70);
+}
+
 if ($action != 'settings' && !$config_key) {
     echo $OUTPUT->header();
     include 'views/navbars.php';
@@ -63,12 +68,6 @@ if ($action != 'settings' && !$config_key) {
         require_capability('quizaccess/edusynch:edit_settings', $context);
     
         global $PAGE;
-    
-        if ($generate == 'token') {
-            $string = sha1(rand());
-            $token = substr($string, 0, 70);
-            $config->set_key('oauth_token', $token);
-        }
 
         if ($lti_url == 'save') {
             $lti_url = optional_param('url', '', PARAM_TEXT);
@@ -80,8 +79,13 @@ if ($action != 'settings' && !$config_key) {
 
         $token         = $config->get_key('oauth_token');
         $lti_url       = $config->get_key('lti_url');
-        $token_value   = $token ? $token->value : null;
+        $token_value   = $token ? $token->value : generateToken();
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
+        $lti_url_value = strpos($_SERVER['SERVER_NAME'], 'edusynch.com') !== false ? $lti_url_value : null;
+
+        $draft_token   = generateToken();
+        $saved_token   = $token ? $token->value : '';
+        $moodle_url    = new moodle_url('/mod/quiz/accessrule/edusynch/');
     
     }  else if ($action == 'launch') {
         $course_id = $_GET['course_id'];
@@ -112,7 +116,7 @@ if ($action != 'settings' && !$config_key) {
 
         $domain        = str_replace("/mod/quiz/accessrule/edusynch/index.php", "", $PAGE->url);
         $token         = $config->get_key('oauth_token');
-        $token_value   = $token ? $token->value : null;
+        $saved_token   = $token ? $token->value : '';
         $lti_url_value = $lti_url ? $lti_url->value : 'https://lti.edusynch.com';
     }
     

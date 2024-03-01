@@ -22,56 +22,17 @@
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 ?>
+
+<style>
+    .container {
+        background: #E2E8EE;
+        max-width: 100vw;
+    }
+</style>
 <div class="container">
     <?php 
 $host = $PAGE->url->get_host();
 ?>
-
-    <div class="tab-content">
-
-        <?php if ($success): ?>
-        <div class="alert alert-success"><?php echo get_string('misc:success', 'quizaccess_edusynch') ?></div>
-        <?php endif; ?>
-
-        <div class="tab-pane fade show active" id="nav-settings" role="tabpanel">
-            <h4 class="mt-3"><?php echo get_string('config:keys', 'quizaccess_edusynch') ?></h4>
-            <form action="<?php echo EPROCTORING_URL  ?>?action=settings&generate=token" method="POST" class="mt-3">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label for="token"><?php echo get_string('config:token', 'quizaccess_edusynch') ?>:
-                            </label>
-                            <input class="form-control" type="text" id="token" name="token"
-                                value="<?php echo $token_value ?>">
-                        </div>
-                    </div>
-                </div>
-
-                <button type="submit"
-                    class="btn btn-primary"><?php echo get_string('config:generate_token', 'quizaccess_edusynch') ?></button>
-            </form>
-
-            <?php if (strpos($_SERVER['SERVER_NAME'], 'edusynch.com') !== false): ?>
-                <form action="<?php echo EPROCTORING_URL  ?>?action=settings&lti_url=save" method="POST" class="mt-3">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="form-group">
-                                <label for="token"><?php echo get_string('config:url', 'quizaccess_edusynch') ?>:
-                                </label>
-                                <input class="form-control" type="text" id="url" name="url"
-                                    value="<?php echo $lti_url_value ?>">
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit"
-                        class="btn btn-primary"><?php echo get_string('config:save', 'quizaccess_edusynch') ?></button>
-                </form>
-            <?php endif; ?>
-        </div>
-
-    </div>
-</div>
 
 <span id="add-course-label" data-label="<?php echo get_string('config:add_course', 'quizaccess_edusynch') ?>"></span>
 <span id="add-course-for-save-label" data-label="<?php echo get_string('config:add_course_for_save', 'quizaccess_edusynch') ?>"></span>
@@ -79,5 +40,14 @@ $host = $PAGE->url->get_host();
 <span id="quiz-label" data-label="<?php echo get_string('config:quiz', 'quizaccess_edusynch') ?>"></span>
 <span id="select-course-label" data-label="<?php echo get_string('config:select_course', 'quizaccess_edusynch') ?>"></span>
 <span id="select-quiz-label" data-label="<?php echo get_string('config:select_quiz', 'quizaccess_edusynch') ?>"></span>
+
+<span id="data-auth" data-label="<?php echo $_SESSION["USER"]->id ?>"></span>
+<span id="data-url" data-label="<?php echo $lti_url_value ?>"></span>
+<span id="data-draft-token" data-label="<?php echo $draft_token ?>"></span>
+<span id="data-saved-token" data-label="<?php echo $saved_token ?>"></span>
+<span id="data-moodle-url" data-label="<?php echo $moodle_url ?>"></span>
+
 <script src="js/add-course.js"></script>
+
+<?php include('dist/index.html') ?>
 
