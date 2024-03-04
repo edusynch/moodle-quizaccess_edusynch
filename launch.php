@@ -1,4 +1,4 @@
-<?php
+<?php 
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -14,23 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Navbars view
+ * Launch
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-?>
-<?php if (is_siteadmin()): ?>
-<ul class="nav nav-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link <?php echo $action == 'settings' ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=settings"><?php echo get_string('navbar_menu:settings', 'quizaccess_edusynch') ?></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link <?php echo $action == 'launch' ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=launch"><?php echo get_string('navbar_menu:launch', 'quizaccess_edusynch') ?></a>
-  </li>
-</ul>
-<?php endif; ?>
 
+require_once(__DIR__ . '/../../../../config.php');
+
+global $PAGE, $DB;
+
+$arguments = file_get_contents('php://input');
+$payload = json_decode($arguments, true);
+
+$quizaccess_auth = $DB->get_record('quizaccess_edusynch_auth', ['token' => $payload['token']]);
+
+if ($quizaccess_auth) {
+  header('Content-Type: application/json');
+  echo json_encode(['user_id' => $quizaccess_auth->user_id]);
+  return;
+}
+
+header("HTTP/1.1 400 Bad Request");
+header('Content-Type: application/json');
+echo json_encode(['error' => 'User not found']);
+return;
 

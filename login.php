@@ -14,39 +14,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Setup quiz page
+ * Login
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 require_once(__DIR__ . '/../../../../config.php');
-require_login();
 
-global $CFG;
+global $PAGE, $DB;
 
+$arguments = file_get_contents('php://input');
+$payload = json_decode($arguments, true);
 
-$attemptid = required_param('attemptid', PARAM_INT);
-$cmid      = required_param('cmid', PARAM_INT);
-$page      = required_param('page', PARAM_INT);
-?>
-<html>
-<head>
-<title><?php echo get_string('pluginname', 'quizaccess_edusynch') ?></title>
-</head>
+$quizaccess_edusynch_token = $DB->get_record('quizaccess_edusynch_tokens', ['token' => $payload['token']]);
 
-<body>
-</body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>   
-<script type="text/javascript">
-setTimeout(function() {
-    var body = $('body');
-    if (body.attr('data-eproctoring') != 'true') {                
-        window.location.href = 'https://edusynch.com/install/extension';
-    } else {
-        window.location.href = '<?php echo $CFG->wwwroot . '/mod/quiz/accessrule/edusynch/start_quiz.php?attemptid=' . $attemptid . '&cmid=' . $cmid . '&page=' . $page ?>';
-    }
-}, 500);    
-</script>
-</html>
+if (isset($quizaccess_edusynch_token)) {
+  header('Content-Type: application/json');
+  echo json_encode(['user_id' => $quizaccess_edusynch_token->user_id]);
+  return;
+}
+
+header("HTTP/1.1 400 Bad Request");
+header('Content-Type: application/json');
+echo json_encode(['error' => 'Student not found']);
+return;
+

@@ -23,19 +23,43 @@
  */
 
 function quizaccess_edusynch_render_navbar_output() {
-    global $PAGE, $CFG;
+    global $PAGE, $CFG, $USER, $DB;
 
-    $context = context_system::instance();
-
+    $title = "EduSynch E-Proctoring";
+    $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php');
     if (!is_siteadmin()) {
-        return '';
+        $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['id']);
+        if (strpos($PAGE->url, 'accessrule/edusynch') === true) {
+            $url = new \moodle_url('/mod/quiz/accessrule/edusynch/index.php?action=launch&course_id=' . $_GET['course_id']);
+        }
     }
-    
+    $icon = new \pix_icon('i/hide', '');
+    $node = \navigation_node::create($title, $url, \navigation_node::TYPE_CUSTOM, null, null, $icon);
+    $version = explode(".", $CFG->release);
+
+    $role_assignamens = $DB->get_records("role_assignments", ['userid' => $USER->id]);
+    $roles = [];
+    foreach ($role_assignamens as $role_assignamen) {
+        $result = $DB->get_record('role', ['id' => $role_assignamen->roleid]);
+        array_push($roles, ucfirst($result->archetype));
+    }
+
+    if ($version[0] < '4') {
+        if (!is_siteadmin() && !in_array('Manager', $roles) && !str_contains($PAGE->url, 'course') && !str_contains($PAGE->url, 'accessrule/edusynch')) {
+            return;
+        }
+
+        $PAGE->flatnav->add($node);
+
+        return '';
+    } else {
+        $node->showinflatnavigation = true;
+        $PAGE->navigation->add_node($node);
+    }
 }
 
 function quizaccess_edusynch_before_footer()
 {
-
 }
 
 function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
@@ -91,3 +115,4 @@ function quizaccess_edusynch_coursemodule_edit_post_actions($moduleinfo)
         }
     }
 }
+

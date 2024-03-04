@@ -14,23 +14,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Navbars view
+ * LTI view
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-?>
-<?php if (is_siteadmin()): ?>
-<ul class="nav nav-tabs" role="tablist">
-  <li class="nav-item">
-    <a class="nav-link <?php echo $action == 'settings' ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=settings"><?php echo get_string('navbar_menu:settings', 'quizaccess_edusynch') ?></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link <?php echo $action == 'launch' ? 'active' : '' ?>" href="<?php echo $CFG->wwwroot ?>/mod/quiz/accessrule/edusynch/index.php?action=launch"><?php echo get_string('navbar_menu:launch', 'quizaccess_edusynch') ?></a>
-  </li>
-</ul>
-<?php endif; ?>
 
+?>
+<link href="css/bootstrap4-toggle.min.css" rel="stylesheet">
+<div class="container-fluid">
+    <div class="row mt-3">
+        <iframe class="row mt-3" style="width: 100%; height: 700px; border: none;" src="<?php echo $lti_url_value ?>/launch?&user_id=<?php echo $user_id ?>&roles=<?php echo $apply_role ?>&launch_presentation_return_url=<?php echo $domain ?>&custom_canvas_user_id=<?php echo $user_id ?>&tool_consumer_info_product_family_code=moodle&launch_presentation_locale=<?php echo $locale ?>&token=<?php echo $token_string ?>&course_id=<?php echo $course_id ?>&token_value=<?php echo $saved_token ?>"></iframe>
+    </div>
+</div>
+<script src="js/session-view.js"></script>
+<script src="js/bootstrap4-toggle.min.js"></script>
 

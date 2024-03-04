@@ -14,33 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * No extension installed view
+ * URL actions
  * 
  * @package    quizaccess_edusynch
  * @category   quiz
  * @copyright  2022 EduSynch <contact@edusynch.com>
  * @license    https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+header('Content-Type: application/json');
+
 require_once(__DIR__ . '/../../../../config.php');
 
-require_login();
+global $PAGE, $DB, $CFG;
 
-global $SESSION;
+$config = new \quizaccess_edusynch\config();
 
-$SESSION->edusynch_started   = null;        
-$SESSION->edusynch_sessionid = null;        
-$SESSION->edusynch_token     = null;   
-$SESSION->userid = null;
-$SESSION->quizid = null;
-?>
-<html>
-<head>
-<title><?php echo get_string('pluginname', 'quizaccess_edusynch') ?></title>
-</head>
+$action = required_param('action', PARAM_ALPHA);
 
-<body>
-</body>
-<script type="text/javascript">
-window.location.href = '<?php echo "$CFG->wwwroot/$SESSION->edusynch_redirect" ?>';
-</script>
-</html>
+if ($action == 'save') {
+    $arguments = file_get_contents('php://input');
+    $payload = json_decode($arguments, true);
+    $config->set_key('lti_url', $payload['url']);
+
+    header('Content-Type: application/json');
+    echo json_encode(['success' => true]);
+}
+
