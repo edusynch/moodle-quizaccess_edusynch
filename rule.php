@@ -93,7 +93,9 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         ); 
 
         $config        = new \quizaccess_edusynch\config();
-        $lti_url       = $config->get_key('lti_url');       
+        $lti_url       = $config->get_key('lti_url');    
+        $lti_url_value = !is_null($lti_url) && !empty($lti_url->value) ? $lti_url->value : 'https://lti.edusynch.com';
+
 
         if (!$token_record) {
             $expiration_datetime->add(new DateInterval('PT10M'));
@@ -119,7 +121,7 @@ function quizaccess_edusynch_course_module_viewed_handler($event)
         $login_request = \quizaccess_edusynch\network::sendRequest(
             'POST', 
             'lti',
-            $lti_url->value . '/auth/v1/authentications/login', 
+            $lti_url_value . '/auth/v1/authentications/login', 
             ['payload' => json_encode($payload)],
             ['Content-Type' => 'form-data']
         );    
